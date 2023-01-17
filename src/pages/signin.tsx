@@ -14,9 +14,7 @@ const SignIn = () => {
     <main>
       <form
         onSubmit={() => {
-          async () => {
-            await signIn("credentials", signInCredentials);
-          };
+          signIn("credentials", signInCredentials);
         }}
       >
         <h2>Sign In</h2>
@@ -50,8 +48,8 @@ const SignIn = () => {
         <button type="submit">Sign In</button>
       </form>
       <button
-        onClick={() => async () => {
-          await signOut();
+        onClick={() => {
+          signOut();
         }}
       >
         Logout
