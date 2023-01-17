@@ -1,28 +1,12 @@
 import { type NextPage } from "next";
-import Head from "next/head";
-import { signIn, signOut, useSession } from "next-auth/react";
-
-import { api } from "../utils/api";
-import { useState } from "react";
+import Link from "next/link";
 
 const Home: NextPage = () => {
-  const [signInCredentials, setSignInCredentials] = useState({
-    username: "",
-    password: "",
-  });
-  const [signUpCredentials, setSignUpCredentials] = useState({
-    username: "",
-    password: "",
-  });
   return (
-    <>
-      <Head>
-        <title>scrtmsg.me | Get message from anonymous.</title>
-        <meta name="description" content="Get message from anonymous." />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <form onSubmit={() => {}}></form>
-    </>
+    <main>
+      <h1>Get message from anonymous.</h1>
+      <Link href="/signin">Sign in</Link>
+    </main>
   );
 };
 
