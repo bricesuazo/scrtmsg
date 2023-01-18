@@ -61,7 +61,9 @@ const SignIn = () => {
         <button type="submit">Sign In</button>
         <p className="mt-4 text-center">
           Don&apos;t have an account yet?{" "}
-          <Link href="/signup">Sign Up here.</Link>
+          <Link href="/signup" className="font-bold">
+            Sign Up here.
+          </Link>
         </p>
       </form>
     </main>

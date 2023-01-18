@@ -12,7 +12,7 @@ const UsernamePage = ({
 }: {
   user: Session["user"] | null;
 }) => {
-  const [isSent, setIsSent] = useState(true);
+  const [isSent, setIsSent] = useState(false);
   const [message, setMessage] = useState("");
 
   const router = useRouter();

@@ -81,7 +81,10 @@ const SignIn = () => {
           {signUpMutate.isLoading ? "Loading..." : "Sign Up"}
         </button>
         <p className="text-center">
-          Already have an account? <Link href="/signin">Sign In here.</Link>
+          Already have an account?{" "}
+          <Link href="/signin" className="font-bold">
+            Sign In here.
+          </Link>
         </p>
       </form>
     </main>
