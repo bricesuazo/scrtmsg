@@ -28,6 +28,7 @@ const UsernamePage = ({ user: userSession }: { user: Session["user"] }) => {
         <Head>
           <title>{title}</title>
         </Head>
+
         <div>
           {messages.data?.map((message) => (
             <div key={message.id}>

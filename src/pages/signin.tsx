@@ -18,7 +18,6 @@ const SignIn = () => {
           e.preventDefault();
 
           signIn("credentials", {
-            redirect: false,
             username: signInCredentials.username,
             password: signInCredentials.password,
           });
