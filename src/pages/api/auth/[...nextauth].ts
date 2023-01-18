@@ -25,9 +25,9 @@ export const authOptions: NextAuthOptions = {
     maxAge: 15 * 24 * 30 * 60, // 15 days
   },
 
-  // pages: {
-  //   signIn: "/signin",
-  // },
+  pages: {
+    signIn: "/signin",
+  },
   providers: [
     CredentialsProvider({
       id: "credentials",
@@ -36,7 +36,7 @@ export const authOptions: NextAuthOptions = {
         username: { label: "Username", type: "text", placeholder: "Username" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         const { username: usernameCredential, password: passwordCredential } =
           credentials as {
             username: string;

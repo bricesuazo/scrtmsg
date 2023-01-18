@@ -1,7 +1,6 @@
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
-import { api } from "../utils/api";
 import { getServerAuthSession } from "../server/auth";
 import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 
@@ -12,8 +11,9 @@ const SignIn = () => {
   });
 
   return (
-    <main>
+    <main className="mx-auto max-w-screen-md p-4">
       <form
+        className="mx-auto flex max-w-md flex-col gap-y-4"
         onSubmit={async (e) => {
           e.preventDefault();
 
@@ -23,37 +23,47 @@ const SignIn = () => {
           });
         }}
       >
-        <h2>Sign In</h2>
-
-        <label htmlFor="username">Username</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          value={signInCredentials.username}
-          onChange={(e) =>
-            setSignInCredentials({
-              ...signInCredentials,
-              username: e.target.value,
-            })
-          }
-        />
-        <label htmlFor="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          value={signInCredentials.password}
-          onChange={(e) =>
-            setSignInCredentials({
-              ...signInCredentials,
-              password: e.target.value,
-            })
-          }
-        />
+        <h2 className="text-center text-lg font-bold">Sign in to scrtmsg.me</h2>
+        <div className="flex flex-col gap-y-1">
+          <label htmlFor="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Username"
+            required
+            value={signInCredentials.username}
+            onChange={(e) =>
+              setSignInCredentials({
+                ...signInCredentials,
+                username: e.target.value,
+              })
+            }
+          />
+        </div>
+        <div className="flex flex-col gap-y-1">
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Password"
+            required
+            value={signInCredentials.password}
+            onChange={(e) =>
+              setSignInCredentials({
+                ...signInCredentials,
+                password: e.target.value,
+              })
+            }
+          />
+        </div>
         <button type="submit">Sign In</button>
+        <p className="mt-4 text-center">
+          Don&apos;t have an account yet?{" "}
+          <Link href="/signup">Sign Up here.</Link>
+        </p>
       </form>
-      <Link href="/signup">Sign Up here.</Link>
     </main>
   );
 };

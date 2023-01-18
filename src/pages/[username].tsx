@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import { api } from "../utils/api";
 import { useState } from "react";
 import Head from "next/head";
-import { GetServerSideProps, GetServerSidePropsContext } from "next";
+import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "../server/auth";
 import type { Session } from "next-auth";
 import Moment from "react-moment";
@@ -12,7 +12,7 @@ const UsernamePage = ({
 }: {
   user: Session["user"] | null;
 }) => {
-  const [isSent, setIsSent] = useState(false);
+  const [isSent, setIsSent] = useState(true);
   const [message, setMessage] = useState("");
 
   const router = useRouter();
@@ -53,8 +53,10 @@ const UsernamePage = ({
           } else {
             if (isSent) {
               return (
-                <>
-                  <h1>Message sent to @{user.data.username}</h1>
+                <div className="flex flex-col items-center gap-y-4">
+                  <h1 className="text-center text-xl font-bold">
+                    Message sent to @{user.data.username}
+                  </h1>
                   <p>
                     <button
                       onClick={() => {
@@ -64,12 +66,14 @@ const UsernamePage = ({
                       Send another message
                     </button>
                   </p>
-                </>
+                </div>
               );
             } else {
               return (
-                <>
-                  <h1>Send message to @{user.data.username}</h1>
+                <div className="mx-auto flex max-w-md flex-col gap-y-4">
+                  <h1 className="text-center text-xl font-bold">
+                    Send message to @{user.data.username}
+                  </h1>
                   <form
                     onSubmit={async (e) => {
                       e.preventDefault();
@@ -80,13 +84,14 @@ const UsernamePage = ({
                       setMessage("");
                       setIsSent(true);
                     }}
+                    className="flex flex-col gap-y-2"
                   >
-                    <input
-                      type="text"
-                      placeholder="Message"
+                    <textarea
+                      placeholder={`Message to @${user.data.username}`}
                       onChange={(e) => setMessage(e.target.value)}
                       value={message}
                       disabled={sendMessageMutation.isLoading}
+                      required
                     />
                     <button
                       type="submit"
@@ -95,7 +100,7 @@ const UsernamePage = ({
                       {sendMessageMutation.isLoading ? "Loading..." : "Send"}
                     </button>
                   </form>
-                </>
+                </div>
               );
             }
           }
