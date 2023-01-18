@@ -12,13 +12,15 @@ const UsernamePage = ({
 }: {
   user: Session["user"] | null;
 }) => {
-  const sendMessageMutation = api.message.sendMessageToUsername.useMutation();
+  const [isSent, setIsSent] = useState(false);
   const [message, setMessage] = useState("");
+
   const router = useRouter();
   const { username } = router.query;
 
   if (!username || typeof username !== "string") return;
 
+  const sendMessageMutation = api.message.sendMessageToUsername.useMutation();
   const user = api.user.getUserByUsername.useQuery({ username });
 
   if (user.isLoading) return <>Loading...</>;
@@ -49,35 +51,53 @@ const UsernamePage = ({
               </>
             );
           } else {
-            return (
-              <>
-                <h1>Send message to @{user.data.username}</h1>
-                <form
-                  onSubmit={async (e) => {
-                    e.preventDefault();
-                    await sendMessageMutation.mutateAsync({
-                      username,
-                      message,
-                    });
-                    setMessage("");
-                  }}
-                >
-                  <input
-                    type="text"
-                    placeholder="Message"
-                    onChange={(e) => setMessage(e.target.value)}
-                    value={message}
-                    disabled={sendMessageMutation.isLoading}
-                  />
-                  <button
-                    type="submit"
-                    disabled={sendMessageMutation.isLoading}
+            if (isSent) {
+              return (
+                <>
+                  <h1>Message sent to @{user.data.username}</h1>
+                  <p>
+                    <button
+                      onClick={() => {
+                        setIsSent(false);
+                      }}
+                    >
+                      Send another message
+                    </button>
+                  </p>
+                </>
+              );
+            } else {
+              return (
+                <>
+                  <h1>Send message to @{user.data.username}</h1>
+                  <form
+                    onSubmit={async (e) => {
+                      e.preventDefault();
+                      await sendMessageMutation.mutateAsync({
+                        username,
+                        message,
+                      });
+                      setMessage("");
+                      setIsSent(true);
+                    }}
                   >
-                    {sendMessageMutation.isLoading ? "Loading..." : "Send"}
-                  </button>
-                </form>
-              </>
-            );
+                    <input
+                      type="text"
+                      placeholder="Message"
+                      onChange={(e) => setMessage(e.target.value)}
+                      value={message}
+                      disabled={sendMessageMutation.isLoading}
+                    />
+                    <button
+                      type="submit"
+                      disabled={sendMessageMutation.isLoading}
+                    >
+                      {sendMessageMutation.isLoading ? "Loading..." : "Send"}
+                    </button>
+                  </form>
+                </>
+              );
+            }
           }
 
           return null;
