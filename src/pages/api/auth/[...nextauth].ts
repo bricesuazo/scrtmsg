@@ -2,7 +2,6 @@ import { prisma } from "./../../../server/db";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import NextAuth, { type NextAuthOptions } from "next-auth";
-import { env } from "../../../env/server.mjs";
 
 export const authOptions: NextAuthOptions = {
   callbacks: {
@@ -21,12 +20,14 @@ export const authOptions: NextAuthOptions = {
       return session;
     },
   },
-  session: {
-    strategy: "jwt",
+  jwt: {
+    secret: "super-secret",
+    maxAge: 15 * 24 * 30 * 60, // 15 days
   },
-  pages: {
-    signIn: "/signin",
-  },
+
+  // pages: {
+  //   signIn: "/signin",
+  // },
   providers: [
     CredentialsProvider({
       id: "credentials",
@@ -36,25 +37,28 @@ export const authOptions: NextAuthOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials, req) {
-        if (!credentials?.username || !credentials?.password) return null;
+        const { username: usernameCredential, password: passwordCredential } =
+          credentials as {
+            username: string;
+            password: string;
+          };
 
         const user = await prisma.user.findUnique({
-          where: { username: credentials.username },
+          where: { username: usernameCredential },
         });
 
         if (!user) return null;
         const passwordMatch = await bcrypt.compare(
-          credentials.password,
+          passwordCredential,
           user.password
         );
 
         if (!passwordMatch) {
-          return null;
+          throw new Error("Invalid username or password");
         }
 
         const { password, emailVerified, ...rest } = user;
 
-        console.log("🚀 ~ file: [...nextauth].ts:59 ~ authorize ~ rest", rest);
         return rest;
       },
     }),

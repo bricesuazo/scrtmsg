@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { api } from "../utils/api";
 import Link from "next/link";
+import type { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { getServerAuthSession } from "../server/auth";
 
 const SignIn = () => {
   const [signUpCredentials, setSignUpCredentials] = useState({
@@ -31,6 +33,7 @@ const SignIn = () => {
               email: e.target.value,
             })
           }
+          disabled={signUpMutate.isLoading}
         />
 
         <label htmlFor="username">Username</label>
@@ -45,6 +48,7 @@ const SignIn = () => {
               username: e.target.value,
             })
           }
+          disabled={signUpMutate.isLoading}
         />
         <label htmlFor="password">Password</label>
         <input
@@ -58,8 +62,11 @@ const SignIn = () => {
               password: e.target.value,
             })
           }
+          disabled={signUpMutate.isLoading}
         />
-        <button type="submit">Sign Up</button>
+        <button type="submit" disabled={signUpMutate.isLoading}>
+          {signUpMutate.isLoading ? "Loading..." : "Sign Up"}
+        </button>
       </form>
 
       <Link href="/signin">Sign In here.</Link>
@@ -68,3 +75,22 @@ const SignIn = () => {
 };
 
 export default SignIn;
+
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const session = await getServerAuthSession(context);
+
+  if (session && session.user) {
+    return {
+      redirect: {
+        destination: `/${session.user.username}`,
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};

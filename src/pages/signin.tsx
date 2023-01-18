@@ -1,6 +1,9 @@
-import { signIn, signOut, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useState } from "react";
+import { api } from "../utils/api";
+import { getServerAuthSession } from "../server/auth";
+import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 
 const SignIn = () => {
   const [signInCredentials, setSignInCredentials] = useState({
@@ -8,17 +11,17 @@ const SignIn = () => {
     password: "",
   });
 
-  const { data } = useSession();
   return (
     <main>
       <form
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          async () =>
-            await signIn("credentials", {
-              username: signInCredentials.username,
-              password: signInCredentials.password,
-            });
+
+          signIn("credentials", {
+            redirect: false,
+            username: signInCredentials.username,
+            password: signInCredentials.password,
+          });
         }}
       >
         <h2>Sign In</h2>
@@ -51,18 +54,28 @@ const SignIn = () => {
         />
         <button type="submit">Sign In</button>
       </form>
-      {data && (
-        <button
-          onClick={() => {
-            signOut();
-          }}
-        >
-          Logout
-        </button>
-      )}
       <Link href="/signup">Sign Up here.</Link>
     </main>
   );
 };
 
 export default SignIn;
+
+export const getServerSideProps: GetServerSideProps = async (
+  context: GetServerSidePropsContext
+) => {
+  const session = await getServerAuthSession(context);
+
+  if (session && session.user) {
+    return {
+      redirect: {
+        destination: `/${session.user.username}`,
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};

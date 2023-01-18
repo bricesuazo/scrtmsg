@@ -18,7 +18,13 @@ export const messageRouter = createTRPCRouter({
       });
     }),
 
-  getAll: protectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.message.findMany();
+  getMessages: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.message.findMany({
+      where: {
+        user: {
+          username: ctx.session.user.username,
+        },
+      },
+    });
   }),
 });
