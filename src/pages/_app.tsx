@@ -7,6 +7,7 @@ import { api } from "../utils/api";
 import "../styles/globals.css";
 import Head from "next/head";
 import Header from "../components/Header";
+import { ThemeProvider } from "next-themes";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -19,10 +20,12 @@ const MyApp: AppType<{ session: Session | null }> = ({
         <meta name="description" content="Get message from anonymous." />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <SessionProvider session={session}>
-        <Header />
-        <Component {...pageProps} />
-      </SessionProvider>
+      <ThemeProvider attribute="class">
+        <SessionProvider session={session}>
+          <Header />
+          <Component {...pageProps} />
+        </SessionProvider>
+      </ThemeProvider>
     </>
   );
 };
