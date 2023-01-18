@@ -12,7 +12,8 @@ const SignIn = () => {
   return (
     <main>
       <form
-        onSubmit={() => {
+        onSubmit={(e) => {
+          e.preventDefault();
           signUpMutate.mutate(signUpCredentials);
         }}
       >

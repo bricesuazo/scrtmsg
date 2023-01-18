@@ -3,12 +3,19 @@ import { z } from "zod";
 import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 
 export const messageRouter = createTRPCRouter({
-  hello: publicProcedure
-    .input(z.object({ text: z.string() }))
-    .query(({ input }) => {
-      return {
-        greeting: `Hello ${input.text}`,
-      };
+  sendMessageToUsername: publicProcedure
+    .input(z.object({ username: z.string(), message: z.string() }))
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.message.create({
+        data: {
+          message: input.message,
+          user: {
+            connect: {
+              username: input.username,
+            },
+          },
+        },
+      });
     }),
 
   getAll: protectedProcedure.query(({ ctx }) => {

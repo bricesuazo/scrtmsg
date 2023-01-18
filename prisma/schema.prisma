@@ -17,7 +17,7 @@ datasource db {
 
 model Message {
     id        String   @id @default(cuid())
-    text      String
+    message      String
     createdAt DateTime @default(now())
     userId    String
     user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)

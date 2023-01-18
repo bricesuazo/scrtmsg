@@ -24,15 +24,18 @@ export const authOptions: NextAuthOptions = {
   session: {
     strategy: "jwt",
   },
-
+  pages: {
+    signIn: "/signin",
+  },
   providers: [
     CredentialsProvider({
+      id: "credentials",
       name: "Credentials",
       credentials: {
         username: { label: "Username", type: "text", placeholder: "Username" },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials) {
+      async authorize(credentials, req) {
         if (!credentials?.username || !credentials?.password) return null;
 
         const user = await prisma.user.findUnique({
@@ -49,8 +52,9 @@ export const authOptions: NextAuthOptions = {
           return null;
         }
 
-        const { password, ...rest } = user;
+        const { password, emailVerified, ...rest } = user;
 
+        console.log("🚀 ~ file: [...nextauth].ts:59 ~ authorize ~ rest", rest);
         return rest;
       },
     }),

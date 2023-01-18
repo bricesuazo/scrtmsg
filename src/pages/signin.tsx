@@ -12,8 +12,13 @@ const SignIn = () => {
   return (
     <main>
       <form
-        onSubmit={() => {
-          signIn("credentials", { ...signInCredentials, callbackUrl: "/" });
+        onSubmit={(e) => {
+          e.preventDefault();
+          async () =>
+            await signIn("credentials", {
+              username: signInCredentials.username,
+              password: signInCredentials.password,
+            });
         }}
       >
         <h2>Sign In</h2>
