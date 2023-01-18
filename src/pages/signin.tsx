@@ -8,13 +8,12 @@ const SignIn = () => {
     password: "",
   });
 
-  const session = useSession();
-  console.log("🚀 ~ file: signin.tsx:11 ~ SignIn ~ session", session);
+  const { data } = useSession();
   return (
     <main>
       <form
         onSubmit={() => {
-          signIn("credentials", signInCredentials);
+          signIn("credentials", { ...signInCredentials, callbackUrl: "/" });
         }}
       >
         <h2>Sign In</h2>
@@ -47,13 +46,15 @@ const SignIn = () => {
         />
         <button type="submit">Sign In</button>
       </form>
-      <button
-        onClick={() => {
-          signOut();
-        }}
-      >
-        Logout
-      </button>
+      {data && (
+        <button
+          onClick={() => {
+            signOut();
+          }}
+        >
+          Logout
+        </button>
+      )}
       <Link href="/signup">Sign Up here.</Link>
     </main>
   );

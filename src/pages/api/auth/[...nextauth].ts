@@ -2,12 +2,21 @@ import { prisma } from "./../../../server/db";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import NextAuth, { type NextAuthOptions } from "next-auth";
+import { env } from "../../../env/server.mjs";
 
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session({ session, user }) {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.username = user.username;
+      }
+      return token;
+    },
+    async session({ session, token }) {
       if (session.user) {
-        session.user.id = user.id;
+        session.user.id = token.id;
+        session.user.username = token.username;
       }
       return session;
     },
@@ -20,29 +29,29 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        username: { label: "Username", type: "text" },
+        username: { label: "Username", type: "text", placeholder: "Username" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
         if (!credentials?.username || !credentials?.password) return null;
 
         const user = await prisma.user.findUnique({
-          where: { username: credentials?.username },
+          where: { username: credentials.username },
         });
 
         if (!user) return null;
-        console.log("🚀 ~ file: [...nextauth].ts:34 ~ authorize ~ user", user);
         const passwordMatch = await bcrypt.compare(
-          credentials?.password,
+          credentials.password,
           user.password
         );
 
-        if (passwordMatch) {
-          console.log("match");
-          return user;
+        if (!passwordMatch) {
+          return null;
         }
 
-        return null;
+        const { password, ...rest } = user;
+
+        return rest;
       },
     }),
   ],
