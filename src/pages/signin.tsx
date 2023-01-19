@@ -1,72 +1,72 @@
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useState } from "react";
 import { getServerAuthSession } from "../server/auth";
 import type { GetServerSideProps, GetServerSidePropsContext } from "next";
-import { Button } from "@mantine/core";
+import {
+  Button,
+  Container,
+  Title,
+  TextInput,
+  PasswordInput,
+  Flex,
+} from "@mantine/core";
+import { useForm } from "@mantine/form";
+import { FaAt, FaLock, FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 
 const SignIn = () => {
-  const [signInCredentials, setSignInCredentials] = useState({
-    username: "",
-    password: "",
+  const form = useForm({
+    initialValues: {
+      username: "",
+      password: "",
+    },
+
+    validate: {
+      username: (value) =>
+        value.length < 3 ? "Username must be at least 3 characters long" : null,
+      password: (value) =>
+        value.length < 8 ? "Password must be at least 8 characters long" : null,
+    },
   });
-
   return (
-    <main className="mx-auto max-w-screen-md p-4">
-      <form
-        className="mx-auto flex max-w-md flex-col gap-y-4"
-        onSubmit={async (e) => {
-          e.preventDefault();
-
-          signIn("credentials", {
-            username: signInCredentials.username,
-            password: signInCredentials.password,
-          });
-        }}
-      >
-        <h2 className="text-center text-lg font-bold">Sign in to scrtmsg.me</h2>
-        <div className="flex flex-col gap-y-1">
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            placeholder="Username"
-            required
-            value={signInCredentials.username}
-            onChange={(e) =>
-              setSignInCredentials({
-                ...signInCredentials,
-                username: e.target.value,
-              })
-            }
+    <main>
+      <Container size="xs">
+        <form
+          onSubmit={form.onSubmit((values) =>
+            signIn("credentials", {
+              username: values.username,
+              password: values.password,
+            })
+          )}
+        >
+          <Title align="center">Sign in to scrtmsg.me</Title>
+          <TextInput
+            withAsterisk
+            label="Username"
+            placeholder="bricesuazo"
+            icon={<FaAt />}
+            {...form.getInputProps("username")}
           />
-        </div>
-        <div className="flex flex-col gap-y-1">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
+          <PasswordInput
+            label="Password"
             placeholder="Password"
-            required
-            value={signInCredentials.password}
-            onChange={(e) =>
-              setSignInCredentials({
-                ...signInCredentials,
-                password: e.target.value,
-              })
+            icon={<FaLock />}
+            {...form.getInputProps("password")}
+            visibilityToggleIcon={({ reveal }) =>
+              reveal ? <FaRegEyeSlash /> : <FaRegEye />
             }
           />
-        </div>
-        <Button type="submit">Sign In</Button>
-        <p className="mt-4 text-center">
-          Don&apos;t have an account yet?{" "}
-          <Link href="/signup" className="font-bold">
-            Sign Up here.
-          </Link>
-        </p>
-      </form>
+          <Flex justify="space-between">
+            <Button type="submit" mt="sm">
+              Sign In
+            </Button>
+            <Link href="/signup" className="font-bold">
+              <Button mt="sm" variant="subtle">
+                Create account
+              </Button>
+            </Link>
+          </Flex>
+        </form>
+      </Container>
     </main>
   );
 };

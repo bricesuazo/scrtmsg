@@ -32,7 +32,7 @@ const UsernamePage = ({
       <Head>
         <title>{title}</title>
       </Head>
-      <main className="mx-auto max-w-screen-md p-4">
+      <main >
         {(() => {
           if (userSession?.username === user.data.username) {
             const messages = api.message.getMessages.useQuery();
@@ -53,8 +53,8 @@ const UsernamePage = ({
           } else {
             if (isSent) {
               return (
-                <div className="flex flex-col items-center gap-y-4">
-                  <h1 className="text-center text-xl font-bold">
+                <div >
+                  <h1 >
                     Message sent to @{user.data.username}
                   </h1>
                   <p>
@@ -70,8 +70,8 @@ const UsernamePage = ({
               );
             } else {
               return (
-                <div className="mx-auto flex max-w-md flex-col gap-y-4">
-                  <h1 className="text-center text-xl font-bold">
+                <div >
+                  <h1 >
                     Send message to @{user.data.username}
                   </h1>
                   <form
@@ -84,7 +84,7 @@ const UsernamePage = ({
                       setMessage("");
                       setIsSent(true);
                     }}
-                    className="flex flex-col gap-y-2"
+                    
                   >
                     <textarea
                       placeholder={`Message to @${user.data.username}`}
