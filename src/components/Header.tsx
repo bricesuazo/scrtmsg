@@ -30,7 +30,7 @@ const Header = () => {
                   </Link>
                   <button
                     onClick={() => {
-                      signOut();
+                      signOut({ callbackUrl: "/signin" });
                     }}
                   >
                     Log out

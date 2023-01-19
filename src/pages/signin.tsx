@@ -3,11 +3,20 @@ import Link from "next/link";
 import { useState } from "react";
 import { getServerAuthSession } from "../server/auth";
 import type { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { useRouter } from "next/router";
 
 const SignIn = () => {
-  const [signInCredentials, setSignInCredentials] = useState({
+  const router = useRouter();
+  const [signInCredentials, setSignInCredentials] = useState<{
+    username: string;
+    password: string;
+    loading: boolean;
+    error: string | null;
+  }>({
     username: "",
     password: "",
+    loading: false,
+    error: null,
   });
 
   return (
@@ -16,11 +25,27 @@ const SignIn = () => {
         className="mx-auto flex max-w-md flex-col gap-y-4"
         onSubmit={async (e) => {
           e.preventDefault();
+          setSignInCredentials({
+            ...signInCredentials,
+            loading: true,
+            error: null,
+          });
 
-          signIn("credentials", {
+          const res = await signIn("credentials", {
             username: signInCredentials.username,
             password: signInCredentials.password,
+            redirect: false,
           });
+          if (res?.ok) {
+            router.reload();
+          } else if (res?.error) {
+            setSignInCredentials({
+              ...signInCredentials,
+              error: res.error,
+            });
+          }
+
+          setSignInCredentials({ ...signInCredentials, loading: false });
         }}
       >
         <h2 className="text-center text-lg font-bold">Sign in to scrtmsg.me</h2>
@@ -32,6 +57,7 @@ const SignIn = () => {
             name="username"
             placeholder="Username"
             required
+            disabled={signInCredentials.loading}
             value={signInCredentials.username}
             onChange={(e) =>
               setSignInCredentials({
@@ -49,6 +75,7 @@ const SignIn = () => {
             name="password"
             placeholder="Password"
             required
+            disabled={signInCredentials.loading}
             value={signInCredentials.password}
             onChange={(e) =>
               setSignInCredentials({
@@ -58,7 +85,12 @@ const SignIn = () => {
             }
           />
         </div>
-        <button type="submit">Sign In</button>
+        {signInCredentials.error && (
+          <p className="text-center text-red-500">{signInCredentials.error}</p>
+        )}
+        <button type="submit" disabled={signInCredentials.loading}>
+          {signInCredentials.loading ? "Loading..." : "Sign In"}
+        </button>
         <p className="mt-4 text-center">
           Don&apos;t have an account yet?{" "}
           <Link href="/signup" className="font-bold">

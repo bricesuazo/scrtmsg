@@ -47,7 +47,7 @@ export const authOptions: NextAuthOptions = {
           where: { username: usernameCredential },
         });
 
-        if (!user) return null;
+        if (!user) throw new Error("Invalid username or password");
         const passwordMatch = await bcrypt.compare(
           passwordCredential,
           user.password

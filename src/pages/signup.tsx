@@ -5,7 +5,11 @@ import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "../server/auth";
 
 const SignIn = () => {
-  const [signUpCredentials, setSignUpCredentials] = useState({
+  const [signUpCredentials, setSignUpCredentials] = useState<{
+    username: string;
+    password: string;
+    email: string;
+  }>({
     username: "",
     password: "",
     email: "",
@@ -77,6 +81,11 @@ const SignIn = () => {
             disabled={signUpMutate.isLoading}
           />
         </div>
+        {signUpMutate.error && (
+          <p className="text-center text-red-500">
+            {signUpMutate.error.message}
+          </p>
+        )}
         <button type="submit" disabled={signUpMutate.isLoading}>
           {signUpMutate.isLoading ? "Loading..." : "Sign Up"}
         </button>
