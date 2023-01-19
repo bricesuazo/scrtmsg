@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { getServerAuthSession } from "../server/auth";
 import type { GetServerSideProps, GetServerSidePropsContext } from "next";
+import { Button } from "@mantine/core";
 
 const SignIn = () => {
   const [signInCredentials, setSignInCredentials] = useState({
@@ -58,7 +59,7 @@ const SignIn = () => {
             }
           />
         </div>
-        <button type="submit">Sign In</button>
+        <Button type="submit">Sign In</Button>
         <p className="mt-4 text-center">
           Don&apos;t have an account yet?{" "}
           <Link href="/signup" className="font-bold">
