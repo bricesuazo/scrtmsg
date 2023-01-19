@@ -25,6 +25,9 @@ export const messageRouter = createTRPCRouter({
           username: ctx.session.user.username,
         },
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
   }),
 });

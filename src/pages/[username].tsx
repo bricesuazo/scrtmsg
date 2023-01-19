@@ -36,19 +36,34 @@ const UsernamePage = ({
         {(() => {
           if (userSession?.username === user.data.username) {
             const messages = api.message.getMessages.useQuery();
+
             return (
-              <>
+              <div className="flex flex-col gap-y-2">
+                <button
+                  onClick={() => messages.refetch()}
+                  disabled={messages.isRefetching}
+                >
+                  {messages.isRefetching ? "Loading.." : "Refresh"}
+                </button>
                 {messages.data?.length === 0 ? (
                   <p>No message</p>
                 ) : (
                   messages.data?.map((message) => (
-                    <div key={message.id}>
+                    <div
+                      key={message.id}
+                      className="rounded border p-4 dark:border-slate-800"
+                    >
                       <p>{message.message}</p>
-                      <Moment fromNow>{message.createdAt}</Moment>
+                      <Moment
+                        fromNow
+                        className="text-sm text-slate-400 dark:text-slate-600"
+                      >
+                        {message.createdAt}
+                      </Moment>
                     </div>
                   ))
                 )}
-              </>
+              </div>
             );
           } else {
             if (isSent) {
