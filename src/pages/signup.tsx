@@ -12,17 +12,17 @@ const SignIn = () => {
   });
   const signUpMutate = api.user.signUp.useMutation();
   return (
-    <main >
+    <main className="mx-auto max-w-screen-md p-4">
       <form
-       
+        className="mx-auto flex max-w-md flex-col gap-y-4"
         onSubmit={(e) => {
           e.preventDefault();
           signUpMutate.mutate(signUpCredentials);
         }}
       >
-        <h2 >Sign up to scrtmsg.me</h2>
+        <h2 className="text-center text-lg font-bold">Sign up to scrtmsg.me</h2>
 
-        <div >
+        <div className="flex flex-col gap-y-1">
           <label htmlFor="email">Email</label>
           <input
             type="email"
@@ -40,7 +40,7 @@ const SignIn = () => {
             disabled={signUpMutate.isLoading}
           />
         </div>
-        <div>
+        <div className="flex flex-col gap-y-1">
           <label htmlFor="username">Username</label>
           <input
             type="text"
@@ -59,7 +59,7 @@ const SignIn = () => {
           />
         </div>
 
-        <div >
+        <div className="flex flex-col gap-y-1">
           <label htmlFor="password">Password</label>
           <input
             type="password"
@@ -80,9 +80,9 @@ const SignIn = () => {
         <button type="submit" disabled={signUpMutate.isLoading}>
           {signUpMutate.isLoading ? "Loading..." : "Sign Up"}
         </button>
-        <p >
+        <p className="text-center">
           Already have an account?{" "}
-          <Link href="/signin">
+          <Link href="/signin" className="font-bold">
             Sign In here.
           </Link>
         </p>
