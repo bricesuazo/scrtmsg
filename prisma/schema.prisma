@@ -14,13 +14,18 @@ datasource db {
     url      = env("DATABASE_URL")
     relationMode = "prisma"
 }
-
+// enum Status {
+//   ACTIVE
+//   INACTIVE
+//   SUSPENDED
+// }
 model Message {
     id        String   @id @default(cuid())
     message      String
     createdAt DateTime @default(now())
     userId    String
     user      User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    // status  Status
 }
 
 
@@ -34,3 +39,6 @@ model User {
     password      String
     messages      Message[]
 }
+
+  
+
