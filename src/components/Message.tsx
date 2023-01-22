@@ -1,26 +1,20 @@
 import { useState } from "react";
-import { type Message } from "@prisma/client";
+import type { Reply, Message, User } from "@prisma/client";
 import { FaTelegramPlane, FaTrashAlt } from "react-icons/fa";
 import Moment from "react-moment";
 import { api } from "../utils/api";
 import Spinner from "./Spinner";
+import ReplyComponent from "./Reply";
 
-const ReplyInput = ({
+const Message = ({
   message,
   refetch,
 }: {
-  message:
-    | Message
-    | {
-        id: string;
-        message: string;
-        createdAt: Date;
-        replies: {
-          id: number;
-          reply: string;
-          createdAt: Date;
-        }[];
-      };
+  message: Message & {
+    replies: (Reply & {
+      user: User;
+    })[];
+  };
   refetch: () => void;
 }) => {
   const replyMutation = api.message.reply.useMutation();
@@ -57,7 +51,15 @@ const ReplyInput = ({
           )}
         </button>
       </div>
-
+      <div className="">
+        {message.replies.length === 0 ? (
+          <p className="text-center text-xs text-slate-500">No reply</p>
+        ) : (
+          message.replies.map((reply) => {
+            return <ReplyComponent reply={reply} refetch={refetch} />;
+          })
+        )}
+      </div>
       <form
         className="flex items-center gap-x-2"
         onSubmit={async (e) => {
@@ -86,19 +88,8 @@ const ReplyInput = ({
           )}
         </button>
       </form>
-
-      {/* <div className="">
-        {message.replies.map((reply) => (
-          <div className="">
-            <p>{reply.reply}</p>
-            <p className="text-sm text-slate-400 dark:text-slate-600">
-              <Moment fromNow>{reply.createdAt}</Moment>
-            </p>
-          </div>
-        ))}
-      </div> */}
     </div>
   );
 };
 
-export default ReplyInput;
+export default Message;

@@ -5,7 +5,7 @@ import Head from "next/head";
 import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "../server/auth";
 import type { Session } from "next-auth";
-import ReplyInput from "../components/ReplyInput";
+import Message from "../components/Message";
 
 const UsernamePage = ({
   user: userSession,
@@ -48,7 +48,7 @@ const UsernamePage = ({
                   <p>No message</p>
                 ) : (
                   messages.data?.map((message) => (
-                    <ReplyInput
+                    <Message
                       message={message}
                       key={message.id}
                       refetch={messages.refetch}

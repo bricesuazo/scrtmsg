@@ -60,12 +60,21 @@ export const messageRouter = createTRPCRouter({
       include: {
         replies: {
           include: {
-            message: true,
+            user: true,
           },
         },
       },
     });
   }),
+  deleteReply: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(({ ctx, input }) => {
+      return ctx.prisma.reply.delete({
+        where: {
+          id: input.id,
+        },
+      });
+    }),
 
   // getPublicAndWithReplyMessages: publicProcedure
   //   .input(z.object({ username: z.string() }))
