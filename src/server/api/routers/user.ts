@@ -58,5 +58,6 @@ export const userRouter = createTRPCRouter({
           email: input.email,
         },
       });
+      return true;
     }),
 });

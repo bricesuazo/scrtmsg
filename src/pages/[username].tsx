@@ -72,6 +72,11 @@ const UsernamePage = ({
                 </div>
               );
             } else {
+              // const messages =
+              //   api.message.getPublicAndWithReplyMessages.useQuery({
+              //     username: user.data.username,
+              //   });
+
               return (
                 <div className="mx-auto flex max-w-md flex-col gap-y-4">
                   <h1 className="text-center text-xl font-bold">

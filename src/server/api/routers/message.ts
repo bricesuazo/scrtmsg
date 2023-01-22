@@ -59,4 +59,8 @@ export const messageRouter = createTRPCRouter({
       },
     });
   }),
+
+  getPublicAndWithReplyMessages: publicProcedure
+    .input(z.object({ username: z.string() }))
+    .query(({ ctx, input }) => {}),
 });

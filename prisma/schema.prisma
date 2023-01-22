@@ -15,19 +15,20 @@ datasource db {
     relationMode = "prisma"
 }
 
-// enum Status {
-//   ACTIVE
-//   INACTIVE
-//   SUSPENDED
-// }
+enum Status {
+    PUBLIC
+    PRIVATE
+}
+
 model Message {
     id        String   @id @default(cuid())
     message   String
     createdAt DateTime @default(now())
-    userId    String
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    // status  Status
-    replies   Reply[]
+
+    userId  String
+    user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    status  Status  @default(PRIVATE)
+    replies Reply[]
 }
 
 model Reply {

@@ -3,6 +3,7 @@ import { api } from "../utils/api";
 import Link from "next/link";
 import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "../server/auth";
+import { signIn } from "next-auth/react";
 
 const SignIn = () => {
   const [signUpCredentials, setSignUpCredentials] = useState<{
@@ -19,9 +20,17 @@ const SignIn = () => {
     <main className="mx-auto max-w-screen-md p-4">
       <form
         className="mx-auto flex max-w-md flex-col gap-y-4"
-        onSubmit={(e) => {
+        onSubmit={async (e) => {
           e.preventDefault();
-          signUpMutate.mutate(signUpCredentials);
+          await signUpMutate
+            .mutateAsync(signUpCredentials)
+            .then(async (res) => {
+              res &&
+                (await signIn("credentials", {
+                  username: signUpCredentials.username,
+                  password: signUpCredentials.password,
+                }));
+            });
         }}
       >
         <h2 className="text-center text-lg font-bold">Sign up to scrtmsg.me</h2>
