@@ -6,7 +6,7 @@ import { api } from "../utils/api";
 import Spinner from "./Spinner";
 import ReplyComponent from "./Reply";
 
-const Message = ({
+const MessageComponent = ({
   message,
   refetch,
 }: {
@@ -47,7 +47,7 @@ const Message = ({
           {deleteMutation.isLoading ? (
             <Spinner />
           ) : (
-            <FaTrashAlt className="text-red-800" />
+            <FaTrashAlt className="text-red-500 dark:text-red-800" />
           )}
         </button>
       </div>
@@ -80,6 +80,7 @@ const Message = ({
           className="flex-1"
           required
           value={reply}
+          disabled={replyMutation.isLoading}
           onChange={(e) => setReply(e.target.value)}
         />
         <button className="p-2" disabled={replyMutation.isLoading}>
@@ -94,4 +95,4 @@ const Message = ({
   );
 };
 
-export default Message;
+export default MessageComponent;

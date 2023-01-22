@@ -32,7 +32,7 @@ const Reply = ({
         {deleteReplyMutation.isLoading ? (
           <Spinner />
         ) : (
-          <FaTrashAlt className="text-red-800" />
+          <FaTrashAlt className="text-red-500 dark:text-red-800" />
         )}
       </button>
     </div>

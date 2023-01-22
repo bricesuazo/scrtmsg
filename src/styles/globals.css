@@ -17,3 +17,7 @@ input,
 textarea {
   @apply rounded bg-slate-100 py-1.5 px-2 outline-none disabled:opacity-50 dark:bg-slate-800 dark:hover:bg-slate-700;
 }
+
+#nprogress .bar {
+  @apply bg-slate-500;
+}
