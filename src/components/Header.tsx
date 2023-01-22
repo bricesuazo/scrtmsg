@@ -30,17 +30,19 @@ const Header = () => {
             case "authenticated":
               return (
                 <div className="space-x-2">
-                  <Link href={`/${session.data.user?.username}`}>
+                  <Link
+                    href={`/${session.data.user?.username}`}
+                    className="truncate text-sm sm:text-base"
+                  >
                     @{session.data.user?.username}
                   </Link>
                   <button
                     onClick={() => {
                       signOut({ callbackUrl: "/signin" });
                     }}
-                    className="px-3 py-3 sm:px-4 sm:py-2"
+                    className="p-3"
                   >
-                    <FaSignOutAlt className="h-4 w-4 sm:hidden" />
-                    <p className="hidden sm:block">Log out</p>
+                    <FaSignOutAlt className="h-3 w-3" />
                   </button>
                 </div>
               );

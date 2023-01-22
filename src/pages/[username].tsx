@@ -45,7 +45,9 @@ const UsernamePage = ({
                   {messages.isRefetching ? "Loading.." : "Refresh"}
                 </button>
                 {messages.data?.length === 0 ? (
-                  <p>No message</p>
+                  <p className="text-center text-sm text-slate-500">
+                    No message
+                  </p>
                 ) : (
                   messages.data?.map((message) => (
                     <Message
