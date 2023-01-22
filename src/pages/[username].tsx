@@ -5,7 +5,7 @@ import Head from "next/head";
 import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "../server/auth";
 import type { Session } from "next-auth";
-import Moment from "react-moment";
+import ReplyInput from "../components/ReplyInput";
 
 const UsernamePage = ({
   user: userSession,
@@ -26,7 +26,6 @@ const UsernamePage = ({
   if (user.isLoading) return <>Loading...</>;
   if (!user.data) return <>Username doesn&apos;t exists.</>;
   const title = `@${user.data.username} | scrtmsg.me`;
-
   return (
     <>
       <Head>
@@ -49,18 +48,7 @@ const UsernamePage = ({
                   <p>No message</p>
                 ) : (
                   messages.data?.map((message) => (
-                    <div
-                      key={message.id}
-                      className="rounded border p-4 dark:border-slate-800"
-                    >
-                      <p>{message.message}</p>
-                      <Moment
-                        fromNow
-                        className="text-sm text-slate-400 dark:text-slate-600"
-                      >
-                        {message.createdAt}
-                      </Moment>
-                    </div>
+                    <ReplyInput message={message} />
                   ))
                 )}
               </div>

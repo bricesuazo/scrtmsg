@@ -10,10 +10,10 @@ a {
 }
 
 button {
-  @apply rounded bg-slate-100 py-2 px-4 font-bold hover:bg-slate-200 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700;
+  @apply rounded bg-slate-100 py-1.5 px-2 font-bold hover:bg-slate-200 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700;
 }
 
 input,
 textarea {
-  @apply rounded bg-slate-100 py-2 px-4 outline-none dark:bg-slate-800 dark:hover:bg-slate-700;
+  @apply rounded bg-slate-100 py-1.5 px-2 outline-none dark:bg-slate-800 dark:hover:bg-slate-700;
 }
