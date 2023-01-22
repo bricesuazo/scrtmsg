@@ -56,7 +56,9 @@ const Message = ({
           <p className="text-center text-xs text-slate-500">No reply</p>
         ) : (
           message.replies.map((reply) => {
-            return <ReplyComponent reply={reply} refetch={refetch} />;
+            return (
+              <ReplyComponent key={reply.id} reply={reply} refetch={refetch} />
+            );
           })
         )}
       </div>
