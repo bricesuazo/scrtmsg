@@ -48,7 +48,11 @@ const UsernamePage = ({
                   <p>No message</p>
                 ) : (
                   messages.data?.map((message) => (
-                    <ReplyInput message={message} />
+                    <ReplyInput
+                      message={message}
+                      key={message.id}
+                      refetch={messages.refetch}
+                    />
                   ))
                 )}
               </div>

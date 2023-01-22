@@ -1,11 +1,19 @@
 import { useState } from "react";
 import { Message } from "@prisma/client";
-import { FaTelegramPlane } from "react-icons/fa";
+import { FaTelegramPlane, FaTrashAlt } from "react-icons/fa";
 import Moment from "react-moment";
 import { api } from "../utils/api";
+import Spinner from "./Spinner";
 
-const ReplyInput = ({ message }: { message: Message }) => {
+const ReplyInput = ({
+  message,
+  refetch,
+}: {
+  message: Message;
+  refetch: () => void;
+}) => {
   const replyMutation = api.message.reply.useMutation();
+  const deleteMutation = api.message.delete.useMutation();
   const [reply, setReply] = useState("");
 
   return (
@@ -13,11 +21,30 @@ const ReplyInput = ({ message }: { message: Message }) => {
       key={message.id}
       className="space-y-4 rounded border p-4 dark:border-slate-800"
     >
-      <div className="">
-        <p>{message.message}</p>
-        <Moment fromNow className="text-sm text-slate-400 dark:text-slate-600">
-          {message.createdAt}
-        </Moment>
+      <div className="flex items-center justify-between">
+        <div>
+          <p>{message.message}</p>
+          <Moment
+            fromNow
+            className="text-xs text-slate-400 dark:text-slate-600"
+          >
+            {message.createdAt}
+          </Moment>
+        </div>
+        <button
+          className="p-2"
+          onClick={async () => {
+            await deleteMutation.mutateAsync({ id: message.id });
+            refetch();
+          }}
+          disabled={deleteMutation.isLoading}
+        >
+          {deleteMutation.isLoading ? (
+            <Spinner />
+          ) : (
+            <FaTrashAlt className="text-red-800" />
+          )}
+        </button>
       </div>
 
       <form
@@ -41,26 +68,7 @@ const ReplyInput = ({ message }: { message: Message }) => {
         />
         <button className="p-2" disabled={replyMutation.isLoading}>
           {replyMutation.isLoading ? (
-            <svg
-              className="h-5 w-5 animate-spin text-white"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                stroke-width="4"
-              ></circle>
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-              ></path>
-            </svg>
+            <Spinner />
           ) : (
             <FaTelegramPlane size={20} />
           )}
