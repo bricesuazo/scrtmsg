@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Message } from "@prisma/client";
+import { type Message } from "@prisma/client";
 import { FaTelegramPlane, FaTrashAlt } from "react-icons/fa";
 import Moment from "react-moment";
 import { api } from "../utils/api";
@@ -9,7 +9,18 @@ const ReplyInput = ({
   message,
   refetch,
 }: {
-  message: Message;
+  message:
+    | Message
+    | {
+        id: string;
+        message: string;
+        createdAt: Date;
+        replies: {
+          id: number;
+          reply: string;
+          createdAt: Date;
+        }[];
+      };
   refetch: () => void;
 }) => {
   const replyMutation = api.message.reply.useMutation();
@@ -76,7 +87,7 @@ const ReplyInput = ({
         </button>
       </form>
 
-      <div className="">
+      {/* <div className="">
         {message.replies.map((reply) => (
           <div className="">
             <p>{reply.reply}</p>
@@ -85,7 +96,7 @@ const ReplyInput = ({
             </p>
           </div>
         ))}
-      </div>
+      </div> */}
     </div>
   );
 };
