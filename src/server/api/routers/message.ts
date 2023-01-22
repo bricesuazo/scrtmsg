@@ -57,6 +57,13 @@ export const messageRouter = createTRPCRouter({
       orderBy: {
         createdAt: "desc",
       },
+      include: {
+        replies: {
+          include: {
+            message: true,
+          },
+        },
+      },
     });
   }),
 

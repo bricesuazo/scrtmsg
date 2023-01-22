@@ -56,6 +56,7 @@ const ReplyInput = ({
             reply,
           });
           setReply("");
+          refetch();
         }}
       >
         <input
@@ -74,6 +75,17 @@ const ReplyInput = ({
           )}
         </button>
       </form>
+
+      <div className="">
+        {message.replies.map((reply) => (
+          <div className="">
+            <p>{reply.reply}</p>
+            <p className="text-sm text-slate-400 dark:text-slate-600">
+              <Moment fromNow>{reply.createdAt}</Moment>
+            </p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
