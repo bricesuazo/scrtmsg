@@ -2,6 +2,7 @@ import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { useTheme } from "next-themes";
 import { FaSignOutAlt } from "react-icons/fa";
+import Image from "next/image";
 
 const Header = () => {
   const session = useSession();
@@ -9,7 +10,14 @@ const Header = () => {
 
   return (
     <header className="mx-auto flex max-w-screen-md items-center justify-between px-4 py-4">
-      <Link href="/">scrtmsg.me</Link>
+      <Link href="/">
+        <Image
+          src="/images/scrtmsg-logo.png"
+          alt="scrtmsg.me logo"
+          width={32}
+          height={32}
+        />
+      </Link>
 
       <div className="flex items-center gap-x-2">
         <select

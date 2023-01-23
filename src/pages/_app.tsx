@@ -38,7 +38,16 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <Head>
         <title>scrtmsg.me | Get message from anonymous.</title>
         <meta name="description" content="Get message from anonymous." />
-        <link rel="icon" href="/favicon.ico" />
+        <link
+          rel="shortcut icon"
+          href="/images/favicon/favicon.ico"
+          type="image/x-icon"
+        />
+        <link
+          rel="icon"
+          href="/images/favicon/favicon.ico"
+          type="image/x-icon"
+        />
       </Head>
       <ThemeProvider attribute="class">
         <SessionProvider session={session}>
