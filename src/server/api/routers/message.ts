@@ -22,6 +22,7 @@ export const messageRouter = createTRPCRouter({
         },
       });
     }),
+
   sendMessageToUsername: publicProcedure
     .input(z.object({ username: z.string(), message: z.string() }))
     .mutation(({ ctx, input }) => {
@@ -47,7 +48,45 @@ export const messageRouter = createTRPCRouter({
       });
     }),
 
-  getMessages: protectedProcedure.query(({ ctx }) => {
+  getAllPublicMessages: publicProcedure
+    .input(z.object({ username: z.string() }))
+    .query(({ input, ctx }) => {
+      return ctx.prisma.message.findMany({
+        where: {
+          AND: [
+            {
+              user: {
+                username: input.username,
+              },
+            },
+            {
+              replies: {
+                some: {
+                  user: {
+                    username: input.username,
+                  },
+                },
+              },
+            },
+            // {
+            //   status: "PUBLIC",
+            // },
+          ],
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+        include: {
+          replies: {
+            include: {
+              user: true,
+            },
+          },
+        },
+      });
+    }),
+
+  getAllMessagesWithReplies: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.message.findMany({
       where: {
         user: {
@@ -75,8 +114,4 @@ export const messageRouter = createTRPCRouter({
         },
       });
     }),
-
-  // getPublicAndWithReplyMessages: publicProcedure
-  //   .input(z.object({ username: z.string() }))
-  //   .query(({ ctx, input }) => {}),
 });

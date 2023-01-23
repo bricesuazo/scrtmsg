@@ -12,16 +12,16 @@ import { ThemeProvider } from "next-themes";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import NProgress from "nprogress";
+import useScrollPosition from "../hooks/useScrollPosition";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
   const router = useRouter();
-  const [scrollPosition, setScrollPosition] = useState(0);
+  const scrollPosition = useScrollPosition();
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll, { passive: true });
     const handleRouteStart = () => NProgress.start();
     const handleRouteDone = () => NProgress.done();
 
@@ -34,15 +34,8 @@ const MyApp: AppType<{ session: Session | null }> = ({
       router.events.off("routeChangeStart", handleRouteStart);
       router.events.off("routeChangeComplete", handleRouteDone);
       router.events.off("routeChangeError", handleRouteDone);
-
-      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
-  const handleScroll = () => {
-    const position = window.pageYOffset;
-    setScrollPosition(position);
-  };
 
   return (
     <>
