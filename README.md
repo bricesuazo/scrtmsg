@@ -1,6 +1,17 @@
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/bricesuazo/scrtmsg)
+<p align="center">
+   <br/>
+   <a href="https://scrtmsg.me" target="_blank"><img width="150px" src="https://raw.githubusercontent.com/bricesuazo/scrtmsg/main/public/images/scrtmsg-logo.png" /></a>
+   <h2 align="center">scrtmsg.me</h2>
+   <p align="center">Get message from anonymous.</p>
 
-# [scrtmsg.me](https://scrtmsg.me/) - Get message from anonymous.
+   <p align="center" style="align: center;">
+      <a href="https://vercel.com/new/clone?repository-url=https://github.com/bricesuazo/scrtmsg">
+        <img src="https://vercel.com/button" alt="Deploy" />
+        </a>
+   </p>
+</p>
+
+## Stack
 
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
 - **Framework**: [Next.js](https://nextjs.org/)
