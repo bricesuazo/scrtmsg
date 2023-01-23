@@ -29,7 +29,6 @@ export const userRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      // check if email is already in use
       const emailInUse = await ctx.prisma.user.findUnique({
         where: {
           email: input.email,
@@ -38,6 +37,9 @@ export const userRouter = createTRPCRouter({
       if (emailInUse) {
         throw new Error("Email already in use");
       }
+      const notAllowedUsername = ["signin", "signup", "settings", "contact"];
+      if (notAllowedUsername.includes(input.username.toLowerCase()))
+        throw new Error("Username not allowed");
 
       // check if username is already in use
       const usernameInUse = await ctx.prisma.user.findUnique({
