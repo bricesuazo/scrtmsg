@@ -13,22 +13,28 @@ const PublicMessage = ({
   return (
     <div className="rounded border p-4 dark:border-slate-800">
       <p>{message.message}</p>
-      <p className="text-xs text-slate-400">Anonymous</p>
-      <Moment fromNow className="text-xs text-slate-400 dark:text-slate-600">
-        {message.createdAt}
-      </Moment>
+      <div className="flex items-center gap-x-1">
+        <p className="text-xs text-slate-400">Anonymous</p>
+        <p className="text-slate-400 dark:text-slate-600">·</p>
+        <Moment fromNow className="text-xs text-slate-400 dark:text-slate-600">
+          {message.createdAt}
+        </Moment>
+      </div>
 
       {message.replies.map((reply) => {
         return (
           <div key={reply.id} className="px-4 py-2">
             <p>{reply.reply}</p>
-            <p className="text-xs text-slate-400">@{username}</p>
-            <Moment
-              fromNow
-              className="text-xs text-slate-400 dark:text-slate-600"
-            >
-              {reply.createdAt}
-            </Moment>
+            <div className="flex items-center gap-x-1">
+              <p className="text-xs text-slate-400">@{username}</p>
+              <p className="text-slate-400 dark:text-slate-600">·</p>
+              <Moment
+                fromNow
+                className="text-xs text-slate-400 dark:text-slate-600"
+              >
+                {reply.createdAt}
+              </Moment>
+            </div>
           </div>
         );
       })}

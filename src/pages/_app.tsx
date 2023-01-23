@@ -60,7 +60,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
               scrollPosition > 20
                 ? "bg-white dark:bg-[#121212]"
                 : "bg-transparent"
-            } sticky top-0 transition-colors`}
+            } sticky top-0 z-10 transition-colors`}
           >
             <Header />
           </div>
