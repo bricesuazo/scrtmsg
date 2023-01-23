@@ -6,7 +6,7 @@ import { FaGithub } from "react-icons/fa";
 const Home: NextPage = () => {
   return (
     <>
-      <main className="mx-auto flex min-h-[calc(100vh-12rem)] max-w-screen-md flex-col items-center justify-center p-4">
+      <main className="mx-auto flex min-h-[calc(100vh-10rem)] max-w-screen-md flex-col items-center justify-center p-4">
         <section>
           <div className="relative mx-auto h-36 w-36 sm:h-48 sm:w-48">
             <Image src="/images/scrtmsg-logo.png" alt="scrtmsg logo" fill />
@@ -33,7 +33,11 @@ const Home: NextPage = () => {
           </div>
         </section>
       </main>
-      <footer>hi</footer>
+      <footer>
+        <p className="p-4 text-center text-slate-300 dark:text-slate-700">
+          scrtmsg.me | © {new Date().getFullYear()}
+        </p>
+      </footer>
     </>
   );
 };
