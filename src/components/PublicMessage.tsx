@@ -6,9 +6,7 @@ const PublicMessage = ({
   username,
 }: {
   message: Message & {
-    replies: (Reply & {
-      user: User;
-    })[];
+    replies: Reply[];
   };
   username: string;
 }) => {

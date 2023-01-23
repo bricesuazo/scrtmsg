@@ -53,35 +53,26 @@ export const messageRouter = createTRPCRouter({
     .query(({ input, ctx }) => {
       return ctx.prisma.message.findMany({
         where: {
-          AND: [
-            {
+          // AND: [
+          // {
+          replies: {
+            some: {
               user: {
                 username: input.username,
               },
             },
-            {
-              replies: {
-                some: {
-                  user: {
-                    username: input.username,
-                  },
-                },
-              },
-            },
-            // {
-            //   status: "PUBLIC",
-            // },
-          ],
+          },
+          // },
+          // {
+          //   status: "PUBLIC",
+          // },
+          // ],
         },
         orderBy: {
           createdAt: "desc",
         },
         include: {
-          replies: {
-            include: {
-              user: true,
-            },
-          },
+          replies: true,
         },
       });
     }),
