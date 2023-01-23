@@ -3,10 +3,29 @@ import bcrypt from "bcrypt";
 
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
+const notAllowedUsername = ["signin", "signup", "settings", "contact"];
+
 export const userRouter = createTRPCRouter({
+  isUsernameExists: publicProcedure
+    .input(z.object({ username: z.string() }))
+    .query(async ({ ctx, input }) => {
+      if (notAllowedUsername.includes(input.username.toLowerCase()))
+        return true;
+
+      const user = await ctx.prisma.user.findUnique({
+        where: {
+          username: input.username,
+        },
+      });
+      return !!user;
+    }),
+
   getUserByUsername: publicProcedure
     .input(z.object({ username: z.string() }))
     .query(async ({ ctx, input }) => {
+      if (notAllowedUsername.includes(input.username.toLowerCase()))
+        return null;
+
       const user = await ctx.prisma.user.findUnique({
         where: {
           username: input.username,
@@ -29,6 +48,9 @@ export const userRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      if (notAllowedUsername.includes(input.username.toLowerCase()))
+        throw new Error("Username not allowed");
+
       const emailInUse = await ctx.prisma.user.findUnique({
         where: {
           email: input.email,
@@ -37,9 +59,6 @@ export const userRouter = createTRPCRouter({
       if (emailInUse) {
         throw new Error("Email already in use");
       }
-      const notAllowedUsername = ["signin", "signup", "settings", "contact"];
-      if (notAllowedUsername.includes(input.username.toLowerCase()))
-        throw new Error("Username not allowed");
 
       // check if username is already in use
       const usernameInUse = await ctx.prisma.user.findUnique({
