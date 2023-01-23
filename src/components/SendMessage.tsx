@@ -26,7 +26,7 @@ const SendMessage = ({
           scrollPosition > 20
             ? "bg-white pb-4 dark:bg-[#121212]"
             : "bg-transparent"
-        } sticky top-16 space-y-4 py-0 transition-all duration-500 ease-in-out`}
+        } sticky top-16 -z-10 space-y-4 py-0 transition-all duration-500 ease-in-out`}
       >
         <h1 className="text-center text-xl font-bold">
           Send message to @{username}
@@ -61,7 +61,7 @@ const SendMessage = ({
           No replied messages
         </p>
       ) : (
-        <div className="space-y-4">
+        <div className="sticky -z-20 space-y-4">
           <h4 className="text-center dark:text-slate-300">Replied messages</h4>
           <div className="space-y-2">
             {messages.data?.map((message) => (

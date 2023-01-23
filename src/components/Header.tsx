@@ -36,15 +36,6 @@ const Header = () => {
       </Link>
 
       <div className="flex items-center gap-x-2">
-        {/* <select
-          value={theme}
-          onChange={(e) => setTheme(e.target.value)}
-          className="hidden sm:block"
-        >
-          <option value="system">System</option>
-          <option value="dark">Dark</option>
-          <option value="light">Light</option>
-        </select> */}
         <Menu
           as="div"
           className="relative inline-block text-left transition-colors"
