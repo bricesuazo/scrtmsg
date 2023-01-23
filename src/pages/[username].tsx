@@ -26,6 +26,7 @@ const UsernamePage = ({
   if (user.isLoading) return <>Loading...</>;
   if (!user.data) return <>Username doesn&apos;t exists.</>;
   const title = `@${user.data.username} | scrtmsg.me`;
+
   return (
     <>
       <Head>
@@ -38,6 +39,11 @@ const UsernamePage = ({
 
             return (
               <div className="flex flex-col gap-y-2">
+                <input
+                  type="text"
+                  value={`scrtmsg.me/${user.data.username}`}
+                  disabled
+                />
                 <button
                   onClick={() => messages.refetch()}
                   disabled={messages.isRefetching}
@@ -118,8 +124,6 @@ const UsernamePage = ({
               );
             }
           }
-
-          return null;
         })()}
       </main>
     </>

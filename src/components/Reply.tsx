@@ -30,7 +30,7 @@ const Reply = ({
         disabled={deleteReplyMutation.isLoading}
       >
         {deleteReplyMutation.isLoading ? (
-          <Spinner />
+          <Spinner className="h-4 w-4" />
         ) : (
           <FaTrashAlt className="text-red-500 dark:text-red-800" />
         )}

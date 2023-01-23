@@ -45,7 +45,7 @@ const MessageComponent = ({
           disabled={deleteMutation.isLoading}
         >
           {deleteMutation.isLoading ? (
-            <Spinner />
+            <Spinner className="h-5 w-5"  />
           ) : (
             <FaTrashAlt className="text-red-500 dark:text-red-800" />
           )}
