@@ -45,7 +45,7 @@ const MessageComponent = ({
           disabled={deleteMutation.isLoading}
         >
           {deleteMutation.isLoading ? (
-            <Spinner className="h-5 w-5"  />
+            <Spinner className="h-5 w-5" />
           ) : (
             <FaTrashAlt className="text-red-500 dark:text-red-800" />
           )}
@@ -77,7 +77,7 @@ const MessageComponent = ({
         <input
           type="text"
           placeholder="Reply..."
-          className="flex-1"
+          className="w-full"
           required
           value={reply}
           disabled={replyMutation.isLoading}
@@ -85,7 +85,7 @@ const MessageComponent = ({
         />
         <button className="p-2" disabled={replyMutation.isLoading}>
           {replyMutation.isLoading ? (
-            <Spinner />
+            <Spinner className="h-5 w-5" />
           ) : (
             <FaTelegramPlane size={20} />
           )}

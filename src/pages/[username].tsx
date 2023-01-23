@@ -7,7 +7,7 @@ import { getServerAuthSession } from "../server/auth";
 import type { Session } from "next-auth";
 import Message from "../components/Message";
 import Spinner from "../components/Spinner";
-import { FaCheck, FaRegCopy } from "react-icons/fa";
+import { FaCheck, FaRegCopy, FaUndo } from "react-icons/fa";
 
 const UsernamePage = ({
   user: userSession,
@@ -48,6 +48,14 @@ const UsernamePage = ({
         </main>
       </>
     );
+
+  const copyUsername = (username: string) => {
+    navigator.clipboard.writeText(`scrtmsg.me/${username}`);
+    setIsCopied(true);
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 3000);
+  };
   return (
     <>
       <Head>
@@ -61,22 +69,18 @@ const UsernamePage = ({
             return (
               <div className="flex flex-col gap-y-2">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-x-2">
+                  <div className="flex flex-shrink-0 items-center gap-x-2">
                     <input
                       type="text"
-                      value={`scrtmsg.me/${username}`}
-                      className="max-w-48 truncate"
+                      value={isCopied ? "Copied" : `scrtmsg.me/${username}`}
+                      className="truncate"
                       readOnly
+                      onClick={() => copyUsername(username)}
+                      disabled={isCopied}
                     />
                     <button
-                      className="p-3"
-                      onClick={() => {
-                        navigator.clipboard.writeText(`scrtmsg.me/${username}`);
-                        setIsCopied(true);
-                        setTimeout(() => {
-                          setIsCopied(false);
-                        }, 3000);
-                      }}
+                      className="hidden p-3 sm:block"
+                      onClick={() => copyUsername(username)}
                       disabled={isCopied}
                     >
                       {!isCopied ? (
@@ -89,12 +93,17 @@ const UsernamePage = ({
                   <button
                     onClick={() => messages.refetch()}
                     disabled={messages.isRefetching}
-                    className="flex w-20 items-center justify-center"
+                    className="flex w-auto items-center justify-center sm:w-20"
                   >
                     {messages.isRefetching ? (
                       <Spinner className="m-1 h-4 w-4" />
                     ) : (
-                      "Refresh"
+                      <>
+                        <div className="p-1 sm:hidden">
+                          <FaUndo className="w-3 text-slate-300" />
+                        </div>
+                        <p className="hidden sm:block">Refresh</p>
+                      </>
                     )}
                   </button>
                 </div>
