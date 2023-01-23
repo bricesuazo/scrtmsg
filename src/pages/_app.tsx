@@ -9,7 +9,7 @@ import "../styles/globals.css";
 import Head from "next/head";
 import Header from "../components/Header";
 import { ThemeProvider } from "next-themes";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import NProgress from "nprogress";
 
@@ -18,7 +18,10 @@ const MyApp: AppType<{ session: Session | null }> = ({
   pageProps: { session, ...pageProps },
 }) => {
   const router = useRouter();
+  const [scrollPosition, setScrollPosition] = useState(0);
+
   useEffect(() => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
     const handleRouteStart = () => NProgress.start();
     const handleRouteDone = () => NProgress.done();
 
@@ -31,8 +34,16 @@ const MyApp: AppType<{ session: Session | null }> = ({
       router.events.off("routeChangeStart", handleRouteStart);
       router.events.off("routeChangeComplete", handleRouteDone);
       router.events.off("routeChangeError", handleRouteDone);
+
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const handleScroll = () => {
+    const position = window.pageYOffset;
+    setScrollPosition(position);
+  };
+
   return (
     <>
       <Head>
@@ -51,7 +62,15 @@ const MyApp: AppType<{ session: Session | null }> = ({
       </Head>
       <ThemeProvider attribute="class">
         <SessionProvider session={session}>
-          <Header />
+          <div
+            className={`${
+              scrollPosition > 20
+                ? "bg-white dark:bg-[#121212]"
+                : "bg-transparent"
+            } sticky top-0 transition-colors`}
+          >
+            <Header />
+          </div>
           <Component {...pageProps} />
         </SessionProvider>
       </ThemeProvider>
