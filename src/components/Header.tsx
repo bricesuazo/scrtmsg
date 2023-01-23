@@ -53,7 +53,9 @@ const Header = () => {
             {({ open }) => (
               <button
                 className={`${
-                  open ? "bg-slate-50" : "bg-transparent hover:bg-slate-50"
+                  open
+                    ? "bg-slate-50 dark:bg-slate-800"
+                    : "bg-transparent hover:bg-slate-50"
                 } rounded-full bg-transparent p-3 transition-colors dark:bg-transparent`}
               >
                 <Icon />
@@ -83,7 +85,7 @@ const Header = () => {
                     <button
                       className={`${
                         active && "bg-blue-500"
-                      } flex w-24 items-center gap-x-2 rounded bg-transparent p-2 text-slate-500 dark:bg-transparent dark:text-slate-300`}
+                      } flex w-24 items-center gap-x-2 rounded bg-transparent text-slate-500 dark:bg-transparent dark:text-slate-300`}
                       onClick={() => setTheme(theme.title)}
                     >
                       {theme.icon}
