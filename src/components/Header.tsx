@@ -5,6 +5,7 @@ import { FaDesktop, FaMoon, FaSignOutAlt, FaSun } from "react-icons/fa";
 import Image from "next/image";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
+import Spinner from "./Spinner";
 
 const Header = () => {
   const session = useSession();
@@ -95,11 +96,14 @@ const Header = () => {
             </Menu.Items>
           </Transition>
         </Menu>
-
         {(() => {
           switch (session.status) {
             case "loading":
-              return <>Loading...</>;
+              return (
+                <div className="item item flex w-12 items-center justify-center">
+                  <Spinner />
+                </div>
+              );
             case "unauthenticated":
               return <Link href="/signin">Sign in</Link>;
             case "authenticated":
