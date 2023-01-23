@@ -16,6 +16,7 @@ const UsernamePage = ({
 }) => {
   const [isSent, setIsSent] = useState(false);
   const [message, setMessage] = useState("");
+  const [isCopied, setIsCopied] = useState(false);
 
   const router = useRouter();
   const { username } = router.query;
@@ -33,7 +34,6 @@ const UsernamePage = ({
       : userSession?.username !== user.data.username
       ? `Send message to @${user.data.username}`
       : `@${user.data.username}`) + " | scrtmsg.me";
-  const [isCopied, setIsCopied] = useState(false);
 
   if (!user.data)
     return (
