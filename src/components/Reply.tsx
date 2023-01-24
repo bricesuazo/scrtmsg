@@ -33,7 +33,7 @@ const Reply = ({
       </div>
       <button
         onClick={async () => {
-          await deleteReplyMutation.mutateAsync({ id: reply.id });
+          await deleteReplyMutation.mutateAsync({ replyId: reply.id });
           refetch();
         }}
         disabled={deleteReplyMutation.isLoading}

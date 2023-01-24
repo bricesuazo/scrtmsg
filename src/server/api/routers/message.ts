@@ -4,7 +4,12 @@ import { createTRPCRouter, publicProcedure, protectedProcedure } from "../trpc";
 
 export const messageRouter = createTRPCRouter({
   reply: protectedProcedure
-    .input(z.object({ messageId: z.string(), reply: z.string() }))
+    .input(
+      z.object({
+        messageId: z.string(),
+        reply: z.string().trim().min(1),
+      })
+    )
     .mutation(({ ctx, input }) => {
       return ctx.prisma.reply.create({
         data: {
@@ -24,7 +29,12 @@ export const messageRouter = createTRPCRouter({
     }),
 
   sendMessageToUsername: publicProcedure
-    .input(z.object({ username: z.string(), message: z.string() }))
+    .input(
+      z.object({
+        username: z.string().trim().min(3).max(20),
+        message: z.string().trim().min(1),
+      })
+    )
     .mutation(({ ctx, input }) => {
       return ctx.prisma.message.create({
         data: {
@@ -49,7 +59,7 @@ export const messageRouter = createTRPCRouter({
     }),
 
   getAllPublicMessages: publicProcedure
-    .input(z.object({ username: z.string() }))
+    .input(z.object({ username: z.string().trim().min(3).max(20) }))
     .query(({ input, ctx }) => {
       return ctx.prisma.message.findMany({
         where: {
@@ -97,11 +107,11 @@ export const messageRouter = createTRPCRouter({
     });
   }),
   deleteReply: protectedProcedure
-    .input(z.object({ id: z.string() }))
+    .input(z.object({ replyId: z.string() }))
     .mutation(({ ctx, input }) => {
       return ctx.prisma.reply.delete({
         where: {
-          id: input.id,
+          id: input.replyId,
         },
       });
     }),

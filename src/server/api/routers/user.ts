@@ -3,11 +3,11 @@ import bcrypt from "bcrypt";
 
 import { createTRPCRouter, publicProcedure } from "../trpc";
 
-const notAllowedUsername = ["signin", "signup", "settings", "contact"];
+const notAllowedUsername = ["signin", "signup", "settings", "api"];
 
 export const userRouter = createTRPCRouter({
   isUsernameExists: publicProcedure
-    .input(z.object({ username: z.string() }))
+    .input(z.object({ username: z.string().trim().min(3).max(20) }))
     .query(async ({ ctx, input }) => {
       if (notAllowedUsername.includes(input.username.toLowerCase()))
         return true;
@@ -21,7 +21,7 @@ export const userRouter = createTRPCRouter({
     }),
 
   getUserByUsername: publicProcedure
-    .input(z.object({ username: z.string() }))
+    .input(z.object({ username: z.string().trim().min(3).max(20) }))
     .query(async ({ ctx, input }) => {
       if (notAllowedUsername.includes(input.username.toLowerCase()))
         return null;
@@ -42,9 +42,9 @@ export const userRouter = createTRPCRouter({
   signUp: publicProcedure
     .input(
       z.object({
-        username: z.string(),
-        email: z.string(),
-        password: z.string(),
+        username: z.string().trim().min(3).max(20),
+        email: z.string().email(),
+        password: z.string().min(8),
       })
     )
     .mutation(async ({ ctx, input }) => {

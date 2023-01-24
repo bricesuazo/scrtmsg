@@ -1,7 +1,14 @@
+import ReactTextareaAutosize from "react-textarea-autosize";
 import useScrollPosition from "../hooks/useScrollPosition";
 import { api } from "../utils/api";
 import PublicMessage from "./PublicMessage";
-import { useState, type SetStateAction, type Dispatch } from "react";
+import {
+  useState,
+  type SetStateAction,
+  type Dispatch,
+  type FormEvent,
+  type KeyboardEvent,
+} from "react";
 
 const SendMessage = ({
   username,
@@ -43,12 +50,13 @@ const SendMessage = ({
           }}
           className="flex flex-col gap-y-2"
         >
-          <textarea
+          <ReactTextareaAutosize
             placeholder={`Send anonymous message to @${username}`}
             onChange={(e) => setMessage(e.target.value)}
             value={message}
             disabled={sendMessageMutation.isLoading}
             required
+            maxRows={10}
           />
           <button
             type="submit"
