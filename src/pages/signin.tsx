@@ -88,7 +88,11 @@ const SignIn = () => {
         {signInCredentials.error && (
           <p className="text-center text-red-500">{signInCredentials.error}</p>
         )}
-        <button type="submit" disabled={signInCredentials.loading}>
+        <button
+          type="submit"
+          disabled={signInCredentials.loading}
+          className="bg-slate-100"
+        >
           {signInCredentials.loading ? "Loading..." : "Sign In"}
         </button>
         <p className="mt-4 text-center">

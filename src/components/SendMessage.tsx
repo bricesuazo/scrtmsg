@@ -50,7 +50,11 @@ const SendMessage = ({
             disabled={sendMessageMutation.isLoading}
             required
           />
-          <button type="submit" disabled={sendMessageMutation.isLoading}>
+          <button
+            type="submit"
+            disabled={sendMessageMutation.isLoading}
+            className="bg-slate-100"
+          >
             {sendMessageMutation.isLoading ? "Loading..." : "Send"}
           </button>
         </form>

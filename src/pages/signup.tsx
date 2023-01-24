@@ -95,7 +95,11 @@ const SignIn = () => {
             {signUpMutate.error.message}
           </p>
         )}
-        <button type="submit" disabled={signUpMutate.isLoading}>
+        <button
+          type="submit"
+          disabled={signUpMutate.isLoading}
+          className="bg-slate-100"
+        >
           {signUpMutate.isLoading ? "Loading..." : "Sign Up"}
         </button>
         <p className="text-center">

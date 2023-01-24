@@ -13,12 +13,12 @@ a {
 }
 
 button {
-  @apply rounded bg-slate-100 py-1.5 px-2 hover:bg-slate-200 disabled:bg-slate-100 disabled:opacity-50 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-800;
+  @apply rounded bg-slate-100 py-1.5 px-2 hover:bg-slate-200 disabled:bg-slate-100 disabled:opacity-50 dark:bg-slate-800 dark:hover:bg-slate-700;
 }
 
 input,
 textarea {
-  @apply rounded bg-slate-100 py-1.5 px-2 outline-none disabled:opacity-50 dark:bg-slate-800 dark:hover:bg-slate-700 disabled:dark:bg-slate-800;
+  @apply rounded bg-slate-100 py-1.5 px-2 outline-none hover:bg-slate-200 disabled:opacity-50 dark:bg-slate-800 dark:hover:bg-slate-700 disabled:dark:bg-slate-800;
 }
 
 #nprogress .bar {
