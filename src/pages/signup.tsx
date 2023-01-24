@@ -109,7 +109,7 @@ const SignIn = () => {
                 message: string;
                 path: [string];
               }) => (
-                <p className="text-center text-red-500">
+                <p className="text-center text-red-500" key={e.code}>
                   {e.path[0].charAt(0).toUpperCase() +
                     e.path[0].slice(1) +
                     " " +
