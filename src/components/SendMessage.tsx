@@ -56,6 +56,7 @@ const SendMessage = ({
             value={message}
             disabled={sendMessageMutation.isLoading}
             required
+            minRows={2}
             maxRows={10}
           />
           <button

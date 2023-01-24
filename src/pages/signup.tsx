@@ -54,7 +54,7 @@ const SignIn = () => {
               onChange={(e) =>
                 setSignUpCredentials({
                   ...signUpCredentials,
-                  email: e.target.value,
+                  email: e.target.value.toLowerCase(),
                 })
               }
               disabled={signUpMutate.isLoading}
@@ -72,7 +72,7 @@ const SignIn = () => {
               onChange={(e) =>
                 setSignUpCredentials({
                   ...signUpCredentials,
-                  username: e.target.value,
+                  username: e.target.value.toLowerCase(),
                 })
               }
               disabled={signUpMutate.isLoading}
