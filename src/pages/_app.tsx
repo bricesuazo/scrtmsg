@@ -43,7 +43,6 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <Head>
         <title>scrtmsg.me | Get message from anonymous.</title>
         <meta name="description" content="Get message from anonymous." />
-        <meta property="og:image" content="https://scrtmsg.me/api/og" />
         <link
           rel="shortcut icon"
           href="/images/favicon/favicon.ico"

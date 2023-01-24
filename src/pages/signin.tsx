@@ -4,6 +4,7 @@ import { useState } from "react";
 import { getServerAuthSession } from "../server/auth";
 import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 const SignIn = () => {
   const router = useRouter();
@@ -20,89 +21,98 @@ const SignIn = () => {
   });
 
   return (
-    <main className="mx-auto max-w-screen-md p-4">
-      <form
-        className="mx-auto flex max-w-md flex-col gap-y-4"
-        onSubmit={async (e) => {
-          e.preventDefault();
-          setSignInCredentials({
-            ...signInCredentials,
-            loading: true,
-            error: null,
-          });
-
-          const res = await signIn("credentials", {
-            username: signInCredentials.username,
-            password: signInCredentials.password,
-            redirect: false,
-          });
-          if (res?.ok) {
-            router.reload();
-          } else if (res?.error) {
+    <>
+      <Head>
+        <meta property="og:image" content="https://scrtmsg.me/api/og" />
+      </Head>
+      <main className="mx-auto max-w-screen-md p-4">
+        <form
+          className="mx-auto flex max-w-md flex-col gap-y-4"
+          onSubmit={async (e) => {
+            e.preventDefault();
             setSignInCredentials({
               ...signInCredentials,
-              error: res.error,
+              loading: true,
+              error: null,
             });
-          }
 
-          setSignInCredentials({ ...signInCredentials, loading: false });
-        }}
-      >
-        <h2 className="text-center text-lg font-bold">Sign in to scrtmsg.me</h2>
-        <div className="flex flex-col gap-y-1">
-          <label htmlFor="username">Username</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            placeholder="Username"
-            required
-            disabled={signInCredentials.loading}
-            value={signInCredentials.username}
-            onChange={(e) =>
+            const res = await signIn("credentials", {
+              username: signInCredentials.username,
+              password: signInCredentials.password,
+              redirect: false,
+            });
+            if (res?.ok) {
+              router.reload();
+            } else if (res?.error) {
               setSignInCredentials({
                 ...signInCredentials,
-                username: e.target.value,
-              })
+                error: res.error,
+              });
             }
-          />
-        </div>
-        <div className="flex flex-col gap-y-1">
-          <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Password"
-            required
-            disabled={signInCredentials.loading}
-            value={signInCredentials.password}
-            onChange={(e) =>
-              setSignInCredentials({
-                ...signInCredentials,
-                password: e.target.value,
-              })
-            }
-          />
-        </div>
-        {signInCredentials.error && (
-          <p className="text-center text-red-500">{signInCredentials.error}</p>
-        )}
-        <button
-          type="submit"
-          disabled={signInCredentials.loading}
-          className="bg-slate-100"
+
+            setSignInCredentials({ ...signInCredentials, loading: false });
+          }}
         >
-          {signInCredentials.loading ? "Loading..." : "Sign In"}
-        </button>
-        <p className="mt-4 text-center">
-          Don&apos;t have an account yet?{" "}
-          <Link href="/signup" className="font-bold">
-            Sign Up here.
-          </Link>
-        </p>
-      </form>
-    </main>
+          <h2 className="text-center text-lg font-bold">
+            Sign in to scrtmsg.me
+          </h2>
+          <div className="flex flex-col gap-y-1">
+            <label htmlFor="username">Username</label>
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Username"
+              required
+              disabled={signInCredentials.loading}
+              value={signInCredentials.username}
+              onChange={(e) =>
+                setSignInCredentials({
+                  ...signInCredentials,
+                  username: e.target.value,
+                })
+              }
+            />
+          </div>
+          <div className="flex flex-col gap-y-1">
+            <label htmlFor="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Password"
+              required
+              disabled={signInCredentials.loading}
+              value={signInCredentials.password}
+              onChange={(e) =>
+                setSignInCredentials({
+                  ...signInCredentials,
+                  password: e.target.value,
+                })
+              }
+            />
+          </div>
+          {signInCredentials.error && (
+            <p className="text-center text-red-500">
+              {signInCredentials.error}
+            </p>
+          )}
+          <button
+            type="submit"
+            disabled={signInCredentials.loading}
+            className="bg-slate-100"
+          >
+            {signInCredentials.loading ? "Loading..." : "Sign In"}
+          </button>
+          <p className="mt-4 text-center">
+            Don&apos;t have an account yet?{" "}
+            <Link href="/signup" className="font-bold">
+              Sign Up here.
+            </Link>
+          </p>
+        </form>
+      </main>
+    </>
   );
 };
 

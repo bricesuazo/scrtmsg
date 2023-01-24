@@ -49,13 +49,14 @@ const UsernamePage = ({
       ? `Send message to @${user.data.username}`
       : `@${user.data.username}`) + " | scrtmsg.me";
 
-  const og = `https://scrtmsg.me/api/og?username=${user.data.username}`;
-
   return (
     <>
       <Head>
         <title>{title}</title>
-        <meta property="og:image" content={og} />
+        <meta
+          property="og:image"
+          content={`https://scrtmsg.me/api/og?username=${user.data.username}`}
+        />
       </Head>
       <main className="mx-auto max-w-screen-md p-4">
         {(() => {

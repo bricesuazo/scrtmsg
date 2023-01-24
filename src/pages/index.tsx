@@ -1,4 +1,5 @@
 import { type NextPage } from "next";
+import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
 import { FaGithub } from "react-icons/fa";
@@ -6,6 +7,9 @@ import { FaGithub } from "react-icons/fa";
 const Home: NextPage = () => {
   return (
     <>
+      <Head>
+        <meta property="og:image" content="https://scrtmsg.me/api/og" />
+      </Head>
       <main className="mx-auto flex min-h-[calc(100vh-10rem)] max-w-screen-md flex-col items-center justify-center p-4">
         <section>
           <div className="relative mx-auto h-36 w-36 sm:h-48 sm:w-48">
