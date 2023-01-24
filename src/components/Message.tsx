@@ -9,13 +9,13 @@ import ReplyComponent from "./Reply";
 const MessageComponent = ({
   message,
   refetch,
+  username,
 }: {
   message: Message & {
-    replies: (Reply & {
-      user: User;
-    })[];
+    replies: Reply[];
   };
   refetch: () => void;
+  username: string;
 }) => {
   const replyMutation = api.message.reply.useMutation();
   const deleteMutation = api.message.delete.useMutation();
@@ -29,12 +29,18 @@ const MessageComponent = ({
       <div className="flex items-center justify-between">
         <div>
           <p>{message.message}</p>
-          <Moment
-            fromNow
-            className="text-xs text-slate-400 dark:text-slate-600"
-          >
-            {message.createdAt}
-          </Moment>
+          <div className="flex items-center gap-x-1">
+            <p className="text-xs text-slate-400">Anonymous</p>
+            <p className="pointer-events-none select-none text-slate-400 dark:text-slate-600">
+              ·
+            </p>
+            <Moment
+              fromNow
+              className="text-xs text-slate-400 dark:text-slate-600"
+            >
+              {message.createdAt}
+            </Moment>
+          </div>
         </div>
         <button
           className="p-2"
@@ -57,7 +63,12 @@ const MessageComponent = ({
         ) : (
           message.replies.map((reply) => {
             return (
-              <ReplyComponent key={reply.id} reply={reply} refetch={refetch} />
+              <ReplyComponent
+                key={reply.id}
+                reply={reply}
+                username={username}
+                refetch={refetch}
+              />
             );
           })
         )}

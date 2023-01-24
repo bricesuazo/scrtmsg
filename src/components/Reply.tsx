@@ -7,20 +7,29 @@ import { FaTrashAlt } from "react-icons/fa";
 const Reply = ({
   reply,
   refetch,
+  username,
 }: {
-  reply: Reply & {
-    user: User;
-  };
+  reply: Reply;
   refetch: () => void;
+  username: string;
 }) => {
   const deleteReplyMutation = api.message.deleteReply.useMutation();
   return (
     <div className="flex items-center justify-between px-4 py-2">
       <div>
         <p className="text-sm">{reply.reply}</p>
-        <p className="text-xs text-slate-400 dark:text-slate-600">
-          <Moment fromNow>{reply.createdAt}</Moment>
-        </p>
+        <div className="flex items-center gap-x-1">
+          <p className="text-xs text-slate-400">@{username}</p>
+          <p className="pointer-events-none select-none text-slate-400 dark:text-slate-600">
+            ·
+          </p>
+          <Moment
+            fromNow
+            className="text-xs text-slate-400 dark:text-slate-600"
+          >
+            {reply.createdAt}
+          </Moment>
+        </div>
       </div>
       <button
         onClick={async () => {

@@ -9,6 +9,7 @@ export const authOptions: NextAuthOptions = {
       if (user) {
         token.id = user.id;
         token.username = user.username;
+        token.emailVerified = user.emailVerified;
       }
       return token;
     },
@@ -16,6 +17,7 @@ export const authOptions: NextAuthOptions = {
       if (session.user) {
         session.user.id = token.id;
         session.user.username = token.username;
+        session.user.emailVerified = token.emailVerified;
       }
       return session;
     },
@@ -57,7 +59,7 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Invalid username or password");
         }
 
-        const { password, emailVerified, ...rest } = user;
+        const { password, ...rest } = user;
 
         return rest;
       },

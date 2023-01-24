@@ -15,7 +15,9 @@ const PublicMessage = ({
       <p>{message.message}</p>
       <div className="flex items-center gap-x-1">
         <p className="text-xs text-slate-400">Anonymous</p>
-        <p className="text-slate-400 dark:text-slate-600">·</p>
+        <p className="pointer-events-none select-none text-slate-400 dark:text-slate-600">
+          ·
+        </p>
         <Moment fromNow className="text-xs text-slate-400 dark:text-slate-600">
           {message.createdAt}
         </Moment>
@@ -27,7 +29,9 @@ const PublicMessage = ({
             <p>{reply.reply}</p>
             <div className="flex items-center gap-x-1">
               <p className="text-xs text-slate-400">@{username}</p>
-              <p className="text-slate-400 dark:text-slate-600">·</p>
+              <p className="pointer-events-none select-none text-slate-400 dark:text-slate-600">
+                ·
+              </p>
               <Moment
                 fromNow
                 className="text-xs text-slate-400 dark:text-slate-600"

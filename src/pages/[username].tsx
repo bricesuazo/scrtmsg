@@ -117,6 +117,7 @@ const UsernamePage = ({
                       message={message}
                       key={message.id}
                       refetch={messages.refetch}
+                      username={username}
                     />
                   ))
                 )}

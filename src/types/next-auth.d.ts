@@ -8,10 +8,16 @@ declare module "next-auth" {
     user?: {
       id: string;
       username: string;
+      emailVerified: Date?;
     } & DefaultSession["user"];
   }
   interface User {
     username: string;
+    emailVerified: Date?;
+  }
+  interface AdapterUser {
+    username: string;
+    emailVerified: Date?;
   }
 }
 
@@ -20,5 +26,6 @@ declare module "next-auth/jwt" {
   interface JWT {
     id: string;
     username: string;
+    emailVerified: Date?;
   }
 }
