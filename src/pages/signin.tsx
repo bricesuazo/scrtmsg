@@ -69,7 +69,7 @@ const SignIn = () => {
               onChange={(e) =>
                 setSignInCredentials({
                   ...signInCredentials,
-                  username: e.target.value,
+                  username: e.target.value.toLowerCase(),
                 })
               }
             />
