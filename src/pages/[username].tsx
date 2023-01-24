@@ -39,6 +39,7 @@ const UsernamePage = ({
       <>
         <Head>
           <title>{title}</title>
+          <meta property="og:image" content={`${getBaseUrl()}/api/og`} />
         </Head>
         <main className="mx-auto max-w-screen-md p-4">
           <h1 className="text-center text-xl font-bold">
@@ -55,14 +56,12 @@ const UsernamePage = ({
       setIsCopied(false);
     }, 3000);
   };
+
   return (
     <>
       <Head>
         <title>{title}</title>
-        <meta
-          property="og:image"
-          content={`${getBaseUrl()}/api/og?username=${username}`}
-        />
+        <meta property="og:image" content={`/api/og?username=${username}`} />
       </Head>
       <main className="mx-auto max-w-screen-md p-4">
         {(() => {
