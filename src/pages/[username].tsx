@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import { api } from "../utils/api";
+import { api, getBaseUrl } from "../utils/api";
 import { useState } from "react";
 import Head from "next/head";
 import type { GetServerSideProps, GetServerSidePropsContext } from "next";
@@ -59,6 +59,10 @@ const UsernamePage = ({
     <>
       <Head>
         <title>{title}</title>
+        <meta
+          property="og:image"
+          content={`${getBaseUrl()}/api/og?username=${username}`}
+        />
       </Head>
       <main className="mx-auto max-w-screen-md p-4">
         {(() => {

@@ -4,7 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 
-import { api } from "../utils/api";
+import { api, getBaseUrl } from "../utils/api";
 
 import "../styles/globals.css";
 import Head from "next/head";
@@ -43,6 +43,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
       <Head>
         <title>scrtmsg.me | Get message from anonymous.</title>
         <meta name="description" content="Get message from anonymous." />
+        <meta property="og:image" content={`${getBaseUrl()}/api/og`} />
         <link
           rel="shortcut icon"
           href="/images/favicon/favicon.ico"
