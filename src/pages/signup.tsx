@@ -17,6 +17,7 @@ const SignIn = () => {
     email: "",
   });
   const signUpMutate = api.user.signUp.useMutation();
+
   return (
     <>
       <Head>
@@ -97,11 +98,25 @@ const SignIn = () => {
               disabled={signUpMutate.isLoading}
             />
           </div>
-          {signUpMutate.error && (
-            <p className="text-center text-red-500">
-              {signUpMutate.error.message}
-            </p>
-          )}
+          {signUpMutate.error &&
+            JSON.parse(signUpMutate.error?.message || "[]").map(
+              (e: {
+                code: string;
+                minimum: number;
+                type: string;
+                inclusive: boolean;
+                exact: boolean;
+                message: string;
+                path: [string];
+              }) => (
+                <p className="text-center text-red-500">
+                  {e.path[0].charAt(0).toUpperCase() +
+                    e.path[0].slice(1) +
+                    " " +
+                    e.message.split("String ")[1]}
+                </p>
+              )
+            )}
           <button
             type="submit"
             disabled={signUpMutate.isLoading}
