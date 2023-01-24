@@ -27,26 +27,13 @@ const UsernamePage = ({
 
   if (user.isLoading) return <>Loading...</>;
 
-  const title =
-    (!user.data
-      ? `No username found`
-      : userSession?.username !== user.data.username
-      ? `Send message to @${user.data.username}`
-      : `@${user.data.username}`) + " | scrtmsg.me";
-
   if (!user.data)
     return (
-      <>
-        <Head>
-          <title>{title}</title>
-          <meta property="og:image" content={`${getBaseUrl()}/api/og`} />
-        </Head>
-        <main className="mx-auto max-w-screen-md p-4">
-          <h1 className="text-center text-xl font-bold">
-            Username doesn&apos;t exists.
-          </h1>
-        </main>
-      </>
+      <main className="mx-auto max-w-screen-md p-4">
+        <h1 className="text-center text-xl font-bold">
+          Username doesn&apos;t exists.
+        </h1>
+      </main>
     );
 
   const copyUsername = (username: string) => {
@@ -57,11 +44,18 @@ const UsernamePage = ({
     }, 3000);
   };
 
+  const title =
+    (userSession?.username !== user.data.username
+      ? `Send message to @${user.data.username}`
+      : `@${user.data.username}`) + " | scrtmsg.me";
+
+  const og = `https://scrtmsg.me/api/og?username=${user.data.username}`;
+
   return (
     <>
       <Head>
         <title>{title}</title>
-        <meta property="og:image" content={`/api/og?username=${username}`} />
+        <meta property="og:image" content={og} />
       </Head>
       <main className="mx-auto max-w-screen-md p-4">
         {(() => {
