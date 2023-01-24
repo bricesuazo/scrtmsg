@@ -1,18 +1,18 @@
 import { type AppType } from "next/app";
 import { type Session } from "next-auth";
 import { SessionProvider } from "next-auth/react";
+import { useEffect } from "react";
+import { useRouter } from "next/router";
 
 import { api } from "../utils/api";
 
-import "nprogress/nprogress.css";
 import "../styles/globals.css";
 import Head from "next/head";
 import Header from "../components/Header";
 import { ThemeProvider } from "next-themes";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import NProgress from "nprogress";
 import useScrollPosition from "../hooks/useScrollPosition";
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -22,6 +22,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   const scrollPosition = useScrollPosition();
 
   useEffect(() => {
+    NProgress.configure({ showSpinner: false });
     const handleRouteStart = () => NProgress.start();
     const handleRouteDone = () => NProgress.done();
 
