@@ -6,9 +6,53 @@ import { createTRPCRouter, publicProcedure } from "../trpc";
 import { env } from "../../../env/server.mjs";
 import { generateToken } from "../../../utils/generateToken";
 
-const notAllowedUsername = ["signin", "signup", "settings", "api"];
+const notAllowedUsername = ["signin", "signup", "settings", "api", "verify"];
 
 export const userRouter = createTRPCRouter({
+  verifyEmail: publicProcedure
+    .input(z.object({ token: z.string() }))
+    .query(async ({ ctx, input }) => {
+      const token = await ctx.prisma.token.findUnique({
+        where: {
+          token: input.token,
+        },
+        select: {
+          id: true,
+          userId: true,
+          identifier: true,
+          expires: true,
+        },
+      });
+
+      if (!token) {
+        throw new Error("Token not found");
+      }
+
+      if (token.expires < new Date()) {
+        throw new Error("Token expired");
+      }
+
+      if (token.identifier !== "EMAIL_VERIFICATION") {
+        throw new Error("Token not valid");
+      }
+
+      await ctx.prisma.user.update({
+        where: {
+          id: token.userId,
+        },
+        data: {
+          emailVerified: new Date(),
+        },
+      });
+
+      await ctx.prisma.token.delete({
+        where: {
+          id: token.id,
+        },
+      });
+
+      return true;
+    }),
   isUsernameExists: publicProcedure
     .input(z.object({ username: z.string().trim().min(3).max(20) }))
     .query(async ({ ctx, input }) => {
@@ -100,15 +144,15 @@ export const userRouter = createTRPCRouter({
       });
 
       sgMail.setApiKey(env.SENDGRID_API_KEY);
-      const msg = {
-        to: input.email, // Change to your recipient
-        from: "bricesuazo@gmail.com", // Change to your verified sender
-        subject: "Sending with SendGrid is Fun",
-        text: "and easy to do anywhere, even with Node.js",
-        html: `<strong>and easy to do anywhere, even with Node.js</strong>token:${token.token}`,
-      };
+
       sgMail
-        .send(msg)
+        .send({
+          to: input.email, // Change to your recipient
+          from: "scrtmsg@bricesuazo.com", // Change to your verified sender
+          subject: "Sending with SendGrid is Fun",
+          text: "and easy to do anywhere, even with Node.js",
+          html: `<strong>and easy to do anywhere, even with Node.js</strong>token:${token.token}`,
+        })
         .then(() => {
           console.log("Email sent");
         })
