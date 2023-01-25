@@ -9,6 +9,57 @@ import { generateToken } from "../../../utils/generateToken";
 const notAllowedUsername = ["signin", "signup", "settings", "api", "verify"];
 
 export const userRouter = createTRPCRouter({
+  resetPassword: publicProcedure
+    .input(
+      z.object({
+        token: z.string(),
+        password: z.string().min(8),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const token = await ctx.prisma.token.findUnique({
+        where: {
+          token: input.token,
+        },
+        select: {
+          id: true,
+          userId: true,
+          identifier: true,
+          expires: true,
+        },
+      });
+
+      if (!token) {
+        throw new Error("Token not found");
+      }
+
+      if (token.expires < new Date()) {
+        throw new Error("Token expired");
+      }
+
+      if (token.identifier !== "PASSWORD_RESET") {
+        throw new Error("Token not valid");
+      }
+
+      const hashedPassword = await bcrypt.hash(input.password, 10);
+
+      await ctx.prisma.user.update({
+        where: {
+          id: token.userId,
+        },
+        data: {
+          password: hashedPassword,
+        },
+      });
+
+      await ctx.prisma.token.delete({
+        where: {
+          id: token.id,
+        },
+      });
+
+      return true;
+    }),
   verifyEmail: publicProcedure
     .input(z.object({ token: z.string() }))
     .query(async ({ ctx, input }) => {
