@@ -4,7 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 
-import { api, getBaseUrl } from "../utils/api";
+import { api } from "../utils/api";
 
 import "../styles/globals.css";
 import Head from "next/head";
@@ -13,6 +13,7 @@ import { ThemeProvider } from "next-themes";
 import useScrollPosition from "../hooks/useScrollPosition";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
+import { Analytics } from "@vercel/analytics/react";
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
@@ -66,6 +67,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
             <Header />
           </div>
           <Component {...pageProps} />
+          <Analytics />
         </SessionProvider>
       </ThemeProvider>
     </>
