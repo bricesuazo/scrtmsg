@@ -5,6 +5,7 @@ import { getServerAuthSession } from "../server/auth";
 import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { useRouter } from "next/router";
 import Head from "next/head";
+import Spinner from "../components/Spinner";
 
 const SignIn = () => {
   const router = useRouter();
@@ -100,9 +101,13 @@ const SignIn = () => {
           <button
             type="submit"
             disabled={signInCredentials.loading}
-            className="bg-slate-100"
+            className="flex items-center justify-center bg-slate-100"
           >
-            {signInCredentials.loading ? "Loading..." : "Sign In"}
+            {signInCredentials.loading ? (
+              <Spinner className="m-1 h-4 w-4" />
+            ) : (
+              "Sign In"
+            )}
           </button>
           <p className="mt-4 text-center">
             Don&apos;t have an account yet?{" "}

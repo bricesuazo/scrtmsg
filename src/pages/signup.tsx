@@ -5,6 +5,7 @@ import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "../server/auth";
 import { signIn } from "next-auth/react";
 import Head from "next/head";
+import Spinner from "../components/Spinner";
 
 const SignIn = () => {
   const [signUpCredentials, setSignUpCredentials] = useState<{
@@ -70,12 +71,16 @@ const SignIn = () => {
               placeholder="Username"
               required
               value={signUpCredentials.username}
-              onChange={(e) =>
+              onChange={(e) => {
+                const regex = new RegExp(/^[a-zA-Z0-9_-]*$/);
+
+                if (!regex.test(e.target.value.trim().toLowerCase())) return;
+
                 setSignUpCredentials({
                   ...signUpCredentials,
-                  username: e.target.value.toLowerCase(),
-                })
-              }
+                  username: e.target.value.trim().toLowerCase(),
+                });
+              }}
               disabled={signUpMutate.isLoading}
             />
           </div>
@@ -98,7 +103,7 @@ const SignIn = () => {
               disabled={signUpMutate.isLoading}
             />
           </div>
-          {signUpMutate.error &&
+          {/* {signUpMutate.error &&
             JSON.parse(signUpMutate.error?.message || "[]").map(
               (e: {
                 code: string;
@@ -116,14 +121,19 @@ const SignIn = () => {
                     e.message.split("String ")[1]}
                 </p>
               )
-            )}
+            )} */}
           <button
             type="submit"
             disabled={signUpMutate.isLoading}
-            className="bg-slate-100"
+            className="flex items-center justify-center bg-slate-100"
           >
-            {signUpMutate.isLoading ? "Loading..." : "Sign Up"}
+            {signUpMutate.isLoading ? (
+              <Spinner className="m-1 h-4 w-4" />
+            ) : (
+              "Sign Up"
+            )}
           </button>
+
           <p className="text-center">
             Already have an account?{" "}
             <Link href="/signin" className="font-bold">

@@ -12,11 +12,13 @@
   "dependencies": {
     "@headlessui/react": "^1.7.7",
     "@prisma/client": "^4.9.0",
+    "@sendgrid/mail": "^7.7.0",
     "@tanstack/react-query": "^4.20.0",
     "@trpc/client": "^10.8.1",
     "@trpc/next": "^10.8.1",
     "@trpc/react-query": "^10.8.1",
     "@trpc/server": "^10.8.1",
+    "@vercel/analytics": "^0.1.8",
     "@vercel/og": "^0.0.27",
     "bcrypt": "^5.1.0",
     "next": "13.1.2",
