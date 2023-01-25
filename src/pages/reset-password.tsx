@@ -40,6 +40,7 @@ const ResetPassword = () => {
       >
         <label htmlFor="password">Password</label>
         <input
+          required
           type="password"
           id="password"
           disabled={resetPasswordMutation.isLoading}
@@ -51,9 +52,9 @@ const ResetPassword = () => {
             })
           }
         />
-
         <label htmlFor="confirm-password">Confirm password</label>
         <input
+          required
           type="password"
           id="confirm-password"
           disabled={resetPasswordMutation.isLoading}
@@ -65,7 +66,6 @@ const ResetPassword = () => {
             })
           }
         />
-
         {resetPasswordMutation.isError && (
           <div>{resetPasswordMutation.error.message}</div>
         )}

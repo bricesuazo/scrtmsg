@@ -5,10 +5,84 @@ import sgMail from "@sendgrid/mail";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { env } from "../../../env/server.mjs";
 import { generateToken } from "../../../utils/generateToken";
+import { getBaseUrl } from "../../../utils/api";
 
-const notAllowedUsername = ["signin", "signup", "settings", "api", "verify"];
+const notAllowedUsername = [
+  "signin",
+  "signup",
+  "settings",
+  "api",
+  "verify",
+  "forgot-password",
+  "reset-password",
+];
 
 export const userRouter = createTRPCRouter({
+  forgotPassword: publicProcedure
+    .input(
+      z.object({
+        input: z.string().trim().min(3).max(20),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const user = await ctx.prisma.user.findFirst({
+        where: {
+          OR: [
+            {
+              username: input.input,
+            },
+            {
+              email: input.input,
+            },
+          ],
+        },
+        select: {
+          id: true,
+          email: true,
+        },
+      });
+
+      if (!user) {
+        throw new Error("User not found");
+      }
+
+      const token = generateToken(32);
+
+      await ctx.prisma.token.create({
+        data: {
+          token,
+          identifier: "PASSWORD_RESET",
+          expires: new Date(Date.now() + 1000 * 60 * 60 * 3),
+          user: {
+            connect: {
+              id: user.id,
+            },
+          },
+        },
+      });
+
+      sgMail.setApiKey(env.SENDGRID_API_KEY);
+      await sgMail
+        .send({
+          to: user.email,
+          from: "scrtmsg@bricesuazo.com",
+          subject: "Reset your password",
+          html: `
+        <h1>Reset your password</h1>
+        <p>Click the link below to reset your password</p>
+        <a href="${getBaseUrl()}/reset-password?token=${token}">Reset password</a>
+        `,
+        })
+        .then(() => {
+          console.log("Email sent");
+        })
+        .catch((error) => {
+          console.error("error lods", error);
+        });
+
+      return true;
+    }),
+
   resetPassword: publicProcedure
     .input(
       z.object({
@@ -52,9 +126,14 @@ export const userRouter = createTRPCRouter({
         },
       });
 
-      await ctx.prisma.token.delete({
+      await ctx.prisma.token.deleteMany({
         where: {
-          id: token.id,
+          AND: [
+            {
+              userId: token.userId,
+              identifier: "PASSWORD_RESET",
+            },
+          ],
         },
       });
 

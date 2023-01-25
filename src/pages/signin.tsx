@@ -92,6 +92,12 @@ const SignIn = () => {
                 })
               }
             />
+            <Link
+              href="/forgot-password"
+              className="text-right text-sm text-slate-300"
+            >
+              Forgot password?
+            </Link>
           </div>
           {signInCredentials.error && (
             <p className="text-center text-red-500">
