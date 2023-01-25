@@ -103,7 +103,7 @@ const SignIn = () => {
               disabled={signUpMutate.isLoading}
             />
           </div>
-          {signUpMutate.error &&
+          {/* {signUpMutate.error &&
             JSON.parse(signUpMutate.error?.message || "[]").map(
               (e: {
                 code: string;
@@ -121,7 +121,7 @@ const SignIn = () => {
                     e.message.split("String ")[1]}
                 </p>
               )
-            )}
+            )} */}
           <button
             type="submit"
             disabled={signUpMutate.isLoading}

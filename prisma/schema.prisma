@@ -51,4 +51,21 @@ model User {
     password      String
     messages      Message[]
     replies       Reply[]
+    Token         Token[]
+}
+
+enum Identifier {
+    EMAIL_VERIFICATION
+    PASSWORD_RESET
+}
+
+model Token {
+    id         String     @id @default(cuid())
+    identifier Identifier
+    token      String     @unique
+    expires    DateTime
+    createdAt  DateTime   @default(now())
+    updatedAt  DateTime   @updatedAt
+    user       User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId     String
 }
