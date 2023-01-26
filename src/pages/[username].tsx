@@ -63,6 +63,7 @@ const UsernamePage = ({
                       onClick={() => {
                         setIsSent(false);
                       }}
+                      name="Send another message"
                     >
                       Send another message
                     </button>

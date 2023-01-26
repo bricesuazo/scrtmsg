@@ -126,6 +126,7 @@ const SignIn = () => {
             type="submit"
             disabled={signUpMutate.isLoading}
             className="flex items-center justify-center bg-slate-100"
+            name="Sign up"
           >
             {signUpMutate.isLoading ? (
               <Spinner className="m-1 h-4 w-4" />

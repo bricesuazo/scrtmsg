@@ -69,7 +69,9 @@ const ResetPassword = () => {
         {resetPasswordMutation.isError && (
           <div>{resetPasswordMutation.error.message}</div>
         )}
-        <button type="submit">Reset password</button>
+        <button type="submit" name="Reset password">
+          Reset password
+        </button>
       </form>
     </div>
   );

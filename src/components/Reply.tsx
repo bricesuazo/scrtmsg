@@ -1,4 +1,4 @@
-import type { Reply, User } from "@prisma/client";
+import type { Reply as ReplyType } from "@prisma/client";
 import { api } from "../utils/api";
 import Moment from "react-moment";
 import Spinner from "./Spinner";
@@ -9,7 +9,7 @@ const Reply = ({
   refetch,
   username,
 }: {
-  reply: Reply;
+  reply: ReplyType;
   refetch: () => void;
   username: string;
 }) => {
@@ -37,6 +37,7 @@ const Reply = ({
           refetch();
         }}
         disabled={deleteReplyMutation.isLoading}
+        name="Delete reply"
       >
         {deleteReplyMutation.isLoading ? (
           <Spinner className="h-4 w-4" />

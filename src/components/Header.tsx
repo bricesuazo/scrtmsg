@@ -48,6 +48,7 @@ const Header = () => {
                     ? "bg-slate-50 dark:bg-slate-800"
                     : "bg-transparent hover:bg-slate-50"
                 } rounded-full bg-transparent p-3 transition-colors dark:bg-transparent`}
+                name="theme"
               >
                 <Icon />
               </button>
@@ -78,6 +79,7 @@ const Header = () => {
                         active && "bg-blue-500"
                       } flex w-24 items-center gap-x-2 rounded bg-transparent text-slate-500 dark:bg-transparent dark:text-slate-300`}
                       onClick={() => setTheme(theme.title)}
+                      name={theme.title + " theme"}
                     >
                       {theme.icon}
                       {theme.title.charAt(0).toLocaleUpperCase() +
@@ -113,6 +115,7 @@ const Header = () => {
                       signOut({ callbackUrl: "/signin" });
                     }}
                     className="p-3"
+                    name="Logout button"
                   >
                     <FaSignOutAlt className="h-3 w-3" />
                   </button>

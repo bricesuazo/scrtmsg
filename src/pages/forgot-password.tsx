@@ -48,6 +48,7 @@ const ForgotPassword = () => {
           disabled={
             forgotPasswordMutation.isLoading || forgotPasswordMutation.isSuccess
           }
+          name="Reset email"
         >
           {forgotPasswordMutation.isLoading ? "Loading..." : "Send reset email"}
         </button>

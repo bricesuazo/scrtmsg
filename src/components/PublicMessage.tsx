@@ -1,4 +1,4 @@
-import type { Message, Reply, User } from "@prisma/client";
+import type { Message, Reply } from "@prisma/client";
 import Moment from "react-moment";
 
 const PublicMessage = ({
@@ -14,11 +14,11 @@ const PublicMessage = ({
     <div className="rounded border p-4 dark:border-slate-800">
       <p>{message.message}</p>
       <div className="flex items-center gap-x-1">
-        <p className="text-xs text-slate-400">Anonymous</p>
-        <p className="pointer-events-none select-none text-slate-400 dark:text-slate-600">
+        <p className="text-xs text-slate-500">Anonymous</p>
+        <p className="pointer-events-none select-none text-slate-500 dark:text-slate-600">
           ·
         </p>
-        <Moment fromNow className="text-xs text-slate-400 dark:text-slate-600">
+        <Moment fromNow className="text-xs text-slate-500 dark:text-slate-600">
           {message.createdAt}
         </Moment>
       </div>
@@ -28,13 +28,13 @@ const PublicMessage = ({
           <div key={reply.id} className="px-4 py-2">
             <p>{reply.reply}</p>
             <div className="flex items-center gap-x-1">
-              <p className="text-xs text-slate-400">@{username}</p>
-              <p className="pointer-events-none select-none text-slate-400 dark:text-slate-600">
+              <p className="text-xs text-slate-500">@{username}</p>
+              <p className="pointer-events-none select-none text-slate-500 dark:text-slate-600">
                 ·
               </p>
               <Moment
                 fromNow
-                className="text-xs text-slate-400 dark:text-slate-600"
+                className="text-xs text-slate-500 dark:text-slate-600"
               >
                 {reply.createdAt}
               </Moment>

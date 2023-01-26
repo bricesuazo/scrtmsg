@@ -22,7 +22,10 @@ const Home: NextPage = () => {
             <p className="text-center">Get message from anonymous.</p>
             <div className="mx-auto flex w-fit items-center gap-x-4">
               <Link href="/signup">
-                <button className="rounded-full bg-gradient-to-br from-[#a678df] via-[#3b2de4] to-[#a678df] bg-size-200 bg-pos-0 px-8 py-2 font-bold text-white transition-all duration-1000 hover:bg-pos-100">
+                <button
+                  className="rounded-full bg-gradient-to-br from-[#a678df] via-[#3b2de4] to-[#a678df] bg-size-200 bg-pos-0 px-8 py-2 font-bold text-white transition-all duration-1000 hover:bg-pos-100"
+                  name="Sign up"
+                >
                   Sign up
                 </button>
               </Link>
@@ -38,7 +41,7 @@ const Home: NextPage = () => {
         </section>
       </main>
       <footer>
-        <p className="p-4 text-center text-slate-300 dark:text-slate-700">
+        <p className="p-4 text-center text-slate-500 dark:text-slate-700">
           scrtmsg.me | © {new Date().getFullYear()}
         </p>
       </footer>

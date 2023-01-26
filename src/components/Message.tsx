@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Reply, Message, User } from "@prisma/client";
+import type { Reply, Message } from "@prisma/client";
 import { FaTelegramPlane, FaTrashAlt } from "react-icons/fa";
 import Moment from "react-moment";
 import { api } from "../utils/api";
@@ -49,6 +49,7 @@ const MessageComponent = ({
             refetch();
           }}
           disabled={deleteMutation.isLoading}
+          name="Delete message"
         >
           {deleteMutation.isLoading ? (
             <Spinner className="h-5 w-5" />
@@ -94,7 +95,11 @@ const MessageComponent = ({
           disabled={replyMutation.isLoading}
           onChange={(e) => setReply(e.target.value)}
         />
-        <button className="p-2" disabled={replyMutation.isLoading}>
+        <button
+          className="p-2"
+          disabled={replyMutation.isLoading}
+          name="Send reply"
+        >
           {replyMutation.isLoading ? (
             <Spinner className="h-5 w-5" />
           ) : (
