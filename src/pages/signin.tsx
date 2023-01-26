@@ -29,7 +29,7 @@ const SignIn = () => {
       <main className="mx-auto max-w-screen-md p-4">
         <form
           className="mx-auto flex max-w-md flex-col gap-y-4"
-          onSubmit={async (e) => {
+          onSubmit={(e) => {
             e.preventDefault();
             setSignInCredentials({
               ...signInCredentials,
@@ -37,21 +37,27 @@ const SignIn = () => {
               error: null,
             });
 
-            const res = await signIn("credentials", {
+            signIn("credentials", {
               username: signInCredentials.username,
               password: signInCredentials.password,
               redirect: false,
-            });
-            if (res?.ok) {
-              router.reload();
-            } else if (res?.error) {
-              setSignInCredentials({
-                ...signInCredentials,
-                error: res.error,
+            })
+              .then((res) => {
+                if (res?.ok) {
+                  router.reload();
+                } else if (res?.error) {
+                  setSignInCredentials({
+                    ...signInCredentials,
+                    error: res.error,
+                  });
+                }
+              })
+              .finally(() => {
+                setSignInCredentials({
+                  ...signInCredentials,
+                  loading: false,
+                });
               });
-            }
-
-            setSignInCredentials({ ...signInCredentials, loading: false });
           }}
         >
           <h2 className="text-center text-lg font-bold">

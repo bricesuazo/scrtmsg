@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { api } from "../utils/api";
 import { useState } from "react";
+import Link from "next/link";
 
 const ResetPassword = () => {
   const [resetPasswordCredentials, setResetPasswordCredentials] = useState<{
@@ -21,11 +22,16 @@ const ResetPassword = () => {
   const resetPasswordMutation = api.user.resetPassword.useMutation();
 
   if (resetPasswordMutation.isSuccess) {
-    return <div>Password reset successfully</div>;
+    return (
+      <main>
+        <p>Password reset successfully</p>
+        <Link href="/signin">Sign in</Link>
+      </main>
+    );
   }
 
   return (
-    <div>
+    <main>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -77,7 +83,7 @@ const ResetPassword = () => {
           Reset password
         </button>
       </form>
-    </div>
+    </main>
   );
 };
 

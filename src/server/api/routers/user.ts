@@ -285,11 +285,11 @@ export const userRouter = createTRPCRouter({
         })
         .then(() => {
           console.log("Email sent");
+          return true;
         })
         .catch((error) => {
           console.error("error lods", error);
+          throw new Error("Error sending email");
         });
-
-      return true;
     }),
 });
