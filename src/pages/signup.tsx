@@ -29,15 +29,12 @@ const SignIn = () => {
           className="mx-auto flex max-w-md flex-col gap-y-4"
           onSubmit={async (e) => {
             e.preventDefault();
-            await signUpMutate
-              .mutateAsync(signUpCredentials)
-              .then(async (res) => {
-                res &&
-                  (await signIn("credentials", {
-                    username: signUpCredentials.username,
-                    password: signUpCredentials.password,
-                  }));
+            await signUpMutate.mutateAsync(signUpCredentials).then(async () => {
+              await signIn("credentials", {
+                username: signUpCredentials.username,
+                password: signUpCredentials.password,
               });
+            });
           }}
         >
           <h2 className="text-center text-lg font-bold">
@@ -103,7 +100,7 @@ const SignIn = () => {
               disabled={signUpMutate.isLoading}
             />
           </div>
-          {/* {signUpMutate.error &&
+          {signUpMutate.error &&
             JSON.parse(signUpMutate.error?.message || "[]").map(
               (e: {
                 code: string;
@@ -121,7 +118,7 @@ const SignIn = () => {
                     e.message.split("String ")[1]}
                 </p>
               )
-            )} */}
+            )}
           <button
             type="submit"
             disabled={signUpMutate.isLoading}
@@ -135,7 +132,7 @@ const SignIn = () => {
             )}
           </button>
 
-          <p className="text-center">
+          <p className="mt-4 text-center">
             Already have an account?{" "}
             <Link href="/signin" className="font-bold">
               Sign In here.
