@@ -84,6 +84,7 @@ export const messageRouter = createTRPCRouter({
         include: {
           replies: true,
         },
+        take: 10,
       });
     }),
 

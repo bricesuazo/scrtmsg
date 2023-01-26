@@ -34,7 +34,13 @@ const ForgotPassword = () => {
             Forgot your password
           </h2>
           <div className="flex flex-col gap-y-1">
-            <label htmlFor="username/email">Username or email</label>
+            <label htmlFor="username/email">
+              Username or email
+              <span className="pointer-events-none select-none text-red-500">
+                {" "}
+                *
+              </span>
+            </label>
             <input
               id="username/email"
               required
