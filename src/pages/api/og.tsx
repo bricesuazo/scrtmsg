@@ -1,4 +1,5 @@
 import { ImageResponse } from "@vercel/og";
+import Image from "next/image";
 import { type NextRequest } from "next/server";
 
 export const config = {
@@ -42,10 +43,11 @@ export default async function handler(req: NextRequest) {
               padding: "2rem",
             }}
           >
-            <img
+            <Image
               width="128"
               height="128"
               src="https://raw.githubusercontent.com/bricesuazo/scrtmsg/main/public/images/scrtmsg-logo.png"
+              alt="scrtmsg logo"
             />
           </div>
           <div
@@ -121,10 +123,11 @@ export default async function handler(req: NextRequest) {
             padding: "2rem",
           }}
         >
-          <img
+          <Image
             width="128"
             height="128"
             src="https://raw.githubusercontent.com/bricesuazo/scrtmsg/main/public/images/scrtmsg-logo.png"
+            alt="scrtmsg logo"
           />
         </div>
         <div

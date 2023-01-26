@@ -17,6 +17,7 @@
 - **Framework**: [Next.js](https://nextjs.org/)
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 - **Authentication**: [NextAuth.js](https://next-auth.js.org/)
+- **Email**: [SendGrid](https://sendgrid.com/)
 - **Database**: [PlanetScale](https://planetscale.com/)
 - **ORM**: [Prisma](https://www.prisma.io/)
 - **Deployment**: [Vercel](https://vercel.com)

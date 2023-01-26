@@ -32,6 +32,7 @@ const MyMessages = ({ username }: { username: string }) => {
             className="hidden p-3 sm:block"
             onClick={() => copyUsername(username)}
             disabled={isCopied}
+            name="Copy username"
           >
             {!isCopied ? (
               <FaRegCopy size={12} className="dark:text-slate-200" />
@@ -44,6 +45,7 @@ const MyMessages = ({ username }: { username: string }) => {
           onClick={() => messages.refetch()}
           disabled={messages.isRefetching}
           className="flex w-auto items-center justify-center sm:w-20"
+          name="Refresh"
         >
           {messages.isRefetching ? (
             <Spinner className="m-1 h-4 w-4" />

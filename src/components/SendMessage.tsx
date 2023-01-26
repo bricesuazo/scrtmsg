@@ -2,13 +2,7 @@ import ReactTextareaAutosize from "react-textarea-autosize";
 import useScrollPosition from "../hooks/useScrollPosition";
 import { api } from "../utils/api";
 import PublicMessage from "./PublicMessage";
-import {
-  useState,
-  type SetStateAction,
-  type Dispatch,
-  type FormEvent,
-  type KeyboardEvent,
-} from "react";
+import { useState, type SetStateAction, type Dispatch } from "react";
 
 const SendMessage = ({
   username,
@@ -63,6 +57,7 @@ const SendMessage = ({
             type="submit"
             disabled={sendMessageMutation.isLoading}
             className="bg-slate-100"
+            name="Send message"
           >
             {sendMessageMutation.isLoading ? "Loading..." : "Send"}
           </button>
@@ -75,7 +70,7 @@ const SendMessage = ({
         </p>
       ) : (
         <div className="space-y-4">
-          <h4 className="text-center dark:text-slate-300">Replied messages</h4>
+          <p className="text-center dark:text-slate-300">Replied messages</p>
           <div className="space-y-2">
             {messages.data?.map((message) => (
               <PublicMessage

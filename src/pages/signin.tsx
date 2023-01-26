@@ -29,7 +29,7 @@ const SignIn = () => {
       <main className="mx-auto max-w-screen-md p-4">
         <form
           className="mx-auto flex max-w-md flex-col gap-y-4"
-          onSubmit={async (e) => {
+          onSubmit={(e) => {
             e.preventDefault();
             setSignInCredentials({
               ...signInCredentials,
@@ -37,28 +37,33 @@ const SignIn = () => {
               error: null,
             });
 
-            const res = await signIn("credentials", {
+            signIn("credentials", {
               username: signInCredentials.username,
               password: signInCredentials.password,
               redirect: false,
+            }).then((res) => {
+              if (res?.ok) {
+                router.reload();
+              } else if (res?.error) {
+                setSignInCredentials({
+                  ...signInCredentials,
+                  error: res.error,
+                });
+              }
             });
-            if (res?.ok) {
-              router.reload();
-            } else if (res?.error) {
-              setSignInCredentials({
-                ...signInCredentials,
-                error: res.error,
-              });
-            }
-
-            setSignInCredentials({ ...signInCredentials, loading: false });
           }}
         >
           <h2 className="text-center text-lg font-bold">
             Sign in to scrtmsg.me
           </h2>
           <div className="flex flex-col gap-y-1">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username">
+              Username
+              <span className="pointer-events-none select-none text-red-500">
+                {" "}
+                *
+              </span>
+            </label>
             <input
               type="text"
               id="username"
@@ -76,7 +81,13 @@ const SignIn = () => {
             />
           </div>
           <div className="flex flex-col gap-y-1">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">
+              Password
+              <span className="pointer-events-none select-none text-red-500">
+                {" "}
+                *
+              </span>
+            </label>
             <input
               type="password"
               id="password"
@@ -92,6 +103,12 @@ const SignIn = () => {
                 })
               }
             />
+            <Link
+              href="/forgot-password"
+              className="w-fit self-end text-sm text-slate-300"
+            >
+              Forgot password?
+            </Link>
           </div>
           {signInCredentials.error && (
             <p className="text-center text-red-500">
@@ -102,6 +119,7 @@ const SignIn = () => {
             type="submit"
             disabled={signInCredentials.loading}
             className="flex items-center justify-center bg-slate-100"
+            name="Sign in"
           >
             {signInCredentials.loading ? (
               <Spinner className="m-1 h-4 w-4" />

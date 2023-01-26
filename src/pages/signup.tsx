@@ -11,10 +11,12 @@ const SignIn = () => {
   const [signUpCredentials, setSignUpCredentials] = useState<{
     username: string;
     password: string;
+    confirmPassword: string;
     email: string;
   }>({
     username: "",
     password: "",
+    confirmPassword: "",
     email: "",
   });
   const signUpMutate = api.user.signUp.useMutation();
@@ -29,14 +31,25 @@ const SignIn = () => {
           className="mx-auto flex max-w-md flex-col gap-y-4"
           onSubmit={async (e) => {
             e.preventDefault();
+            if (
+              signUpCredentials.password !== signUpCredentials.confirmPassword
+            )
+              return alert("Passwords do not match");
+            if (signUpCredentials.username.length < 3)
+              return alert("Username must be at least 3 characters long");
+            if (signUpCredentials.password.length < 8)
+              return alert("Password must be at least 8 characters long");
             await signUpMutate
-              .mutateAsync(signUpCredentials)
-              .then(async (res) => {
-                res &&
-                  (await signIn("credentials", {
-                    username: signUpCredentials.username,
-                    password: signUpCredentials.password,
-                  }));
+              .mutateAsync({
+                username: signUpCredentials.username,
+                password: signUpCredentials.password,
+                email: signUpCredentials.email,
+              })
+              .then(async () => {
+                await signIn("credentials", {
+                  username: signUpCredentials.username,
+                  password: signUpCredentials.password,
+                });
               });
           }}
         >
@@ -45,7 +58,13 @@ const SignIn = () => {
           </h2>
 
           <div className="flex flex-col gap-y-1">
-            <label htmlFor="email">Email</label>
+            <label htmlFor="email">
+              Email
+              <span className="pointer-events-none select-none text-red-500">
+                {" "}
+                *
+              </span>
+            </label>
             <input
               type="email"
               id="email"
@@ -63,7 +82,13 @@ const SignIn = () => {
             />
           </div>
           <div className="flex flex-col gap-y-1">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username">
+              Username
+              <span className="pointer-events-none select-none text-red-500">
+                {" "}
+                *
+              </span>
+            </label>
             <input
               type="text"
               id="username"
@@ -86,7 +111,13 @@ const SignIn = () => {
           </div>
 
           <div className="flex flex-col gap-y-1">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">
+              Password
+              <span className="pointer-events-none select-none text-red-500">
+                {" "}
+                *
+              </span>
+            </label>
             <input
               type="password"
               id="password"
@@ -103,8 +134,32 @@ const SignIn = () => {
               disabled={signUpMutate.isLoading}
             />
           </div>
+          <div className="flex flex-col gap-y-1">
+            <label htmlFor="password">
+              Confirm password
+              <span className="pointer-events-none select-none text-red-500">
+                {" "}
+                *
+              </span>
+            </label>
+            <input
+              type="password"
+              id="password"
+              name="password"
+              placeholder="Password"
+              required
+              value={signUpCredentials.confirmPassword}
+              onChange={(e) =>
+                setSignUpCredentials({
+                  ...signUpCredentials,
+                  confirmPassword: e.target.value,
+                })
+              }
+              disabled={signUpMutate.isLoading}
+            />
+          </div>
           {/* {signUpMutate.error &&
-            JSON.parse(signUpMutate.error?.message || "[]").map(
+            JSON.parse(signUpMutate.error?.message).map(
               (e: {
                 code: string;
                 minimum: number;
@@ -122,10 +177,17 @@ const SignIn = () => {
                 </p>
               )
             )} */}
+
+          {signUpMutate.error && (
+            <p className="text-center text-red-500">
+              {signUpMutate.error.message}
+            </p>
+          )}
           <button
             type="submit"
             disabled={signUpMutate.isLoading}
             className="flex items-center justify-center bg-slate-100"
+            name="Sign up"
           >
             {signUpMutate.isLoading ? (
               <Spinner className="m-1 h-4 w-4" />
@@ -134,7 +196,7 @@ const SignIn = () => {
             )}
           </button>
 
-          <p className="text-center">
+          <p className="mt-4 text-center">
             Already have an account?{" "}
             <Link href="/signin" className="font-bold">
               Sign In here.

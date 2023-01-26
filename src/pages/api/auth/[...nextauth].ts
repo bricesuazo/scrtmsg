@@ -50,6 +50,7 @@ export const authOptions: NextAuthOptions = {
         });
 
         if (!user) throw new Error("Invalid username or password");
+
         const passwordMatch = await bcrypt.compare(
           passwordCredential,
           user.password
