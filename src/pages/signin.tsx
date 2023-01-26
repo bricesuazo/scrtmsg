@@ -41,23 +41,16 @@ const SignIn = () => {
               username: signInCredentials.username,
               password: signInCredentials.password,
               redirect: false,
-            })
-              .then((res) => {
-                if (res?.ok) {
-                  router.reload();
-                } else if (res?.error) {
-                  setSignInCredentials({
-                    ...signInCredentials,
-                    error: res.error,
-                  });
-                }
-              })
-              .finally(() => {
+            }).then((res) => {
+              if (res?.ok) {
+                router.reload();
+              } else if (res?.error) {
                 setSignInCredentials({
                   ...signInCredentials,
-                  loading: false,
+                  error: res.error,
                 });
-              });
+              }
+            });
           }}
         >
           <h2 className="text-center text-lg font-bold">
