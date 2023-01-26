@@ -57,7 +57,13 @@ const SignIn = () => {
             Sign in to scrtmsg.me
           </h2>
           <div className="flex flex-col gap-y-1">
-            <label htmlFor="username">Username</label>
+            <label htmlFor="username">
+              Username
+              <span className="pointer-events-none select-none text-red-500">
+                {" "}
+                *
+              </span>
+            </label>
             <input
               type="text"
               id="username"
@@ -75,7 +81,13 @@ const SignIn = () => {
             />
           </div>
           <div className="flex flex-col gap-y-1">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">
+              Password
+              <span className="pointer-events-none select-none text-red-500">
+                {" "}
+                *
+              </span>
+            </label>
             <input
               type="password"
               id="password"
@@ -93,7 +105,7 @@ const SignIn = () => {
             />
             <Link
               href="/forgot-password"
-              className="text-right text-sm text-slate-300"
+              className="w-fit self-end text-sm text-slate-300"
             >
               Forgot password?
             </Link>
