@@ -21,7 +21,7 @@ export const userRouter = createTRPCRouter({
   forgotPassword: publicProcedure
     .input(
       z.object({
-        input: z.string().trim().min(3).max(20),
+        input: z.string().trim().min(3),
       })
     )
     .mutation(async ({ ctx, input }) => {

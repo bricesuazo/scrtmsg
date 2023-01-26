@@ -20,6 +20,10 @@ const ResetPassword = () => {
 
   const resetPasswordMutation = api.user.resetPassword.useMutation();
 
+  if (resetPasswordMutation.isSuccess) {
+    return <div>Password reset successfully</div>;
+  }
+
   return (
     <div>
       <form
