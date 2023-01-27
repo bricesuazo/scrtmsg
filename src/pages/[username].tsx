@@ -7,12 +7,15 @@ import { getServerAuthSession } from "../server/auth";
 import type { Session } from "next-auth";
 import SendMessage from "../components/SendMessage";
 import MyMessages from "../components/MyMessages";
+import VerifyEmailBanner from "../components/VerifyEmailBanner";
 
 const UsernamePage = ({
   user: userSession,
 }: {
   user: Session["user"] | null;
 }) => {
+  console.log("🚀 ~ file: [username].tsx:17 ~ userSession", userSession);
+
   const [isSent, setIsSent] = useState(false);
 
   const router = useRouter();
@@ -50,7 +53,15 @@ const UsernamePage = ({
       <main className="mx-auto max-w-screen-md p-4">
         {(() => {
           if (userSession?.username === user.data.username) {
-            return <MyMessages username={username} />;
+            return (
+              <div className="space-y-2">
+                {!userSession?.emailVerified && (
+                  <VerifyEmailBanner email={user.data.email} />
+                )}
+
+                <MyMessages username={username} />
+              </div>
+            );
           } else {
             if (isSent) {
               return (
@@ -88,6 +99,14 @@ export const getServerSideProps: GetServerSideProps = async (
   const session = await getServerAuthSession(context);
 
   return {
-    props: { user: session?.user || null },
+    props: {
+      user:
+        {
+          ...session?.user,
+          emailVerified: session?.user?.emailVerified
+            ? JSON.stringify(session?.user?.emailVerified)
+            : null,
+        } || null,
+    },
   };
 };
