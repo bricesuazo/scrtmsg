@@ -4,6 +4,7 @@ import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "../server/auth";
 import Spinner from "../components/Spinner";
 import Link from "next/link";
+import { FaRegCheckCircle } from "react-icons/fa";
 
 const ForgotPassword = () => {
   const [input, setInput] = useState("");
@@ -13,12 +14,18 @@ const ForgotPassword = () => {
   return (
     <main className="mx-auto max-w-screen-md p-4">
       {forgotPasswordMutation.isSuccess ? (
-        <>
-          <h2>Check your email</h2>
-          <p>
-            We&apos;ve sent you an email with a link to reset your password.
-          </p>
-        </>
+        <div className="mx-auto max-w-md space-y-2">
+          <FaRegCheckCircle
+            size={52}
+            className="mx-auto text-blue-500 dark:text-blue-300"
+          />
+          <div className="text-center">
+            <h2 className="text-xl font-bold">Check your email</h2>
+            <p>
+              We&apos;ve sent you an email with a link to reset your password.
+            </p>
+          </div>
+        </div>
       ) : (
         <form
           className="mx-auto flex max-w-md flex-col gap-y-4"
@@ -51,9 +58,9 @@ const ForgotPassword = () => {
             />
           </div>
           {forgotPasswordMutation.isError && (
-            <div className="text-red-500">
+            <p className="text-center text-red-500">
               {forgotPasswordMutation.error?.message}
-            </div>
+            </p>
           )}
 
           <button

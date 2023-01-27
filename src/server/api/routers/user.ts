@@ -14,6 +14,38 @@ const notAllowedUsername = [
   "verify",
   "forgot-password",
   "reset-password",
+  "privacy",
+  "terms",
+  "about",
+  "contact",
+  "logout",
+  "login",
+  "register",
+  "me",
+  "profile",
+  "dashboard",
+  "admin",
+  "moderator",
+  "mod",
+  "moderators",
+  "mods",
+  "admins",
+  "administrator",
+  "administrators",
+  "root",
+  "roots",
+  "superuser",
+  "superusers",
+  "super",
+  "supers",
+  "owner",
+  "owners",
+  "creator",
+  "creators",
+  "founder",
+  "founders",
+  "developer",
+  "developers",
 ];
 
 export const userRouter = createTRPCRouter({
@@ -38,11 +70,16 @@ export const userRouter = createTRPCRouter({
         select: {
           id: true,
           email: true,
+          emailVerified: true,
         },
       });
 
       if (!user) {
         throw new Error("User not found");
+      }
+
+      if (!user.emailVerified) {
+        throw new Error("Email not verified");
       }
 
       const token = generateToken(32);
@@ -76,7 +113,7 @@ export const userRouter = createTRPCRouter({
             env.DOMAIN + "/reset-password?token=" + token
           }" target="_blank" style="color:#067df7;text-decoration:none" href="">${
             env.DOMAIN + "/reset-password?token=" + token
-          }</a></p><p style="font-size:14px;line-height:24px;margin:16px 0">If you don&#x27;t want to change your password or didn&#x27;t request this, just ignore and delete this message.</p><p style="font-size:16px;line-height:26px;margin:16px 0">Best,<br/><a target="_blank" style="color:black;text-decoration:none;&amp;:hover:[object Object]" href="https://bricesuazo.com">Brice Suazo</a> - Creator of scrtmsg.me</p></div><div><!--[if mso | IE]>
+          }</a></p><p style="font-size:14px;line-height:24px;margin:16px 0">If you don&#x27;t want to change your password or didn&#x27;t request this, just ignore and delete this message.</p><p style="font-size:16px;line-height:26px;margin:16px 0">Best,<br/>Brice Suazo - Creator of scrtmsg.me</p></div><div><!--[if mso | IE]>
           </td><td></td></tr></table>
           <![endif]--></div></td></tr></tbody></table></html>`,
         })
@@ -107,20 +144,11 @@ export const userRouter = createTRPCRouter({
           userId: true,
           identifier: true,
           expires: true,
-          user: {
-            select: {
-              emailVerified: true,
-            },
-          },
         },
       });
 
       if (!token) {
         throw new Error("Token not found");
-      }
-
-      if (!token.user.emailVerified) {
-        throw new Error("Email not verified");
       }
 
       if (token.expires < new Date()) {
@@ -219,7 +247,7 @@ export const userRouter = createTRPCRouter({
             env.DOMAIN + "/verify?token=" + token.token
           }</a></p></div><div><!--[if mso | IE]>
           </td><td></td></tr></table>
-          <![endif]--></div><p style="font-size:16px;line-height:26px;margin:16px 0">Best,<br/><a target="_blank" style="color:black;text-decoration:none;&amp;:hover:[object Object]" href="https://bricesuazo.com">Brice Suazo</a> - Creator of scrtmsg.me</p></div><div><!--[if mso | IE]>
+          <![endif]--></div><p style="font-size:16px;line-height:26px;margin:16px 0">Best,<br/>Brice Suazo - Creator of scrtmsg.me</p></div><div><!--[if mso | IE]>
           </td><td></td></tr></table>
           <![endif]--></div></td></tr></tbody></table></html>`,
         })
@@ -388,7 +416,7 @@ export const userRouter = createTRPCRouter({
             env.DOMAIN + "/verify?token=" + token.token
           }</a></p></div><div><!--[if mso | IE]>
           </td><td></td></tr></table>
-          <![endif]--></div><p style="font-size:16px;line-height:26px;margin:16px 0">Best,<br/><a target="_blank" style="color:black;text-decoration:none;&amp;:hover:[object Object]" href="https://bricesuazo.com">Brice Suazo</a> - Creator of scrtmsg.me</p></div><div><!--[if mso | IE]>
+          <![endif]--></div><p style="font-size:16px;line-height:26px;margin:16px 0">Best,<br/>Brice Suazo - Creator of scrtmsg.me</p></div><div><!--[if mso | IE]>
           </td><td></td></tr></table>
           <![endif]--></div></td></tr></tbody></table></html>`,
         })

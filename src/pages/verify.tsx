@@ -1,7 +1,6 @@
 import { useRouter } from "next/router";
 import { api } from "../utils/api";
 import { FaRegCheckCircle, FaRegTimesCircle } from "react-icons/fa";
-import { reloadSession } from "../utils/reloadSession";
 
 const Verify = () => {
   const router = useRouter();
@@ -44,7 +43,6 @@ const Verify = () => {
 
   if (verify.isSuccess) {
     setTimeout(() => {
-      reloadSession();
       router.push("/signin");
     }, 2000);
   }
