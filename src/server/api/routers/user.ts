@@ -67,11 +67,19 @@ export const userRouter = createTRPCRouter({
           to: user.email,
           from: "scrtmsg@bricesuazo.com",
           subject: "Reset your password",
-          html: `
-        <h1>Reset your password</h1>
-        <p>Click the link below to reset your password</p>
-        <a href="${getBaseUrl()}/reset-password?token=${token}">Reset password</a>
-        `,
+          html: `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html lang="en"><head><meta http-equiv="Content-Type" content="text/html charset=UTF-8"/></head><div style="display:none;overflow:hidden;line-height:1px;opacity:0;max-height:0;max-width:0">Please verify your email<div> ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿ ‌​‍‎‏﻿</div></div><table style="width:100%;background-color:#ffffff;font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,Roboto,Oxygen-Sans,Ubuntu,Cantarell,&quot;Helvetica Neue&quot;,sans-serif" align="center" border="0" cellPadding="0" cellSpacing="0" role="presentation"><tbody><tr><td><div><!--[if mso | IE]>
+            <table role="presentation" width="100%" align="center" style="max-width:37.5em;margin:0 auto;padding:20px 0 48px;"><tr><td></td><td style="width:37.5em;background:#ffffff">
+          <![endif]--></div><div style="max-width:37.5em;margin:0 auto;padding:20px 0 48px"><a target="_blank" style="color:#067df7;text-decoration:none" href="https://scrtmsg.me/"><img alt="scrtmsg-logo" src="https://raw.githubusercontent.com/bricesuazo/scrtmsg/main/public/images/scrtmsg-logo.png" width="128" style="display:block;outline:none;border:none;text-decoration:none;margin:0 auto"/></a><p style="font-size:16px;line-height:26px;margin:16px 0">Hi @${
+            input.input
+          },</p><p style="font-size:16px;line-height:26px;margin:16px 0">Someone recently requested a password change for your scrtmsg.me account. If this was you, you can set a new password here:</p><table style="width:100%;text-align:center" align="center" border="0" cellPadding="0" cellSpacing="0" role="presentation"><tbody><tr><td><a href="${
+            getBaseUrl() + "/reset-password?token=" + token
+          }" target="_blank" style="background:linear-gradient(138deg, rgba(167,121,223,1) 0%, rgba(59,45,228,1) 100%);border-radius:3px;color:#fff;font-size:16px;text-decoration:none;text-align:center;display:inline-block;p-x:12px;p-y:12px;line-height:100%;max-width:100%;padding:12px 12px"><span><!--[if mso]><i style="letter-spacing: 12px;mso-font-width:-100%;mso-text-raise:18" hidden>&nbsp;</i><![endif]--></span><span style="background:linear-gradient(138deg, rgba(167,121,223,1) 0%, rgba(59,45,228,1) 100%);border-radius:3px;color:#fff;font-size:16px;text-decoration:none;text-align:center;display:inline-block;p-x:12px;p-y:12px;max-width:100%;line-height:120%;text-transform:none;mso-padding-alt:0px;mso-text-raise:9px">Reset password</span><span><!--[if mso]><i style="letter-spacing: 12px;mso-font-width:-100%" hidden>&nbsp;</i><![endif]--></span></a></td></tr></tbody></table><p style="font-size:14px;line-height:24px;margin:16px 0">or copy and paste this URL into your browser:<br/><a href="${
+            getBaseUrl() + "/reset-password?token=" + token
+          }" target="_blank" style="color:#067df7;text-decoration:none" href="">${
+            getBaseUrl() + "/reset-password?token=" + token
+          }</a></p><p style="font-size:14px;line-height:24px;margin:16px 0">If you don&#x27;t want to change your password or didn&#x27;t request this, just ignore and delete this message.</p><p style="font-size:16px;line-height:26px;margin:16px 0">Best,<br/><a target="_blank" style="color:black;text-decoration:none;&amp;:hover:[object Object]" href="https://bricesuazo.com">Brice Suazo</a> - Creator of scrtmsg.me</p></div><div><!--[if mso | IE]>
+          </td><td></td></tr></table>
+          <![endif]--></div></td></tr></tbody></table></html>`,
         })
         .then(() => {
           console.log("Email sent");
@@ -288,7 +296,9 @@ export const userRouter = createTRPCRouter({
             getBaseUrl() + "/verify?token=" + token.token
           }" target="_blank" style="background:linear-gradient(138deg, rgba(167,121,223,1) 0%, rgba(59,45,228,1) 100%);border-radius:3px;color:#fff;font-size:16px;text-decoration:none;text-align:center;display:inline-block;p-x:12px;p-y:12px;line-height:100%;max-width:100%;padding:12px 12px"><span><!--[if mso]><i style="letter-spacing: 12px;mso-font-width:-100%;mso-text-raise:18" hidden>&nbsp;</i><![endif]--></span><span style="background:linear-gradient(138deg, rgba(167,121,223,1) 0%, rgba(59,45,228,1) 100%);border-radius:3px;color:#fff;font-size:16px;text-decoration:none;text-align:center;display:inline-block;p-x:12px;p-y:12px;max-width:100%;line-height:120%;text-transform:none;mso-padding-alt:0px;mso-text-raise:9px">Verify email</span><span><!--[if mso]><i style="letter-spacing: 12px;mso-font-width:-100%" hidden>&nbsp;</i><![endif]--></span></a></td></tr></tbody></table><div><!--[if mso | IE]>
             <table role="presentation" width="100%" align="center" style="max-width:37.5em;"><tr><td></td><td style="width:37.5em;background:#ffffff">
-          <![endif]--></div><div style="max-width:37.5em"><p style="font-size:14px;line-height:24px;margin:16px 0">or copy and paste this URL into your browser:<br/><a target="_blank" style="color:#067df7;text-decoration:none" href="">${
+          <![endif]--></div><div style="max-width:37.5em"><p style="font-size:14px;line-height:24px;margin:16px 0">or copy and paste this URL into your browser:<br/><a target="_blank" style="color:#067df7;text-decoration:none" href="${
+            getBaseUrl() + "/verify?token=" + token.token
+          }">${
             getBaseUrl() + "/verify?token=" + token.token
           }</a></p></div><div><!--[if mso | IE]>
           </td><td></td></tr></table>
