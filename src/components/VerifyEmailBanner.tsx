@@ -7,9 +7,9 @@ const VerifyEmailBanner = ({ email }: { email: string }) => {
     api.user.resendVerificationEmail.useMutation();
 
   return (
-    <div className="flex items-center justify-between rounded bg-slate-100 px-4 py-2">
+    <div className="flex items-center justify-between rounded bg-slate-100 px-4 py-2 dark:bg-slate-800">
       <div className="flex items-center gap-x-2">
-        <div className="rounded-full bg-slate-200 p-2">
+        <div className="rounded-full bg-slate-200 p-2 dark:bg-slate-700">
           <FaRegEnvelope size={18} />
         </div>
         <h1 className="">Please verify your email address.</h1>

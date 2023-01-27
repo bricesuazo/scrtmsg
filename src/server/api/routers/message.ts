@@ -90,6 +90,7 @@ export const messageRouter = createTRPCRouter({
 
   getAllMessagesWithReplies: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.message.findMany({
+      take: 10,
       where: {
         user: {
           username: ctx.session.user.username,
