@@ -3,6 +3,7 @@ import { api } from "../utils/api";
 import { useState } from "react";
 import Link from "next/link";
 import Spinner from "../components/Spinner";
+import { FaRegCheckCircle } from "react-icons/fa";
 
 const ResetPassword = () => {
   const [resetPasswordCredentials, setResetPasswordCredentials] = useState<{
@@ -21,12 +22,24 @@ const ResetPassword = () => {
   return (
     <main className="mx-auto max-w-screen-md p-4">
       {!token || typeof token !== "string" ? (
-        <h1 className="text-center text-2xl font-bold">Invalid token</h1>
+        <h1 className="text-center text-2xl font-bold text-red-500">
+          Invalid token
+        </h1>
       ) : resetPasswordMutation.isSuccess ? (
-        <>
-          <p>Password reset successfully</p>
-          <Link href="/signin">Sign in</Link>
-        </>
+        <div className="mx-auto max-w-md space-y-2">
+          <FaRegCheckCircle
+            size={52}
+            className="mx-auto text-blue-500 dark:text-blue-300"
+          />
+          <div className="flex flex-col justify-center gap-y-1">
+            <h1 className="text-center text-xl font-bold">
+              Password reset successfully
+            </h1>
+            <Link href="/signin" className="text-center">
+              <button>Sign in</button>
+            </Link>
+          </div>
+        </div>
       ) : (
         <form
           className="mx-auto flex max-w-md flex-col gap-y-4"
@@ -94,7 +107,9 @@ const ResetPassword = () => {
             />
           </div>
           {resetPasswordMutation.isError && (
-            <div>{resetPasswordMutation.error.message}</div>
+            <div className="text-center text-red-500">
+              {resetPasswordMutation.error.message}
+            </div>
           )}
           <button
             type="submit"

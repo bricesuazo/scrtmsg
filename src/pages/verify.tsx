@@ -5,7 +5,7 @@ import { FaRegCheckCircle, FaRegTimesCircle } from "react-icons/fa";
 const Verify = () => {
   const router = useRouter();
 
-  const { token } = router.query as { token: string };
+  const { token } = router.query;
 
   if (!token || typeof token !== "string") {
     return (
