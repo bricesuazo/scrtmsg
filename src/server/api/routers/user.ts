@@ -70,11 +70,16 @@ export const userRouter = createTRPCRouter({
         select: {
           id: true,
           email: true,
+          emailVerified: true,
         },
       });
 
       if (!user) {
         throw new Error("User not found");
+      }
+
+      if (!user.emailVerified) {
+        throw new Error("Email not verified");
       }
 
       const token = generateToken(32);
@@ -139,20 +144,11 @@ export const userRouter = createTRPCRouter({
           userId: true,
           identifier: true,
           expires: true,
-          user: {
-            select: {
-              emailVerified: true,
-            },
-          },
         },
       });
 
       if (!token) {
         throw new Error("Token not found");
-      }
-
-      if (!token.user.emailVerified) {
-        throw new Error("Email not verified");
       }
 
       if (token.expires < new Date()) {
