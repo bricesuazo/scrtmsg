@@ -5,7 +5,6 @@ import sgMail from "@sendgrid/mail";
 import { createTRPCRouter, publicProcedure } from "../trpc";
 import { env } from "../../../env/server.mjs";
 import { generateToken } from "../../../utils/generateToken";
-import { getBaseUrl } from "../../../utils/api";
 
 const notAllowedUsername = [
   "signin",
@@ -72,11 +71,11 @@ export const userRouter = createTRPCRouter({
           <![endif]--></div><div style="max-width:37.5em;margin:0 auto;padding:20px 0 48px"><a target="_blank" style="color:#067df7;text-decoration:none" href="https://scrtmsg.me/"><img alt="scrtmsg-logo" src="https://raw.githubusercontent.com/bricesuazo/scrtmsg/main/public/images/scrtmsg-logo.png" width="128" style="display:block;outline:none;border:none;text-decoration:none;margin:0 auto"/></a><p style="font-size:16px;line-height:26px;margin:16px 0">Hi @${
             input.input
           },</p><p style="font-size:16px;line-height:26px;margin:16px 0">Someone recently requested a password change for your scrtmsg.me account. If this was you, you can set a new password here:</p><table style="width:100%;text-align:center" align="center" border="0" cellPadding="0" cellSpacing="0" role="presentation"><tbody><tr><td><a href="${
-            getBaseUrl() + "/reset-password?token=" + token
+            env.DOMAIN + "/reset-password?token=" + token
           }" target="_blank" style="background:linear-gradient(138deg, rgba(167,121,223,1) 0%, rgba(59,45,228,1) 100%);border-radius:3px;color:#fff;font-size:16px;text-decoration:none;text-align:center;display:inline-block;p-x:12px;p-y:12px;line-height:100%;max-width:100%;padding:12px 12px"><span><!--[if mso]><i style="letter-spacing: 12px;mso-font-width:-100%;mso-text-raise:18" hidden>&nbsp;</i><![endif]--></span><span style="background:linear-gradient(138deg, rgba(167,121,223,1) 0%, rgba(59,45,228,1) 100%);border-radius:3px;color:#fff;font-size:16px;text-decoration:none;text-align:center;display:inline-block;p-x:12px;p-y:12px;max-width:100%;line-height:120%;text-transform:none;mso-padding-alt:0px;mso-text-raise:9px">Reset password</span><span><!--[if mso]><i style="letter-spacing: 12px;mso-font-width:-100%" hidden>&nbsp;</i><![endif]--></span></a></td></tr></tbody></table><p style="font-size:14px;line-height:24px;margin:16px 0">or copy and paste this URL into your browser:<br/><a href="${
-            getBaseUrl() + "/reset-password?token=" + token
+            env.DOMAIN + "/reset-password?token=" + token
           }" target="_blank" style="color:#067df7;text-decoration:none" href="">${
-            getBaseUrl() + "/reset-password?token=" + token
+            env.DOMAIN + "/reset-password?token=" + token
           }</a></p><p style="font-size:14px;line-height:24px;margin:16px 0">If you don&#x27;t want to change your password or didn&#x27;t request this, just ignore and delete this message.</p><p style="font-size:16px;line-height:26px;margin:16px 0">Best,<br/><a target="_blank" style="color:black;text-decoration:none;&amp;:hover:[object Object]" href="https://bricesuazo.com">Brice Suazo</a> - Creator of scrtmsg.me</p></div><div><!--[if mso | IE]>
           </td><td></td></tr></table>
           <![endif]--></div></td></tr></tbody></table></html>`,
@@ -293,13 +292,13 @@ export const userRouter = createTRPCRouter({
           <![endif]--></div><div style="max-width:37.5em;margin:0 auto;padding:20px 0 48px"><a target="_blank" style="color:#067df7;text-decoration:none" href="https://scrtmsg.me/"><img alt="scrtmsg-logo" src="https://raw.githubusercontent.com/bricesuazo/scrtmsg/main/public/images/scrtmsg-logo.png" width="128" style="display:block;outline:none;border:none;text-decoration:none;margin:0 auto"/></a><p style="font-size:16px;line-height:26px;margin:16px 0">Hi @${
             input.username
           },</p><p style="font-size:16px;line-height:26px;margin:16px 0">You&#x27;re almost set! Verify your email by tapping the button. Don&#x27;t wait, this message is valid for 3 hours.</p><table style="width:100%;text-align:center" align="center" border="0" cellPadding="0" cellSpacing="0" role="presentation"><tbody><tr><td><a href="${
-            getBaseUrl() + "/verify?token=" + token.token
+            env.DOMAIN + "/verify?token=" + token.token
           }" target="_blank" style="background:linear-gradient(138deg, rgba(167,121,223,1) 0%, rgba(59,45,228,1) 100%);border-radius:3px;color:#fff;font-size:16px;text-decoration:none;text-align:center;display:inline-block;p-x:12px;p-y:12px;line-height:100%;max-width:100%;padding:12px 12px"><span><!--[if mso]><i style="letter-spacing: 12px;mso-font-width:-100%;mso-text-raise:18" hidden>&nbsp;</i><![endif]--></span><span style="background:linear-gradient(138deg, rgba(167,121,223,1) 0%, rgba(59,45,228,1) 100%);border-radius:3px;color:#fff;font-size:16px;text-decoration:none;text-align:center;display:inline-block;p-x:12px;p-y:12px;max-width:100%;line-height:120%;text-transform:none;mso-padding-alt:0px;mso-text-raise:9px">Verify email</span><span><!--[if mso]><i style="letter-spacing: 12px;mso-font-width:-100%" hidden>&nbsp;</i><![endif]--></span></a></td></tr></tbody></table><div><!--[if mso | IE]>
             <table role="presentation" width="100%" align="center" style="max-width:37.5em;"><tr><td></td><td style="width:37.5em;background:#ffffff">
           <![endif]--></div><div style="max-width:37.5em"><p style="font-size:14px;line-height:24px;margin:16px 0">or copy and paste this URL into your browser:<br/><a target="_blank" style="color:#067df7;text-decoration:none" href="${
-            getBaseUrl() + "/verify?token=" + token.token
+            env.DOMAIN + "/verify?token=" + token.token
           }">${
-            getBaseUrl() + "/verify?token=" + token.token
+            env.DOMAIN + "/verify?token=" + token.token
           }</a></p></div><div><!--[if mso | IE]>
           </td><td></td></tr></table>
           <![endif]--></div><p style="font-size:16px;line-height:26px;margin:16px 0">Best,<br/><a target="_blank" style="color:black;text-decoration:none;&amp;:hover:[object Object]" href="https://bricesuazo.com">Brice Suazo</a> - Creator of scrtmsg.me</p></div><div><!--[if mso | IE]>
