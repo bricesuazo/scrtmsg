@@ -113,7 +113,7 @@ export const userRouter = createTRPCRouter({
             env.DOMAIN + "/reset-password?token=" + token
           }" target="_blank" style="color:#067df7;text-decoration:none" href="">${
             env.DOMAIN + "/reset-password?token=" + token
-          }</a></p><p style="font-size:14px;line-height:24px;margin:16px 0">If you don&#x27;t want to change your password or didn&#x27;t request this, just ignore and delete this message.</p><p style="font-size:16px;line-height:26px;margin:16px 0">Best,<br/><a target="_blank" style="color:black;text-decoration:none;&amp;:hover:[object Object]" href="https://bricesuazo.com">Brice Suazo</a> - Creator of scrtmsg.me</p></div><div><!--[if mso | IE]>
+          }</a></p><p style="font-size:14px;line-height:24px;margin:16px 0">If you don&#x27;t want to change your password or didn&#x27;t request this, just ignore and delete this message.</p><p style="font-size:16px;line-height:26px;margin:16px 0">Best,<br/>Brice Suazo - Creator of scrtmsg.me</p></div><div><!--[if mso | IE]>
           </td><td></td></tr></table>
           <![endif]--></div></td></tr></tbody></table></html>`,
         })
@@ -247,7 +247,7 @@ export const userRouter = createTRPCRouter({
             env.DOMAIN + "/verify?token=" + token.token
           }</a></p></div><div><!--[if mso | IE]>
           </td><td></td></tr></table>
-          <![endif]--></div><p style="font-size:16px;line-height:26px;margin:16px 0">Best,<br/><a target="_blank" style="color:black;text-decoration:none;&amp;:hover:[object Object]" href="https://bricesuazo.com">Brice Suazo</a> - Creator of scrtmsg.me</p></div><div><!--[if mso | IE]>
+          <![endif]--></div><p style="font-size:16px;line-height:26px;margin:16px 0">Best,<br/>Brice Suazo - Creator of scrtmsg.me</p></div><div><!--[if mso | IE]>
           </td><td></td></tr></table>
           <![endif]--></div></td></tr></tbody></table></html>`,
         })
@@ -416,7 +416,7 @@ export const userRouter = createTRPCRouter({
             env.DOMAIN + "/verify?token=" + token.token
           }</a></p></div><div><!--[if mso | IE]>
           </td><td></td></tr></table>
-          <![endif]--></div><p style="font-size:16px;line-height:26px;margin:16px 0">Best,<br/><a target="_blank" style="color:black;text-decoration:none;&amp;:hover:[object Object]" href="https://bricesuazo.com">Brice Suazo</a> - Creator of scrtmsg.me</p></div><div><!--[if mso | IE]>
+          <![endif]--></div><p style="font-size:16px;line-height:26px;margin:16px 0">Best,<br/>Brice Suazo - Creator of scrtmsg.me</p></div><div><!--[if mso | IE]>
           </td><td></td></tr></table>
           <![endif]--></div></td></tr></tbody></table></html>`,
         })
