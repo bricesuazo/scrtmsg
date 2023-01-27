@@ -47,7 +47,13 @@ const ResetPassword = () => {
         >
           <h2 className="text-center text-lg font-bold">Reset your password</h2>
           <div className="flex flex-col gap-y-1">
-            <label htmlFor="password">Password</label>
+            <label htmlFor="password">
+              Password
+              <span className="pointer-events-none select-none text-red-500">
+                {" "}
+                *
+              </span>
+            </label>
             <input
               required
               type="password"
@@ -65,7 +71,13 @@ const ResetPassword = () => {
           </div>
 
           <div className="flex flex-col gap-y-1">
-            <label htmlFor="confirm-password">Confirm password</label>
+            <label htmlFor="confirm-password">
+              Confirm password
+              <span className="pointer-events-none select-none text-red-500">
+                {" "}
+                *
+              </span>
+            </label>
             <input
               required
               type="password"
