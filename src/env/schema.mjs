@@ -20,6 +20,7 @@ export const serverSchema = z.object({
     process.env.VERCEL ? z.string() : z.string().url()
   ),
   SENDGRID_API_KEY: z.string(),
+  DOMAIN: z.string().url(),
 });
 
 /**
@@ -33,6 +34,7 @@ export const serverEnv = {
   NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
   NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   SENDGRID_API_KEY: process.env.SENDGRID_API_KEY,
+  DOMAIN: process.env.DOMAIN,
 };
 
 /**

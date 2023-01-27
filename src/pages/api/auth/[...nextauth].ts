@@ -15,10 +15,20 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       if (session.user) {
-        session.user.id = token.id;
-        session.user.username = token.username;
-        session.user.emailVerified = token.emailVerified;
+        const user = await prisma.user.findUnique({
+          where: { id: token.id },
+        });
+        if (user) {
+          session.user.id = user.id;
+          session.user.username = user.username;
+          session.user.emailVerified = user.emailVerified;
+        }
       }
+      // if (session.user) {
+      //   session.user.id = token.id;
+      //   session.user.username = token.username;
+      //   session.user.emailVerified = token.emailVerified;
+      // }
       return session;
     },
   },

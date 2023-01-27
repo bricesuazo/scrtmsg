@@ -1,5 +1,7 @@
 import { useRouter } from "next/router";
 import { api } from "../utils/api";
+import { FaRegCheckCircle, FaRegTimesCircle } from "react-icons/fa";
+import { reloadSession } from "../utils/reloadSession";
 
 const Verify = () => {
   const router = useRouter();
@@ -7,12 +9,22 @@ const Verify = () => {
   const { token } = router.query as { token: string };
 
   if (!token || typeof token !== "string") {
-    return <div>Invalid token</div>;
+    return (
+      <main className="mx-auto max-w-screen-md space-y-2 p-4">
+        <FaRegTimesCircle size={52} className="mx-auto text-red-500" />
+        <h1 className="text-center text-xl font-bold">Invalid token</h1>
+      </main>
+    );
   }
 
   const verify = api.user.verifyEmail.useQuery(
     { token },
-    { retry: false, refetchOnWindowFocus: false }
+    {
+      retry: false,
+      refetchOnWindowFocus: false,
+      refetchOnMount: false,
+      refetchOnReconnect: false,
+    }
   );
 
   if (verify.isLoading) {
@@ -20,10 +32,37 @@ const Verify = () => {
   }
 
   if (verify.isError) {
-    return <div>{verify.error.message || "Error verifying email"}</div>;
+    return (
+      <main className="mx-auto max-w-screen-md space-y-2 p-4">
+        <FaRegTimesCircle size={52} className="mx-auto text-red-500" />
+        <h1 className="text-center text-xl font-bold">
+          {verify.error.message || "Error verifying email"}
+        </h1>
+      </main>
+    );
   }
 
-  return <>Email verified!</>;
+  if (verify.isSuccess) {
+    setTimeout(() => {
+      reloadSession();
+      router.push("/signin");
+    }, 2000);
+  }
+
+  return (
+    <main className="mx-auto max-w-screen-md space-y-2 p-4">
+      <>
+        <FaRegCheckCircle
+          size={52}
+          className="mx-auto text-blue-500 dark:text-blue-300"
+        />
+        <div>
+          <h1 className="text-center text-xl font-bold">Email verified!</h1>
+          <p className="text-center">Redirecting...</p>
+        </div>
+      </>
+    </main>
+  );
 };
 
 export default Verify;
