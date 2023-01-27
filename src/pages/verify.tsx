@@ -5,7 +5,7 @@ import { FaRegCheckCircle, FaRegTimesCircle } from "react-icons/fa";
 const Verify = () => {
   const router = useRouter();
 
-  const { token } = router.query as { token: string };
+  const { token } = router.query;
 
   if (!token || typeof token !== "string") {
     return (
@@ -26,21 +26,6 @@ const Verify = () => {
     }
   );
 
-  if (verify.isLoading) {
-    return <div>Verifying...</div>;
-  }
-
-  if (verify.isError) {
-    return (
-      <main className="mx-auto max-w-screen-md space-y-2 p-4">
-        <FaRegTimesCircle size={52} className="mx-auto text-red-500" />
-        <h1 className="text-center text-xl font-bold">
-          {verify.error.message || "Error verifying email"}
-        </h1>
-      </main>
-    );
-  }
-
   if (verify.isSuccess) {
     setTimeout(() => {
       router.push("/signin");
@@ -49,16 +34,27 @@ const Verify = () => {
 
   return (
     <main className="mx-auto max-w-screen-md space-y-2 p-4">
-      <>
-        <FaRegCheckCircle
-          size={52}
-          className="mx-auto text-blue-500 dark:text-blue-300"
-        />
-        <div>
-          <h1 className="text-center text-xl font-bold">Email verified!</h1>
-          <p className="text-center">Redirecting...</p>
-        </div>
-      </>
+      {verify.isError ? (
+        <>
+          <FaRegTimesCircle size={52} className="mx-auto text-red-500" />
+          <h1 className="text-center text-xl font-bold">
+            {verify.error.message || "Error verifying email"}
+          </h1>
+        </>
+      ) : verify.isLoading ? (
+        <div className="text-center">Verifying...</div>
+      ) : (
+        <>
+          <FaRegCheckCircle
+            size={52}
+            className="mx-auto text-blue-500 dark:text-blue-300"
+          />
+          <div>
+            <h1 className="text-center text-xl font-bold">Email verified!</h1>
+            <p className="text-center">Redirecting...</p>
+          </div>
+        </>
+      )}
     </main>
   );
 };
