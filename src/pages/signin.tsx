@@ -105,7 +105,7 @@ const SignIn = () => {
             />
             <Link
               href="/forgot-password"
-              className="w-fit self-end text-sm text-slate-300"
+              className="w-fit self-end text-sm text-slate-500 dark:text-slate-300"
             >
               Forgot password?
             </Link>

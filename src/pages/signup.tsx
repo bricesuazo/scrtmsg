@@ -135,7 +135,7 @@ const SignIn = () => {
             />
           </div>
           <div className="flex flex-col gap-y-1">
-            <label htmlFor="password">
+            <label htmlFor="confirm-password">
               Confirm password
               <span className="pointer-events-none select-none text-red-500">
                 {" "}
@@ -144,9 +144,9 @@ const SignIn = () => {
             </label>
             <input
               type="password"
-              id="password"
-              name="password"
-              placeholder="Password"
+              id="confirm-password"
+              name="confirm-password"
+              placeholder="Confirm Password"
               required
               value={signUpCredentials.confirmPassword}
               onChange={(e) =>
