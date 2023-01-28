@@ -3,6 +3,7 @@ import useScrollPosition from "../hooks/useScrollPosition";
 import { api } from "../utils/api";
 import PublicMessage from "./PublicMessage";
 import { useState, type SetStateAction, type Dispatch } from "react";
+import LoadingMessage from "./LoadingMessage";
 
 const SendMessage = ({
   username,
@@ -27,7 +28,7 @@ const SendMessage = ({
           scrollPosition > 20
             ? "bg-white pb-4 dark:bg-[#121212]"
             : "bg-transparent"
-        } sticky top-16 space-y-4 py-0 transition-all duration-500 ease-in-out`}
+        } sticky top-16 z-50 space-y-4 py-0 transition-all duration-300 ease-in-out`}
       >
         <h1 className="text-center text-xl font-bold">
           Send message to @{username}
@@ -64,24 +65,35 @@ const SendMessage = ({
         </form>
       </div>
 
-      {messages.data?.length === 0 ? (
-        <p className="text-center text-sm dark:text-slate-500">
-          No replied messages
-        </p>
-      ) : (
-        <div className="space-y-4">
-          <p className="text-center dark:text-slate-300">Replied messages</p>
-          <div className="space-y-2">
-            {messages.data?.map((message) => (
-              <PublicMessage
-                message={message}
-                key={message.id}
-                username={username}
-              />
-            ))}
-          </div>
-        </div>
-      )}
+      <div className="space-y-4">
+        {messages.isLoading ? (
+          <>
+            <div className="mx-auto mt-10 h-4 w-32 animate-pulse bg-slate-300 dark:bg-slate-700" />
+            <div className="space-y-2">
+              {[...Array(10)].map((_, index) => (
+                <LoadingMessage key={index} isOwned={false} />
+              ))}
+            </div>
+          </>
+        ) : !messages.data ? (
+          <p className="text-center text-sm dark:text-slate-500">
+            No replied messages
+          </p>
+        ) : (
+          <>
+            <p className="text-center dark:text-slate-300">Replied messages</p>
+            <div className="space-y-2">
+              {messages.data?.map((message) => (
+                <PublicMessage
+                  message={message}
+                  key={message.id}
+                  username={username}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 };

@@ -15,7 +15,11 @@ const SendAnonymousMessage = ({
   const user = api.user.getUserByUsername.useQuery({ username });
 
   if (user.isLoading) {
-    return <Spinner />;
+    return (
+      <div className="h-screen">
+        <Spinner />
+      </div>
+    );
   }
 
   if (user.isError) {
