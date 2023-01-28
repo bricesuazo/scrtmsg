@@ -2,7 +2,7 @@ import { FaRegEnvelope } from "react-icons/fa";
 import { api } from "../utils/api";
 import Spinner from "./Spinner";
 
-const VerifyEmailBanner = ({ email }: { email: string }) => {
+const VerifyEmailBanner = () => {
   const resendEmailVerification =
     api.user.resendVerificationEmail.useMutation();
 
@@ -26,7 +26,7 @@ const VerifyEmailBanner = ({ email }: { email: string }) => {
       ) : (
         <button
           onClick={() => {
-            resendEmailVerification.mutate({ email });
+            resendEmailVerification.mutate();
           }}
           disabled={resendEmailVerification.isLoading}
         >

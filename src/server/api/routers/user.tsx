@@ -174,19 +174,14 @@ export const userRouter = createTRPCRouter({
 
       return true;
     }),
-  resendVerificationEmail: protectedProcedure
-    .input(
-      z.object({
-        email: z.string().email(),
-      })
-    )
-    .mutation(async ({ ctx, input }) => {
+  resendVerificationEmail: protectedProcedure.mutation(
+    async ({ ctx, input }) => {
       if (ctx.session.user.emailVerified) {
         throw new Error("Email already verified");
       }
       const user = await ctx.prisma.user.findUnique({
         where: {
-          email: input.email,
+          id: ctx.session.user.id,
         },
         select: {
           id: true,
@@ -236,7 +231,8 @@ export const userRouter = createTRPCRouter({
           console.error("error lods", error);
           throw new Error("Error sending email");
         });
-    }),
+    }
+  ),
 
   verifyEmail: publicProcedure
     .input(z.object({ token: z.string() }))
