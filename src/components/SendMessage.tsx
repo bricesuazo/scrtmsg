@@ -1,8 +1,8 @@
 import ReactTextareaAutosize from "react-textarea-autosize";
-import useScrollPosition from "../hooks/useScrollPosition";
 import { api } from "../utils/api";
 import PublicMessage from "./PublicMessage";
 import { useState, type SetStateAction, type Dispatch } from "react";
+import LoadingMessage from "./LoadingMessage";
 
 const SendMessage = ({
   username,
@@ -11,7 +11,6 @@ const SendMessage = ({
   username: string;
   setIsSent: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const scrollPosition = useScrollPosition();
   const [message, setMessage] = useState("");
 
   const sendMessageMutation = api.message.sendMessageToUsername.useMutation();
@@ -19,16 +18,9 @@ const SendMessage = ({
   const messages = api.message.getAllPublicMessages.useQuery({
     username,
   });
-
   return (
     <div className="mx-auto max-w-md space-y-8">
-      <div
-        className={`${
-          scrollPosition > 20
-            ? "bg-white pb-4 dark:bg-[#121212]"
-            : "bg-transparent"
-        } sticky top-16 space-y-4 py-0 transition-all duration-500 ease-in-out`}
-      >
+      <div className="sticky top-16 z-50 space-y-4 bg-white py-0 pb-4 transition-all duration-75 ease-in-out dark:bg-[#121212]">
         <h1 className="text-center text-xl font-bold">
           Send message to @{username}
         </h1>
@@ -64,24 +56,35 @@ const SendMessage = ({
         </form>
       </div>
 
-      {messages.data?.length === 0 ? (
-        <p className="text-center text-sm dark:text-slate-500">
-          No replied messages
-        </p>
-      ) : (
-        <div className="space-y-4">
-          <p className="text-center dark:text-slate-300">Replied messages</p>
-          <div className="space-y-2">
-            {messages.data?.map((message) => (
-              <PublicMessage
-                message={message}
-                key={message.id}
-                username={username}
-              />
-            ))}
-          </div>
-        </div>
-      )}
+      <div className="space-y-4">
+        {messages.isLoading ? (
+          <>
+            <div className="mx-auto mt-10 h-4 w-32 animate-pulse bg-slate-300 p-1 dark:bg-slate-700" />
+            <div className="space-y-2">
+              {[...Array(10)].map((_, index) => (
+                <LoadingMessage key={index} isOwned={false} />
+              ))}
+            </div>
+          </>
+        ) : !messages.data?.length ? (
+          <p className="text-center text-sm dark:text-slate-500">
+            No replied messages
+          </p>
+        ) : (
+          <>
+            <p className="text-center dark:text-slate-300">Replied messages</p>
+            <div className="space-y-2">
+              {messages.data?.map((message) => (
+                <PublicMessage
+                  message={message}
+                  key={message.id}
+                  username={username}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 };

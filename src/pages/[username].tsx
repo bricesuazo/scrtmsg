@@ -1,45 +1,25 @@
-import { useRouter } from "next/router";
-import { api } from "../utils/api";
 import { useState } from "react";
 import Head from "next/head";
 import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "../server/auth";
 import type { Session } from "next-auth";
-import SendMessage from "../components/SendMessage";
 import MyMessages from "../components/MyMessages";
 import VerifyEmailBanner from "../components/VerifyEmailBanner";
+import SendAnonymousMessage from "../components/SendAnonymousMessage";
 
 const UsernamePage = ({
   user: userSession,
+  username,
 }: {
+  username: string;
   user: Session["user"] | null;
 }) => {
-  console.log("🚀 ~ file: [username].tsx:17 ~ userSession", userSession);
-
   const [isSent, setIsSent] = useState(false);
 
-  const router = useRouter();
-  const { username } = router.query;
-
-  if (!username || typeof username !== "string") return;
-
-  const user = api.user.getUserByUsername.useQuery({ username });
-
-  if (user.isLoading) return <>Loading...</>;
-
-  if (!user.data)
-    return (
-      <main className="mx-auto max-w-screen-md p-4">
-        <h1 className="text-center text-xl font-bold">
-          Username doesn&apos;t exists.
-        </h1>
-      </main>
-    );
-
   const title =
-    (userSession?.username !== user.data.username
-      ? `Send message to @${user.data.username}`
-      : `@${user.data.username}`) + " | scrtmsg.me";
+    (userSession?.username !== username
+      ? `Send message to @${username}`
+      : `@${userSession?.username}`) + " | scrtmsg.me";
 
   return (
     <>
@@ -47,45 +27,23 @@ const UsernamePage = ({
         <title>{title}</title>
         <meta
           property="og:image"
-          content={`https://scrtmsg.me/api/og?username=${user.data.username}`}
+          content={`https://scrtmsg.me/api/og?username=${username}`}
         />
       </Head>
       <main className="mx-auto max-w-screen-md p-4">
-        {(() => {
-          if (userSession?.username === user.data.username) {
-            return (
-              <div className="space-y-2">
-                {!userSession?.emailVerified && (
-                  <VerifyEmailBanner email={user.data.email} />
-                )}
+        {userSession?.username === username ? (
+          <div className="space-y-2">
+            {!userSession.emailVerified && <VerifyEmailBanner />}
 
-                <MyMessages username={username} />
-              </div>
-            );
-          } else {
-            if (isSent) {
-              return (
-                <div className="flex flex-col items-center gap-y-4">
-                  <h1 className="text-center text-xl font-bold">
-                    Message sent to @{user.data.username}
-                  </h1>
-                  <p>
-                    <button
-                      onClick={() => {
-                        setIsSent(false);
-                      }}
-                      name="Send another message"
-                    >
-                      Send another message
-                    </button>
-                  </p>
-                </div>
-              );
-            } else {
-              return <SendMessage username={username} setIsSent={setIsSent} />;
-            }
-          }
-        })()}
+            <MyMessages username={username} />
+          </div>
+        ) : (
+          <SendAnonymousMessage
+            isSent={isSent}
+            setIsSent={setIsSent}
+            username={username}
+          />
+        )}
       </main>
     </>
   );
@@ -100,6 +58,7 @@ export const getServerSideProps: GetServerSideProps = async (
 
   return {
     props: {
+      username: context.query.username,
       user:
         {
           ...session?.user,

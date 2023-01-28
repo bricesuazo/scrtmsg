@@ -10,7 +10,6 @@ import "../styles/globals.css";
 import Head from "next/head";
 import Header from "../components/Header";
 import { ThemeProvider } from "next-themes";
-import useScrollPosition from "../hooks/useScrollPosition";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import { Analytics } from "@vercel/analytics/react";
@@ -20,7 +19,6 @@ const MyApp: AppType<{ session: Session | null }> = ({
   pageProps: { session, ...pageProps },
 }) => {
   const router = useRouter();
-  const scrollPosition = useScrollPosition();
 
   useEffect(() => {
     NProgress.configure({ showSpinner: false });
@@ -57,13 +55,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
       </Head>
       <ThemeProvider attribute="class">
         <SessionProvider session={session}>
-          <div
-            className={`${
-              scrollPosition > 20
-                ? "bg-white dark:bg-[#121212]"
-                : "bg-transparent"
-            } sticky top-0 z-10 transition-colors`}
-          >
+          <div className="sticky top-0 z-10 bg-white transition-colors dark:bg-[#121212]">
             <Header />
           </div>
           <Component {...pageProps} />

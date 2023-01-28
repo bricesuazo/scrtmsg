@@ -3,6 +3,7 @@ import { api } from "../utils/api";
 import Spinner from "./Spinner";
 import MessageComponent from "./Message";
 import { useState } from "react";
+import LoadingMessage from "./LoadingMessage";
 
 const MyMessages = ({ username }: { username: string }) => {
   const messages = api.message.getAllMessagesWithReplies.useQuery();
@@ -15,7 +16,6 @@ const MyMessages = ({ username }: { username: string }) => {
       setIsCopied(false);
     }, 3000);
   };
-
   return (
     <div className="flex flex-col gap-y-2">
       <div className="flex items-center justify-between">
@@ -48,7 +48,7 @@ const MyMessages = ({ username }: { username: string }) => {
           name="Refresh"
         >
           {messages.isRefetching ? (
-            <Spinner className="m-1 h-4 w-4" />
+            <Spinner className="m-1 h-4 w-3" />
           ) : (
             <>
               <div className="p-1 sm:hidden">
@@ -59,8 +59,13 @@ const MyMessages = ({ username }: { username: string }) => {
           )}
         </button>
       </div>
-
-      {messages.data?.length === 0 ? (
+      {messages.isLoading ? (
+        <>
+          {[...Array(10)].map((_, index) => (
+            <LoadingMessage key={index} isOwned={true} />
+          ))}
+        </>
+      ) : messages.data?.length === 0 ? (
         <p className="text-center text-sm text-slate-500">No message</p>
       ) : (
         messages.data?.map((message) => (
