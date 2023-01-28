@@ -1,4 +1,3 @@
-import { useRouter } from "next/router";
 import { useState } from "react";
 import Head from "next/head";
 import type { GetServerSideProps, GetServerSidePropsContext } from "next";
@@ -10,15 +9,12 @@ import SendAnonymousMessage from "../components/SendAnonymousMessage";
 
 const UsernamePage = ({
   user: userSession,
+  username,
 }: {
+  username: string;
   user: Session["user"] | null;
 }) => {
   const [isSent, setIsSent] = useState(false);
-  const router = useRouter();
-
-  const { username } = router.query;
-
-  if (!username || typeof username !== "string") return;
 
   const title =
     (userSession?.username !== username
@@ -62,6 +58,7 @@ export const getServerSideProps: GetServerSideProps = async (
 
   return {
     props: {
+      username: context.query.username,
       user:
         {
           ...session?.user,
