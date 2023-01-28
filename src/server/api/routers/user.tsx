@@ -174,65 +174,63 @@ export const userRouter = createTRPCRouter({
 
       return true;
     }),
-  resendVerificationEmail: protectedProcedure.mutation(
-    async ({ ctx, input }) => {
-      if (ctx.session.user.emailVerified) {
-        throw new Error("Email already verified");
-      }
-      const user = await ctx.prisma.user.findUnique({
-        where: {
-          id: ctx.session.user.id,
-        },
-        select: {
-          id: true,
-          email: true,
-          emailVerified: true,
-          username: true,
-        },
-      });
+  resendVerificationEmail: protectedProcedure.mutation(async ({ ctx }) => {
+    if (ctx.session.user.emailVerified) {
+      throw new Error("Email already verified");
+    }
+    const user = await ctx.prisma.user.findUnique({
+      where: {
+        id: ctx.session.user.id,
+      },
+      select: {
+        id: true,
+        email: true,
+        emailVerified: true,
+        username: true,
+      },
+    });
 
-      if (!user) {
-        throw new Error("User not found");
-      }
+    if (!user) {
+      throw new Error("User not found");
+    }
 
-      if (user.emailVerified) {
-        throw new Error("Email already verified");
-      }
+    if (user.emailVerified) {
+      throw new Error("Email already verified");
+    }
 
-      const token = await ctx.prisma.token.create({
-        data: {
-          identifier: "EMAIL_VERIFICATION",
-          token: generateToken(32),
-          expires: new Date(Date.now() + 1000 * 60 * 60 * 3), // 3 hours
-          user: {
-            connect: {
-              id: user.id,
-            },
+    const token = await ctx.prisma.token.create({
+      data: {
+        identifier: "EMAIL_VERIFICATION",
+        token: generateToken(32),
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 3), // 3 hours
+        user: {
+          connect: {
+            id: user.id,
           },
         },
+      },
+    });
+
+    sgMail.setApiKey(env.SENDGRID_API_KEY);
+
+    sgMail
+      .send({
+        to: ctx.session.user.email, // Change to your recipient
+        from: "scrtmsg@bricesuazo.com", // Change to your verified sender
+        subject: "Verify your email",
+        html: render(
+          <EmailVerification username={user.username} token={token.token} />
+        ),
+      })
+      .then(() => {
+        console.log("Email sent");
+        return true;
+      })
+      .catch((error) => {
+        console.error("error lods", error);
+        throw new Error("Error sending email");
       });
-
-      sgMail.setApiKey(env.SENDGRID_API_KEY);
-
-      sgMail
-        .send({
-          to: input.email, // Change to your recipient
-          from: "scrtmsg@bricesuazo.com", // Change to your verified sender
-          subject: "Verify your email",
-          html: render(
-            <EmailVerification username={user.username} token={token.token} />
-          ),
-        })
-        .then(() => {
-          console.log("Email sent");
-          return true;
-        })
-        .catch((error) => {
-          console.error("error lods", error);
-          throw new Error("Error sending email");
-        });
-    }
-  ),
+  }),
 
   verifyEmail: publicProcedure
     .input(z.object({ token: z.string() }))
