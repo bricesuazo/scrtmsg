@@ -37,7 +37,7 @@ const UsernamePage = ({
       <main className="mx-auto max-w-screen-md p-4">
         {userSession?.username === username ? (
           <div className="space-y-2">
-            {!userSession?.emailVerified && <VerifyEmailBanner />}
+            {!userSession.emailVerified && <VerifyEmailBanner />}
 
             <MyMessages username={username} />
           </div>
