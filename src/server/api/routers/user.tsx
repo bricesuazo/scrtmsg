@@ -312,6 +312,9 @@ export const userRouter = createTRPCRouter({
           id: true,
         },
       });
+
+      if (!user) return null;
+
       return user;
     }),
 

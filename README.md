@@ -31,4 +31,4 @@ npm install
 npm run dev
 ```
 
-Create a `.env.local` file similar to [`.env.example`](https://github.com/bricesuazo/scrtmsg/blob/main/.env.example).
+Create a `.env` file similar to [`.env.example`](https://github.com/bricesuazo/scrtmsg/blob/main/.env.example).

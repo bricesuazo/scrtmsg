@@ -14,11 +14,9 @@ const UsernamePage = ({
 }: {
   user: Session["user"] | null;
 }) => {
-  console.log("🚀 ~ file: [username].tsx:17 ~ userSession", userSession);
-
   const [isSent, setIsSent] = useState(false);
-
   const router = useRouter();
+
   const { username } = router.query;
 
   if (!username || typeof username !== "string") return;
@@ -27,7 +25,7 @@ const UsernamePage = ({
 
   if (user.isLoading) return <>Loading...</>;
 
-  if (!user.data)
+  if (!user.data) {
     return (
       <main className="mx-auto max-w-screen-md p-4">
         <h1 className="text-center text-xl font-bold">
@@ -35,11 +33,12 @@ const UsernamePage = ({
         </h1>
       </main>
     );
+  }
 
   const title =
-    (userSession?.username !== user.data.username
-      ? `Send message to @${user.data.username}`
-      : `@${user.data.username}`) + " | scrtmsg.me";
+    (userSession?.username !== user.data?.username
+      ? `Send message to @${user.data?.username}`
+      : `@${user.data?.username}`) + " | scrtmsg.me";
 
   return (
     <>
