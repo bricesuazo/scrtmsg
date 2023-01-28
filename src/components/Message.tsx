@@ -24,7 +24,7 @@ const MessageComponent = ({
   return (
     <div
       key={message.id}
-      className="space-y-4 rounded border p-4 dark:border-slate-800"
+      className="space-y-2 rounded border p-4 dark:border-slate-800"
     >
       <div className="flex items-center justify-between">
         <div>

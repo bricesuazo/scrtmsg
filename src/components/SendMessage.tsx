@@ -20,7 +20,6 @@ const SendMessage = ({
   const messages = api.message.getAllPublicMessages.useQuery({
     username,
   });
-
   return (
     <div className="mx-auto max-w-md space-y-8">
       <div
@@ -68,7 +67,7 @@ const SendMessage = ({
       <div className="space-y-4">
         {messages.isLoading ? (
           <>
-            <div className="mx-auto mt-10 h-4 w-32 animate-pulse bg-slate-300 dark:bg-slate-700" />
+            <div className="mx-auto mt-10 h-4 w-32 animate-pulse bg-slate-300 p-1 dark:bg-slate-700" />
             <div className="space-y-2">
               {[...Array(10)].map((_, index) => (
                 <LoadingMessage key={index} isOwned={false} />
