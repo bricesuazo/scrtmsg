@@ -1,5 +1,4 @@
 import ReactTextareaAutosize from "react-textarea-autosize";
-import useScrollPosition from "../hooks/useScrollPosition";
 import { api } from "../utils/api";
 import PublicMessage from "./PublicMessage";
 import { useState, type SetStateAction, type Dispatch } from "react";
@@ -12,7 +11,6 @@ const SendMessage = ({
   username: string;
   setIsSent: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const scrollPosition = useScrollPosition();
   const [message, setMessage] = useState("");
 
   const sendMessageMutation = api.message.sendMessageToUsername.useMutation();
@@ -22,13 +20,7 @@ const SendMessage = ({
   });
   return (
     <div className="mx-auto max-w-md space-y-8">
-      <div
-        className={`${
-          scrollPosition > 20
-            ? "bg-white pb-4 dark:bg-[#121212]"
-            : "bg-transparent"
-        } sticky top-16 z-50 space-y-4 py-0 transition-all duration-300 ease-in-out`}
-      >
+      <div className="sticky top-16 z-50 space-y-4 bg-white py-0 pb-4 transition-all duration-75 ease-in-out dark:bg-[#121212]">
         <h1 className="text-center text-xl font-bold">
           Send message to @{username}
         </h1>
@@ -74,7 +66,7 @@ const SendMessage = ({
               ))}
             </div>
           </>
-        ) : !messages.data ? (
+        ) : !messages.data?.length ? (
           <p className="text-center text-sm dark:text-slate-500">
             No replied messages
           </p>

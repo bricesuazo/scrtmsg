@@ -16,8 +16,8 @@ const SendAnonymousMessage = ({
 
   if (user.isLoading) {
     return (
-      <div className="h-screen">
-        <Spinner />
+      <div className="flex h-screen justify-center">
+        <Spinner className="h-8 w-8" />
       </div>
     );
   }
@@ -27,7 +27,7 @@ const SendAnonymousMessage = ({
   }
 
   if (!user.data) {
-    return <div>User not found</div>;
+    return <h1 className="text-center text-xl text-red-500">User not found</h1>;
   }
 
   if (isSent) {

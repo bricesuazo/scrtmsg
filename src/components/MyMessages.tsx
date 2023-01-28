@@ -48,7 +48,7 @@ const MyMessages = ({ username }: { username: string }) => {
           name="Refresh"
         >
           {messages.isRefetching ? (
-            <Spinner className="m-1 h-4 w-4" />
+            <Spinner className="m-1 h-4 w-3" />
           ) : (
             <>
               <div className="p-1 sm:hidden">
