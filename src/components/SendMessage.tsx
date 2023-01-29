@@ -29,7 +29,7 @@ const SendMessage = ({
   });
   return (
     <div className="mx-auto max-w-md space-y-8">
-      <div className="sticky top-16 z-50 space-y-4 bg-white py-0 pb-4 transition-all duration-75 ease-in-out dark:bg-[#121212]">
+      <div className="sticky top-16 space-y-4 bg-white py-0 pb-4 transition-all duration-75 ease-in-out dark:bg-[#121212]">
         <h1 className="text-center text-xl font-bold">
           Send message to @{username}
         </h1>
@@ -81,8 +81,8 @@ const SendMessage = ({
               }
               className={`${
                 input.isCodeNameEnable
-                  ? "bg-blue-600 hover:bg-blue-600"
-                  : "bg-gray-200 hover:bg-gray-200"
+                  ? "bg-slate-600 hover:bg-slate-500 dark:bg-slate-600"
+                  : "bg-gray-200 hover:bg-gray-300"
               } relative inline-flex h-5 w-9 items-center rounded-full`}
               id="codename-checkbox"
             >
