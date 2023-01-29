@@ -340,23 +340,36 @@ export const userRouter = createTRPCRouter({
       if (notAllowedUsername.includes(input.username.toLowerCase()))
         throw new Error("Username not allowed");
 
-      const emailInUse = await ctx.prisma.user.findUnique({
+      const isUsernameEmailExists = await ctx.prisma.user.findMany({
         where: {
-          email: input.email,
+          OR: [
+            {
+              username: input.username,
+              email: input.email,
+            },
+          ],
         },
       });
-      if (emailInUse) {
-        throw new Error("Email already in use");
+
+      if (isUsernameEmailExists.length > 0) {
+        throw new Error("Username or email already in use");
       }
 
-      // check if username is already in use
-      const usernameInUse = await ctx.prisma.user.findUnique({
+      const isTempUserExists = await ctx.prisma.temporaryUser.findMany({
         where: {
-          username: input.username,
+          OR: [
+            {
+              username: input.username,
+              email: input.email,
+            },
+          ],
         },
       });
-      if (usernameInUse) {
-        throw new Error("Username already in use");
+
+      if (isTempUserExists.length > 0) {
+        throw new Error(
+          "Email or username already in use. Please verify your email."
+        );
       }
 
       const hashedPassword = await bcrypt.hash(input.password, 10);
@@ -387,7 +400,7 @@ export const userRouter = createTRPCRouter({
 
       sgMail.setApiKey(env.SENDGRID_API_KEY);
 
-      sgMail
+      await sgMail
         .send({
           to: input.email, // Change to your recipient
           from: "scrtmsg@bricesuazo.com", // Change to your verified sender
