@@ -7,7 +7,7 @@ const Verify = () => {
 
   const { token } = router.query;
 
-  if (!token || typeof token !== "string") {
+  if (typeof token !== "string") {
     return (
       <main className="mx-auto max-w-screen-md space-y-2 p-4">
         <FaRegTimesCircle size={52} className="mx-auto text-red-500" />

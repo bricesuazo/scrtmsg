@@ -5,6 +5,7 @@ import type { GetServerSideProps, GetServerSidePropsContext } from "next";
 import { getServerAuthSession } from "../server/auth";
 import Head from "next/head";
 import Spinner from "../components/Spinner";
+import { FaRegCheckCircle } from "react-icons/fa";
 
 const SignIn = () => {
   const [signUpCredentials, setSignUpCredentials] = useState<{
@@ -28,8 +29,12 @@ const SignIn = () => {
         <meta property="og:image" content="https://scrtmsg.me/api/og" />
       </Head>
       <main className="mx-auto max-w-screen-md p-4">
-        {signUpCredentials.isSignedUp ? (
-          <div className="flex flex-col gap-y-4">
+        {signUpCredentials.isSignedUp || true ? (
+          <div className="mx-auto flex max-w-md flex-col gap-y-4">
+            <FaRegCheckCircle
+              size={52}
+              className="mx-auto text-blue-500 dark:text-blue-300"
+            />
             <p className="text-center">
               You have successfully signed up. Please check your email to verify
               your account.
@@ -192,7 +197,7 @@ const SignIn = () => {
 
             {signUpMutate.error && (
               <p className="text-center text-red-500">
-                {signUpMutate.error.message}
+                {signUpMutate.error?.message}
               </p>
             )}
             <button
