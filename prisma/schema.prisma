@@ -54,9 +54,18 @@ model User {
     image         String?
     username      String    @unique
     password      String
+    createdAt     DateTime  @default(now())
     messages      Message[]
     replies       Reply[]
     Token         Token[]
+}
+
+model TemporaryUser {
+    id        String   @id @default(cuid())
+    username  String   @unique
+    password  String
+    email     String   @unique
+    createdAt DateTime @default(now())
 }
 
 enum Identifier {

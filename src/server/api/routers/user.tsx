@@ -259,22 +259,38 @@ export const userRouter = createTRPCRouter({
         throw new Error("Token not valid");
       }
 
-      await ctx.prisma.user.update({
+      const tempUser = await ctx.prisma.temporaryUser.findUnique({
         where: {
           id: token.userId,
         },
-        data: {
-          emailVerified: new Date(),
-        },
       });
 
-      await ctx.prisma.token.deleteMany({
-        where: {
-          userId: token.userId,
-        },
-      });
+      if (tempUser) {
+        await ctx.prisma.user.create({
+          data: {
+            id: tempUser.id,
+            username: tempUser.username,
+            email: tempUser.email,
+            password: tempUser.password,
+            emailVerified: new Date(),
+            createdAt: tempUser.createdAt,
+          },
+        });
 
-      return true;
+        await ctx.prisma.temporaryUser.delete({
+          where: {
+            id: tempUser.id,
+          },
+        });
+
+        await ctx.prisma.token.deleteMany({
+          where: {
+            userId: token.userId,
+          },
+        });
+
+        return true;
+      }
     }),
   isUsernameExists: publicProcedure
     .input(z.object({ username: z.string().trim().min(3).max(20) }))
@@ -345,7 +361,7 @@ export const userRouter = createTRPCRouter({
 
       const hashedPassword = await bcrypt.hash(input.password, 10);
 
-      const user = await ctx.prisma.user.create({
+      const user = await ctx.prisma.temporaryUser.create({
         data: {
           username: input.username,
           password: hashedPassword,

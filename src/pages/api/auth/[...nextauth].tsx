@@ -1,7 +1,12 @@
-import { prisma } from "./../../../server/db";
+import { prisma } from "../../../server/db";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 import NextAuth, { type NextAuthOptions } from "next-auth";
+import sgMail from "@sendgrid/mail";
+import { generateToken } from "../../../utils/generateToken";
+import { env } from "../../../env/server.mjs";
+import EmailVerification from "../../../../emails/EmailVerification";
+import { render } from "@react-email/render";
 
 export const authOptions: NextAuthOptions = {
   callbacks: {
@@ -56,6 +61,57 @@ export const authOptions: NextAuthOptions = {
             username: string;
             password: string;
           };
+
+        const tempUser = await prisma.temporaryUser.findUnique({
+          where: { username: usernameCredential },
+          select: { id: true, email: true, username: true },
+        });
+
+        if (tempUser) {
+          await prisma.token.deleteMany({
+            where: {
+              userId: tempUser.id,
+              identifier: "EMAIL_VERIFICATION",
+            },
+          });
+
+          const token = await prisma.token.create({
+            data: {
+              identifier: "EMAIL_VERIFICATION",
+              userId: tempUser.id,
+              expires: new Date(Date.now() + 1000 * 60 * 60 * 3), // 3 hours
+              token: generateToken(32),
+            },
+            select: {
+              token: true,
+            },
+          });
+
+          sgMail.setApiKey(env.SENDGRID_API_KEY);
+
+          sgMail
+            .send({
+              to: tempUser.email, // Change to your recipient
+              from: "scrtmsg@bricesuazo.com", // Change to your verified sender
+              subject: "Verify your email",
+              html: render(
+                <EmailVerification
+                  username={tempUser.username}
+                  token={token.token}
+                />
+              ),
+            })
+            .then(() => {
+              console.log("Email sent");
+              return true;
+            })
+            .catch((error) => {
+              console.error("error lods", error);
+              throw new Error("Error sending email");
+            });
+
+          throw new Error("Please verify your email address");
+        }
 
         const user = await prisma.user.findUnique({
           where: { username: usernameCredential },
