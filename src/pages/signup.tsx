@@ -29,7 +29,7 @@ const SignIn = () => {
         <meta property="og:image" content="https://scrtmsg.me/api/og" />
       </Head>
       <main className="mx-auto max-w-screen-md p-4">
-        {signUpCredentials.isSignedUp || true ? (
+        {signUpCredentials.isSignedUp ? (
           <div className="mx-auto flex max-w-md flex-col gap-y-4">
             <FaRegCheckCircle
               size={52}
