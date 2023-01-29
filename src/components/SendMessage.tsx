@@ -3,6 +3,7 @@ import { api } from "../utils/api";
 import PublicMessage from "./PublicMessage";
 import { useState, type SetStateAction, type Dispatch } from "react";
 import LoadingMessage from "./LoadingMessage";
+import { Switch } from "@headlessui/react";
 
 const SendMessage = ({
   username,
@@ -11,7 +12,15 @@ const SendMessage = ({
   username: string;
   setIsSent: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const [message, setMessage] = useState("");
+  const [input, setInput] = useState<{
+    message: string;
+    codeName: string | null;
+    isCodeNameEnable: boolean;
+  }>({
+    message: "",
+    codeName: null,
+    isCodeNameEnable: false,
+  });
 
   const sendMessageMutation = api.message.sendMessageToUsername.useMutation();
 
@@ -29,17 +38,18 @@ const SendMessage = ({
             e.preventDefault();
             await sendMessageMutation.mutateAsync({
               username,
-              message,
+              message: input.message,
+              codeName: input.codeName,
             });
-            setMessage("");
+            setInput({ message: "", codeName: null, isCodeNameEnable: false });
             setIsSent(true);
           }}
           className="flex flex-col gap-y-2"
         >
           <ReactTextareaAutosize
             placeholder={`Send anonymous message to @${username}`}
-            onChange={(e) => setMessage(e.target.value)}
-            value={message}
+            onChange={(e) => setInput({ ...input, message: e.target.value })}
+            value={input.message}
             disabled={sendMessageMutation.isLoading}
             required
             minRows={2}
@@ -53,6 +63,70 @@ const SendMessage = ({
           >
             {sendMessageMutation.isLoading ? "Loading..." : "Send"}
           </button>
+
+          {sendMessageMutation.isError && (
+            <p className="text-sm text-red-500">
+              {sendMessageMutation.error.message}
+            </p>
+          )}
+
+          <p className="mt-2 flex items-center justify-center gap-x-2">
+            <Switch
+              checked={input.isCodeNameEnable}
+              onChange={(checked: boolean) =>
+                setInput({
+                  ...input,
+                  isCodeNameEnable: checked,
+                })
+              }
+              className={`${
+                input.isCodeNameEnable
+                  ? "bg-blue-600 hover:bg-blue-600"
+                  : "bg-gray-200 hover:bg-gray-200"
+              } relative inline-flex h-5 w-9 items-center rounded-full`}
+              id="codename-checkbox"
+            >
+              <span className="sr-only">Add code name</span>
+              <span
+                className={`${
+                  input.isCodeNameEnable ? "translate-x-3" : "-translate-x-1"
+                } inline-block h-3 w-3 transform rounded-full bg-white transition`}
+              />
+            </Switch>
+            <label
+              htmlFor="codename-checkbox"
+              className={`text-sm ${
+                input.isCodeNameEnable
+                  ? "text-slate-900 dark:text-slate-50"
+                  : "text-slate-500 dark:text-slate-400"
+              }`}
+            >
+              Add code name
+            </label>
+          </p>
+
+          {input.isCodeNameEnable && (
+            <div className="flex flex-col">
+              <label htmlFor="codename">
+                Add a code name
+                <span className="pointer-events-none select-none text-red-500">
+                  {" "}
+                  *
+                </span>
+              </label>
+              <input
+                type="text"
+                id="codename"
+                placeholder="Code name"
+                onChange={(e) =>
+                  setInput({ ...input, codeName: e.target.value })
+                }
+                value={input.codeName || ""}
+                disabled={sendMessageMutation.isLoading}
+                required={input.isCodeNameEnable}
+              />
+            </div>
+          )}
         </form>
       </div>
 

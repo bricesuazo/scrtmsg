@@ -25,10 +25,11 @@ model Message {
     message   String
     createdAt DateTime @default(now())
 
-    userId  String
-    user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-    status  Status  @default(PRIVATE)
-    replies Reply[]
+    userId   String
+    user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+    status   Status  @default(PRIVATE)
+    codeName String?
+    replies  Reply[]
 
     @@index([userId])
 }
