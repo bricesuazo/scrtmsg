@@ -63,7 +63,7 @@ const Header = () => {
             leaveFrom="transform opacity-100 scale-100"
             leaveTo="transform opacity-0 scale-95"
           >
-            <Menu.Items className="absolute right-0 z-10 mt-2 flex origin-top-right flex-col gap-y-1 rounded bg-slate-50 p-2 dark:bg-slate-900">
+            <Menu.Items className="absolute right-0 mt-2 flex origin-top-right flex-col gap-y-1 rounded bg-slate-50 p-2 dark:bg-slate-900">
               {[
                 {
                   title: "system",
