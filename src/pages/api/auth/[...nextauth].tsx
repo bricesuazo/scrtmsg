@@ -67,7 +67,10 @@ export const authOptions: NextAuthOptions = {
           select: { id: true, email: true, username: true },
         });
 
-        if (tempUser) {
+        if (
+          tempUser &&
+          (await bcrypt.compare(passwordCredential, tempUser.id))
+        ) {
           await prisma.token.deleteMany({
             where: {
               userId: tempUser.id,
@@ -89,7 +92,7 @@ export const authOptions: NextAuthOptions = {
 
           sgMail.setApiKey(env.SENDGRID_API_KEY);
 
-          sgMail
+          await sgMail
             .send({
               to: tempUser.email, // Change to your recipient
               from: "scrtmsg@bricesuazo.com", // Change to your verified sender
