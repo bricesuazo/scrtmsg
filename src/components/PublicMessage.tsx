@@ -14,7 +14,9 @@ const PublicMessage = ({
     <div className="rounded border p-4 dark:border-slate-800">
       <p>{message.message}</p>
       <div className="flex items-center gap-x-1">
-        <p className="text-xs text-slate-500">Anonymous</p>
+        <p className="text-xs text-slate-500">
+          {message.codeName || "Anonymous"}
+        </p>
         <p className="pointer-events-none select-none text-slate-500 dark:text-slate-600">
           ·
         </p>

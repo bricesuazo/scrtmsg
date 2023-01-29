@@ -33,12 +33,14 @@ export const messageRouter = createTRPCRouter({
       z.object({
         username: z.string().trim().min(3).max(20),
         message: z.string().trim().min(1),
+        codeName: z.string().trim().min(1).nullable(),
       })
     )
     .mutation(({ ctx, input }) => {
       return ctx.prisma.message.create({
         data: {
           message: input.message,
+          codeName: input.codeName,
           user: {
             connect: {
               username: input.username,

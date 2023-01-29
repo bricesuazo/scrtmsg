@@ -30,7 +30,9 @@ const MessageComponent = ({
         <div>
           <p>{message.message}</p>
           <div className="flex items-center gap-x-1">
-            <p className="text-xs text-slate-400">Anonymous</p>
+            <p className="text-xs text-slate-400">
+              {message.codeName || "Anonymous"}
+            </p>
             <p className="pointer-events-none select-none text-slate-400 dark:text-slate-600">
               ·
             </p>
