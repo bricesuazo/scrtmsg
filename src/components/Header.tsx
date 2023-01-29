@@ -9,10 +9,10 @@ import Spinner from "./Spinner";
 
 const Header = () => {
   const session = useSession();
-  const { theme, setTheme } = useTheme();
+  const { theme: themeMode, setTheme } = useTheme();
 
   const Icon = () => {
-    switch (theme) {
+    switch (themeMode) {
       case "light":
         return <FaSun className="h-3 w-3" />;
       case "dark":
@@ -76,8 +76,10 @@ const Header = () => {
                   {({ active }) => (
                     <button
                       className={`${
-                        active && "bg-blue-500"
-                      } flex w-24 items-center gap-x-2 rounded bg-transparent text-slate-500 dark:bg-transparent dark:text-slate-300`}
+                        active || theme.title === themeMode
+                          ? "bg-slate-200 dark:bg-slate-800"
+                          : "dark:bg-transparent"
+                      } flex w-24 items-center gap-x-2 rounded bg-transparent text-slate-500 dark:text-slate-300`}
                       onClick={() => setTheme(theme.title)}
                       name={theme.title + " theme"}
                     >

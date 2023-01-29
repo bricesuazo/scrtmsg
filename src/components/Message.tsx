@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import type { Reply, Message } from "@prisma/client";
-import { FaTelegramPlane, FaTrashAlt } from "react-icons/fa";
+import { FaEllipsisV, FaRegTrashAlt, FaTelegramPlane } from "react-icons/fa";
 import Moment from "react-moment";
 import { api } from "../utils/api";
 import Spinner from "./Spinner";
 import ReplyComponent from "./Reply";
+import { Menu, Transition } from "@headlessui/react";
 
 const MessageComponent = ({
   message,
@@ -44,23 +45,63 @@ const MessageComponent = ({
             </Moment>
           </div>
         </div>
-        <button
-          className="p-2"
-          onClick={async () => {
-            await deleteMutation.mutateAsync({ id: message.id });
-            refetch();
-          }}
-          disabled={deleteMutation.isLoading}
-          name="Delete message"
-        >
-          {deleteMutation.isLoading ? (
-            <Spinner className="h-5 w-5" />
-          ) : (
-            <FaTrashAlt className="text-red-500 dark:text-red-800" />
-          )}
-        </button>
+
+        <Menu as="div" className="relative inline-block text-left">
+          <Menu.Button className="bg-slate-100 p-2 text-slate-400 hover:bg-slate-200">
+            <FaEllipsisV />
+          </Menu.Button>
+
+          <Transition
+            as={Fragment}
+            enter="transition ease-out duration-100"
+            enterFrom="transform opacity-0 scale-95"
+            enterTo="transform opacity-100 scale-100"
+            leave="transition ease-in duration-75"
+            leaveFrom="transform opacity-100 scale-100"
+            leaveTo="transform opacity-0 scale-95"
+          >
+            <Menu.Items className="absolute right-0 z-10 mt-2 w-40 origin-top-right rounded bg-slate-50 p-2 shadow-sm dark:bg-slate-900">
+              <Menu.Item>
+                {({ active, close }) => (
+                  <button
+                    className={`flex w-full items-center gap-x-2 p-2 text-left text-sm ${
+                      active && "bg-slate-100"
+                    }`}
+                    onClick={async () => {
+                      await deleteMutation.mutateAsync({ id: message.id });
+                      refetch();
+                      close();
+                    }}
+                    disabled={deleteMutation.isLoading}
+                    name="Delete message"
+                  >
+                    {deleteMutation.isLoading ? (
+                      <Spinner className="h-5 w-5" />
+                    ) : (
+                      <>
+                        <FaRegTrashAlt className="h-4 w-4 text-red-500 dark:text-red-800" />{" "}
+                        <span className="text-red-500 dark:text-red-800">
+                          Delete Message
+                        </span>
+                      </>
+                    )}
+                  </button>
+                )}
+              </Menu.Item>
+              {/* <Menu.Item disabled>
+                <button
+                  className="flex w-full items-center gap-x-2 p-2 text-left text-sm"
+                  disabled
+                >
+                  <FaEdit className="h-4 w-4" />{" "}
+                  <span>Edit Message (coming soon!)</span>
+                </button>
+              </Menu.Item> */}
+            </Menu.Items>
+          </Transition>
+        </Menu>
       </div>
-      <div className="">
+      <div>
         {message.replies.length === 0 ? (
           <p className="text-center text-xs text-slate-500">No reply</p>
         ) : (

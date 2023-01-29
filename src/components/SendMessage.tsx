@@ -29,7 +29,8 @@ const SendMessage = ({
   });
   return (
     <div className="mx-auto max-w-md space-y-8">
-      <div className="sticky top-16 space-y-4 bg-white py-0 pb-4 transition-all duration-75 ease-in-out dark:bg-[#121212]">
+      <div className="sticky top-16 z-10 space-y-4 bg-white py-0 pb-4 transition-all duration-75 ease-in-out dark:bg-[#121212]">
+
         <h1 className="text-center text-xl font-bold">
           Send message to @{username}
         </h1>

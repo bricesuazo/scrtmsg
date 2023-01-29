@@ -55,7 +55,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
       </Head>
       <ThemeProvider attribute="class">
         <SessionProvider session={session}>
-          <div className="sticky top-0 z-10 bg-white transition-colors dark:bg-[#121212]">
+          <div className="sticky top-0 z-20 bg-white transition-colors dark:bg-[#121212]">
             <Header />
           </div>
           <Component {...pageProps} />

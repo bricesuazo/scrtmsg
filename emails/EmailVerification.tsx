@@ -35,16 +35,14 @@ export default function EmailVerification({
             padding: "20px 0 48px",
           }}
         >
-          <Link href="https://scrtmsg.me/">
-            <Img
-              src="https://raw.githubusercontent.com/bricesuazo/scrtmsg/main/public/images/scrtmsg-logo.png"
-              width="128"
-              alt="Koala"
-              style={{
-                margin: "0 auto",
-              }}
-            />
-          </Link>
+          <Img
+            src="https://raw.githubusercontent.com/bricesuazo/scrtmsg/main/public/images/scrtmsg-logo.png"
+            width="128"
+            alt="Koala"
+            style={{
+              margin: "0 auto",
+            }}
+          />
 
           <Text
             style={{
