@@ -104,12 +104,13 @@ const MessageComponent = ({
                         })
                       }
                       className="dark:bg-slate-900"
+                      disabled={deleteMutation.isLoading}
                     >
                       Cancel
                     </button>
                     <button
                       type="button"
-                      className="rounded bg-red-500 p-2 text-white hover:bg-red-600 dark:bg-red-600 hover:dark:bg-red-500"
+                      className="flex w-16 items-center justify-center rounded bg-red-500 p-2 text-white hover:bg-red-600 dark:bg-red-600 hover:dark:bg-red-500"
                       onClick={async () => {
                         await deleteMutation.mutateAsync({ id: message.id });
                         refetch();
@@ -120,7 +121,11 @@ const MessageComponent = ({
                       }}
                       disabled={deleteMutation.isLoading}
                     >
-                      Delete
+                      {deleteMutation.isLoading ? (
+                        <Spinner className="m-1 h-4 w-4" />
+                      ) : (
+                        "Delete"
+                      )}
                     </button>
                   </div>
                 </Dialog.Panel>
