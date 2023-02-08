@@ -102,7 +102,7 @@ export default function EmailVerification({
           >
             Best,
             <br />
-            Brice Suazo - Creator of scrtmsg.me
+            Brice Suazo - Creator of scrtmsg
           </Text>
         </Container>
       </Section>

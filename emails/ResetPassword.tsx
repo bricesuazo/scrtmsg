@@ -105,7 +105,7 @@ export default function ResetPassword({
           >
             Best,
             <br />
-            Brice Suazo - Creator of scrtmsg.me
+            Brice Suazo - Creator of scrtmsg
           </Text>
         </Container>
       </Section>
