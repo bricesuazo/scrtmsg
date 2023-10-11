@@ -1,5 +1,0 @@
-{
-  "[prisma]": {
-    "editor.defaultFormatter": "Prisma.prisma"
-  }
-}
