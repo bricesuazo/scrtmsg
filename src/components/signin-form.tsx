@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { signIn } from "next-auth/react";
 import { Loader2 } from "lucide-react";
+import { signIn } from "next-auth/react";
 
 export default function SigninForm() {
   const [loading, setLoading] = useState(false);
@@ -21,17 +21,18 @@ export default function SigninForm() {
 
   return (
     <main className="mx-auto max-w-screen-md p-4">
-      <Button
-        disabled={loading}
-        onClick={async () => {
+      <form
+        onSubmit={async () => {
           setLoading(true);
-          await signIn("google");
+          await signIn("google", { callbackUrl: "/dashboard" });
           setLoading(false);
         }}
       >
-        {loading && <Loader2 className="animate-spin mr-1 h-4 w-4" />}
-        Sign in with Google
-      </Button>
+        <Button type="submit" disabled={loading}>
+          {loading && <Loader2 className="animate-spin mr-1 h-4 w-4" />}
+          Sign in with Google
+        </Button>
+      </form>
 
       {/* <form
         className="mx-auto flex max-w-md flex-col gap-y-4"

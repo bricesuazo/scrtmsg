@@ -4,6 +4,8 @@ import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import Header from "@/components/header";
 
+export const runtime = "edge";
+
 const font = Open_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -26,7 +28,7 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;

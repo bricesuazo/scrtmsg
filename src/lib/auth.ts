@@ -1,7 +1,19 @@
 import GoogleProvider from "next-auth/providers/google";
-import NextAuth, { DefaultSession } from "next-auth";
+import NextAuth from "next-auth";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db } from "@/db";
+
+declare module "next-auth" {
+  interface Session {
+    user: {
+      id: string;
+      username: string;
+      email: string;
+      image: string;
+      emailVerified: number | null;
+    };
+  }
+}
 
 if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET)
   throw new Error(

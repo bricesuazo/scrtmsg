@@ -28,15 +28,16 @@ export default async function Header() {
             >
               @{session.user.id}
             </Link>
-            <button
-              onClick={() => {
-                signOut({ redirectTo: "/sign-in" });
+            <form
+              action={async () => {
+                "use server";
+                await signOut({ redirectTo: "/sign-in" });
               }}
-              className="p-3"
-              name="Logout button"
             >
-              <LogOut className="h-3 w-3" />
-            </button>
+              <button className="p-3" name="Logout button">
+                <LogOut className="h-3 w-3" />
+              </button>
+            </form>
           </div>
         )}
       </div>
