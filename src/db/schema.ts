@@ -1,13 +1,9 @@
 // schema.js
-import { sqliteTable, text, blob, integer } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, blob } from "drizzle-orm/sqlite-core";
 
 export const user = sqliteTable("user", {
   id: text("id").primaryKey(),
-  username: text("username").unique(),
   email: text("email").notNull().unique(),
-  given_name: text("given_name").notNull(),
-  family_name: text("family_name").notNull(),
-  emailVerified: integer("emailVerified", { mode: "boolean" }),
   // other user attributes
 });
 

@@ -15,16 +15,21 @@ export const auth = lucia({
   }),
   env: process.env.NODE_ENV === "production" ? "PROD" : "DEV",
   middleware: nextjs_future(),
-
-  getSessionAttributes: (data) => {
-    return data;
+  sessionCookie: {
+    expires: false,
+  },
+  experimental: {
+    debugMode: true,
+  },
+  getUserAttributes: async (user) => {
+    return { email: user.email };
   },
 });
 
 export const googleAuth = google(auth, {
   clientId: process.env.GOOGLE_CLIENT_ID ?? "",
   clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
-  redirectUri: "/dashboard",
+  redirectUri: process.env.GOOGLE_REDIRECT_URI ?? "",
 });
 
 export const getSession = cache(() => {

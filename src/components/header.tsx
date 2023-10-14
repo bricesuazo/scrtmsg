@@ -28,15 +28,10 @@ export default async function Header() {
             >
               @{session.user.id}
             </Link>
-            <form
-              action={async () => {
-                "use server";
-                // await signOut({ redirectTo: "/sign-in" });
-              }}
-            >
-              <button className="p-3" name="Logout button">
+            <form action="/api/auth/logout" method="post">
+              <Button type="submit" className="p-3">
                 <LogOut className="h-3 w-3" />
-              </button>
+              </Button>
             </form>
           </div>
         )}

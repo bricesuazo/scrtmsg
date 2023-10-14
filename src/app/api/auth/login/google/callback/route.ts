@@ -1,11 +1,26 @@
 import { auth, googleAuth } from "@/lib/auth";
 import { OAuthRequestError } from "@lucia-auth/oauth";
+import { nanoid } from "nanoid";
 import { cookies, headers } from "next/headers";
 
 import type { NextRequest } from "next/server";
 
 export const GET = async (request: NextRequest) => {
-  const storedState = cookies().get("google_oauth_state")?.value;
+  const authRequest = auth.handleRequest(request.method, {
+    headers,
+    cookies,
+  });
+  const session = await authRequest.validate();
+  if (session) {
+    return new Response(null, {
+      status: 302,
+      headers: {
+        Location: "/",
+      },
+    });
+  }
+  const cookieStore = cookies();
+  const storedState = cookieStore.get("google_oauth_state")?.value;
   const url = new URL(request.url);
   const state = url.searchParams.get("state");
   const code = url.searchParams.get("code");
@@ -22,14 +37,11 @@ export const GET = async (request: NextRequest) => {
     const getUser = async () => {
       const existingUser = await getExistingUser();
       if (existingUser) return existingUser;
+
       const user = await createUser({
+        userId: nanoid(),
         attributes: {
-          given_name: googleUser.given_name,
-          family_name: googleUser.family_name,
-          emailVerified: googleUser.email_verified,
-          id: crypto.randomUUID(),
-          email: googleUser.email,
-          username: null,
+          email: googleUser.email ?? "",
         },
       });
       return user;
@@ -40,15 +52,11 @@ export const GET = async (request: NextRequest) => {
       userId: user.userId,
       attributes: {},
     });
-    const authRequest = auth.handleRequest(request.method, {
-      cookies,
-      headers,
-    });
     authRequest.setSession(session);
     return new Response(null, {
       status: 302,
       headers: {
-        Location: "/", // redirect to profile page
+        Location: "/",
       },
     });
   } catch (e) {

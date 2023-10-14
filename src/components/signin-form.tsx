@@ -22,9 +22,9 @@ export default function SigninForm() {
   return (
     <main className="mx-auto max-w-screen-md p-4">
       <Button asChild>
-        <Link href="/login/google">sign in</Link>
+        <Link href="/api/auth/login/google">sign in</Link>
       </Button>
-      <form
+      {/* <form
         onSubmit={async () => {
           setLoading(true);
           // await signIn("google", { callbackUrl: "/dashboard" });
@@ -35,7 +35,7 @@ export default function SigninForm() {
           {loading && <Loader2 className="animate-spin mr-1 h-4 w-4" />}
           Sign in with Google
         </Button>
-      </form>
+      </form> */}
 
       {/* <form
         className="mx-auto flex max-w-md flex-col gap-y-4"
