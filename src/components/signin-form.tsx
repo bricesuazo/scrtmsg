@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
-import { signIn } from "next-auth/react";
+import Link from "next/link";
 
 export default function SigninForm() {
   const [loading, setLoading] = useState(false);
@@ -21,10 +21,13 @@ export default function SigninForm() {
 
   return (
     <main className="mx-auto max-w-screen-md p-4">
+      <Button asChild>
+        <Link href="/login/google">sign in</Link>
+      </Button>
       <form
         onSubmit={async () => {
           setLoading(true);
-          await signIn("google", { callbackUrl: "/dashboard" });
+          // await signIn("google", { callbackUrl: "/dashboard" });
           setLoading(false);
         }}
       >

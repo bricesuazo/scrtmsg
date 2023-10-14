@@ -1,50 +1,33 @@
-import GoogleProvider from "next-auth/providers/google";
-import NextAuth from "next-auth";
-import { DrizzleAdapter } from "@auth/drizzle-adapter";
-import { db } from "@/db";
+// lucia.ts
+import { lucia } from "lucia";
+import { libsql } from "@lucia-auth/adapter-sqlite";
+import { client } from "@/db";
+import { nextjs_future } from "lucia/middleware";
+import { google } from "@lucia-auth/oauth/providers";
+import { cache } from "react";
+import * as context from "next/headers";
 
-declare module "next-auth" {
-  interface Session {
-    user: {
-      id: string;
-      username: string;
-      email: string;
-      image: string;
-      emailVerified: number | null;
-    };
-  }
-}
+export const auth = lucia({
+  adapter: libsql(client, {
+    key: "user_key",
+    session: "user_session",
+    user: "user",
+  }),
+  env: process.env.NODE_ENV === "production" ? "PROD" : "DEV",
+  middleware: nextjs_future(),
 
-if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET)
-  throw new Error(
-    "GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET must be set in .env.local"
-  );
-
-export const {
-  handlers: { GET, POST },
-  auth,
-  signIn,
-  signOut,
-  update,
-} = NextAuth({
-  adapter: DrizzleAdapter(db as any),
-  providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    }),
-  ],
-  callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
+  getSessionAttributes: (data) => {
+    return data;
   },
-  secret: process.env.NEXTAUTH_SECRET,
-  pages: {
-    signIn: "/sign-in",
-  },
+});
+
+export const googleAuth = google(auth, {
+  clientId: process.env.GOOGLE_CLIENT_ID ?? "",
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+  redirectUri: "/dashboard",
+});
+
+export const getSession = cache(() => {
+  const authRequest = auth.handleRequest("GET", context);
+  return authRequest.validate();
 });

@@ -2,11 +2,11 @@ import Link from "next/link";
 import Image from "next/image";
 import { ThemeToggle } from "./theme-toggle";
 import { LogOut } from "lucide-react";
-import { auth, signOut } from "@/lib/auth";
+import { getSession } from "@/lib/auth";
 import { Button } from "./ui/button";
 
 export default async function Header() {
-  const session = await auth();
+  const session = await getSession();
 
   return (
     <header className="mx-auto flex max-w-screen-md items-center justify-between px-4 py-4">
@@ -31,7 +31,7 @@ export default async function Header() {
             <form
               action={async () => {
                 "use server";
-                await signOut({ redirectTo: "/sign-in" });
+                // await signOut({ redirectTo: "/sign-in" });
               }}
             >
               <button className="p-3" name="Logout button">

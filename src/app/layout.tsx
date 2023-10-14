@@ -3,6 +3,8 @@ import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import Header from "@/components/header";
+import { auth, getSession } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 export const runtime = "edge";
 
@@ -28,11 +30,16 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getSession();
+  console.log("🚀 ~ file: layout.tsx:39 ~ session:", session);
+
+  // if (session && !session.user.username) redirect("/welcome");
+
   return (
     <html lang="en">
       <body className={font.className}>
