@@ -1,5 +1,5 @@
-import AuthForm from "@/components/auth-form";
+import SignInForm from "@/components/signin-form";
 
 export default async function SignIn() {
-  return <AuthForm type="sign-in" />;
+  return <SignInForm />;
 }

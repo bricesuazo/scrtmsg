@@ -15,37 +15,51 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { signIn, signUp } from "@/actions/auth";
-import { authSchema } from "@/lib/zod-schema";
+import { signUp } from "@/actions/auth";
+import { signUpSchema } from "@/lib/zod-schema";
 
-export default function AuthForm({ type }: { type: "sign-in" | "sign-up" }) {
-  const form = useForm<z.infer<typeof authSchema>>({
-    resolver: zodResolver(authSchema),
+export default function SignUpForm() {
+  const form = useForm<z.infer<typeof signUpSchema>>({
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
+      email: "",
       username: "",
       password: "",
     },
   });
 
-  async function onSubmit(values: z.infer<typeof authSchema>) {
+  async function onSubmit(values: z.infer<typeof signUpSchema>) {
     const body = new FormData();
 
     Object.entries(values).forEach(([key, value]) => body.append(key, value));
 
-    const response =
-      type === "sign-in"
-        ? await signIn(body as FormData)
-        : await signUp(body as FormData);
+    const response = await signUp(body as FormData);
 
-    if (!response.error) {
-      form.setError("root", { message: response.error });
-    }
+    // if (!response.error) {
+    //   form.setError("root", { message: response.error });
+    // }
+
+    // form.reset();
   }
 
   return (
     <main className="max-w-screen-md px-4 mx-auto">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <FormField
+            control={form.control}
+            name="email"
+            disabled={form.formState.isSubmitting}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Email</FormLabel>
+                <FormControl>
+                  <Input placeholder="Email" {...field} name="username" />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           <FormField
             control={form.control}
             name="username"
@@ -84,7 +98,7 @@ export default function AuthForm({ type }: { type: "sign-in" | "sign-up" }) {
             {form.formState.isSubmitting && (
               <Loader2 className="animate-spin mr-2 h-4 w-4" />
             )}
-            {type === "sign-in" ? "Sign in" : "Sign up"}
+            Sign in
           </Button>
         </form>
       </Form>
