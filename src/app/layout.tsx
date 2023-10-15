@@ -3,8 +3,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import Header from "@/components/header";
-import { getSession } from "@/lib/auth";
-import { redirect } from "next/navigation";
+import { auth, getSession } from "@/lib/auth";
 
 export const runtime = "edge";
 
@@ -36,7 +35,8 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getSession();
-  console.log("🚀 ~ file: layout.tsx:39 ~ session:", session);
+
+  console.log("🚀 ~ file: layout.tsx:39 ~ session:", session, "====");
 
   // if (session && session) redirect("/welcome");
 

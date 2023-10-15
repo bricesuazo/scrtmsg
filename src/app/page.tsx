@@ -8,7 +8,7 @@ export default function Home() {
       <main className="mx-auto flex min-h-[calc(100vh-10rem)] max-w-screen-md flex-col items-center justify-center p-4">
         <section>
           <div className="relative mx-auto h-36 w-36 sm:h-48 sm:w-48">
-            <Image src="/logo.png" alt="scrtmsg logo" fill />
+            <Image src="/logo.png" alt="scrtmsg logo" fill sizes="100%" />
           </div>
           <div className="space-y-2 sm:space-y-4">
             <h1 className="text-center text-4xl font-bold sm:text-5xl">

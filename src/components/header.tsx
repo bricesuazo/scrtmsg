@@ -17,18 +17,23 @@ export default async function Header() {
       <div className="flex items-center gap-x-2">
         <ThemeToggle />
         {!session ? (
-          <Button asChild variant="outline">
-            <Link href="/sign-in">Sign in</Link>
-          </Button>
+          <>
+            <Button asChild variant="outline">
+              <Link href="/sign-in">Sign in</Link>
+            </Button>
+            <Button asChild variant="default">
+              <Link href="/sign-up">Sign up</Link>
+            </Button>
+          </>
         ) : (
           <div className="space-x-2">
             <Link
-              href={`/${session.user.id}`}
+              href={`/${session.user.username}`}
               className="truncate text-sm sm:text-base"
             >
-              @{session.user.id}
+              @{session.user.username}
             </Link>
-            <form action="/api/auth/logout" method="post">
+            <form action="/api/auth/sign-out" method="post">
               <Button type="submit" className="p-3">
                 <LogOut className="h-3 w-3" />
               </Button>
