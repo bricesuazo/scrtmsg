@@ -4,14 +4,21 @@ import { ThemeToggle } from "./theme-toggle";
 import { LogOut } from "lucide-react";
 import { getSession } from "@/lib/auth";
 import { Button } from "./ui/button";
+import { signOut } from "@/actions/auth";
 
 export default async function Header() {
   const session = await getSession();
 
   return (
-    <header className="mx-auto flex max-w-screen-md items-center justify-between px-4 py-4">
+    <header className="mx-auto flex max-w-screen-md items-center justify-between p-4">
       <Link href="/">
-        <Image src="/logo.png" alt="scrtmsg.me logo" width={32} height={32} />
+        <Image
+          src="/logo.png"
+          alt="scrtmsg.me logo"
+          className="min-w-min"
+          width={32}
+          height={32}
+        />
       </Link>
 
       <div className="flex items-center gap-x-2">
@@ -33,7 +40,7 @@ export default async function Header() {
             >
               @{session.user.username}
             </Link>
-            <form action="/api/auth/sign-out" method="post">
+            <form action={signOut}>
               <Button type="submit" className="p-3">
                 <LogOut className="h-3 w-3" />
               </Button>
