@@ -1,6 +1,6 @@
 // schema.js
 import { relations } from "drizzle-orm";
-import { sqliteTable, text, int, index } from "drizzle-orm/sqlite-core";
+import { index, int, sqliteTable, text } from "drizzle-orm/sqlite-core";
 
 export const user = sqliteTable("user", {
   id: text("id").primaryKey(),

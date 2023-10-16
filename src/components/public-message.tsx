@@ -1,5 +1,6 @@
-import type { Message, Reply } from "@/db/schema";
 import Moment from "react-moment";
+
+import type { Message, Reply } from "@/db/schema";
 
 export default function PublicMessage({
   message,

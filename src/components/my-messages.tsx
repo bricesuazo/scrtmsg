@@ -1,24 +1,25 @@
-"use client";
+'use client';
 
-import { Check, Copy, RefreshCw } from "lucide-react";
-import { useState } from "react";
-import LoadingMessage from "./loading-message";
-import MessageComponent from "./message";
-import { useQuery } from "@tanstack/react-query";
-import { getAllMessagesWithReplies } from "@/actions/user";
-import { Button } from "./ui/button";
-import { Input } from "./ui/input";
-import { cn } from "@/lib/utils";
+import { getAllMessagesWithReplies } from '@/actions/user';
+import { cn } from '@/lib/utils';
+import { useQuery } from '@tanstack/react-query';
+import { Check, Copy, RefreshCw } from 'lucide-react';
+import { useState } from 'react';
+
+import LoadingMessage from './loading-message';
+import MessageComponent from './message';
+import { Button } from './ui/button';
+import { Input } from './ui/input';
 
 export default function MyMessages({ username }: { username: string }) {
   const messages = useQuery({
-    queryKey: ["messages", username],
+    queryKey: ['messages', username],
     queryFn: () => getAllMessagesWithReplies({ username }),
   });
   const [isCopied, setIsCopied] = useState(false);
 
   const copyUsername = (username: string) => {
-    (navigator as any).clipboard.writeText(`scrtmsg.me/${username}`);
+    navigator.clipboard.writeText(`scrtmsg.me/${username}`);
     setIsCopied(true);
     setTimeout(() => {
       setIsCopied(false);
@@ -27,11 +28,11 @@ export default function MyMessages({ username }: { username: string }) {
 
   return (
     <div className="flex flex-col gap-y-2 max-w-screen-md mx-auto px-4">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between gap-x-4">
         <div className="flex items-center gap-x-2">
           <Input
             type="text"
-            value={isCopied ? "Copied" : `scrtmsg.me/${username}`}
+            value={isCopied ? 'Copied' : `scrtmsg.me/${username}`}
             className="truncate"
             readOnly
             onClick={() => copyUsername(username)}
@@ -54,8 +55,8 @@ export default function MyMessages({ username }: { username: string }) {
         >
           <RefreshCw
             className={cn(
-              "w-4 sm:mr-1",
-              (messages.isLoading || messages.isRefetching) && "animate-spin"
+              'w-4 sm:mr-1',
+              (messages.isLoading || messages.isRefetching) && 'animate-spin',
             )}
           />
 

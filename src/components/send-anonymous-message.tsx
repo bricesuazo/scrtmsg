@@ -1,8 +1,11 @@
-"use client";
+'use client';
 
-import { Loader2 } from "lucide-react";
-import { useState } from "react";
-import SendMessage from "./send-message";
+import { getUserByUsername } from '@/actions/user';
+import { useQuery } from '@tanstack/react-query';
+import { Loader2 } from 'lucide-react';
+import { useState } from 'react';
+
+import SendMessage from './send-message';
 
 export default function SendAnonymousMessage({
   username,
@@ -10,7 +13,10 @@ export default function SendAnonymousMessage({
   username: string;
 }) {
   const [isSent, setIsSent] = useState(false);
-  //   const user = api.user.getUserByUsername.useQuery({ username });
+  const user = useQuery({
+    queryKey: ['user', username],
+    queryFn: () => getUserByUsername({ username }),
+  });
 
   if (user.isLoading) {
     return (

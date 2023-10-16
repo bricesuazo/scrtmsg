@@ -1,10 +1,16 @@
-"use client";
+'use client';
 
-import { Dispatch, SetStateAction, useState } from "react";
-import ReactTextareaAutosize from "react-textarea-autosize";
-import { Switch } from "./ui/switch";
-import PublicMessage from "./public-message";
-import { Input } from "./ui/input";
+import { sendMessageToUsername } from '@/actions/message';
+import { getAllPublicMessages } from '@/actions/user';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import type { Dispatch, SetStateAction } from 'react';
+import { useState } from 'react';
+import ReactTextareaAutosize from 'react-textarea-autosize';
+
+import PublicMessage from './public-message';
+import { Input } from './ui/input';
+import { Switch } from './ui/switch';
+
 export default function SendMessage({
   username,
   setIsSent,
@@ -17,16 +23,33 @@ export default function SendMessage({
     codeName: string | null;
     isCodeNameEnable: boolean;
   }>({
-    message: "",
+    message: '',
     codeName: null,
     isCodeNameEnable: false,
   });
 
-  // const sendMessageMutation = api.message.sendMessageToUsername.useMutation();
+  const sendMessageMutation = useMutation({
+    mutationKey: ['sendMessage', username],
+    mutationFn: ({
+      username,
+      message,
+      codeName,
+    }: {
+      username: string;
+      message: string;
+      codeName: string | null;
+    }) =>
+      sendMessageToUsername({
+        username,
+        message,
+        codeName,
+      }),
+  });
 
-  // const messages = api.message.getAllPublicMessages.useQuery({
-  //   username,
-  // });
+  const messages = useQuery({
+    queryKey: ['messages', username],
+    queryFn: () => getAllPublicMessages({ username }),
+  });
   return (
     <div className="mx-auto max-w-md space-y-8">
       <div className="sticky top-16 z-10 space-y-4 bg-white py-0 pb-4 transition-all duration-75 ease-in-out dark:bg-[#121212]">
@@ -41,7 +64,7 @@ export default function SendMessage({
               message: input.message,
               codeName: input.codeName,
             });
-            setInput({ message: "", codeName: null, isCodeNameEnable: false });
+            setInput({ message: '', codeName: null, isCodeNameEnable: false });
             setIsSent(true);
           }}
           className="flex flex-col gap-y-2"
@@ -51,18 +74,18 @@ export default function SendMessage({
             placeholder={`Send anonymous message to @${username}`}
             onChange={(e) => setInput({ ...input, message: e.target.value })}
             value={input.message}
-            disabled={sendMessageMutation.isLoading}
+            disabled={sendMessageMutation.isPending}
             required
             minRows={2}
             maxRows={10}
           />
           <button
             type="submit"
-            disabled={sendMessageMutation.isLoading}
+            disabled={sendMessageMutation.isPending}
             className="bg-slate-100"
             name="Send message"
           >
-            {sendMessageMutation.isLoading ? "Loading..." : "Send"}
+            {sendMessageMutation.isPending ? 'Loading...' : 'Send'}
           </button>
 
           {sendMessageMutation.isError && (
@@ -85,7 +108,7 @@ export default function SendMessage({
               <span className="sr-only">Add code name</span>
               <span
                 className={`${
-                  input.isCodeNameEnable ? "translate-x-3" : "-translate-x-1"
+                  input.isCodeNameEnable ? 'translate-x-3' : '-translate-x-1'
                 } inline-block h-3 w-3 transform rounded-full bg-white transition`}
               />
             </Switch>
@@ -93,8 +116,8 @@ export default function SendMessage({
               htmlFor="codename-checkbox"
               className={`text-sm ${
                 input.isCodeNameEnable
-                  ? "text-slate-900 dark:text-slate-50"
-                  : "text-slate-500 dark:text-slate-400"
+                  ? 'text-slate-900 dark:text-slate-50'
+                  : 'text-slate-500 dark:text-slate-400'
               }`}
             >
               Add code name
@@ -106,7 +129,7 @@ export default function SendMessage({
               <label htmlFor="codename">
                 Add a code name
                 <span className="pointer-events-none select-none text-red-500">
-                  {" "}
+                  {' '}
                   *
                 </span>
               </label>
@@ -117,8 +140,8 @@ export default function SendMessage({
                 onChange={(e) =>
                   setInput({ ...input, codeName: e.target.value })
                 }
-                value={input.codeName || ""}
-                disabled={sendMessageMutation.isLoading}
+                value={input.codeName || ''}
+                disabled={sendMessageMutation.isPending}
                 required={input.isCodeNameEnable}
               />
             </div>

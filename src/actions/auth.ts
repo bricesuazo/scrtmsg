@@ -1,15 +1,12 @@
 "use server";
 
-import { auth, getSession } from "@/auth";
-import { sendEmailVerificationLink, sendPasswordResetLink } from "@/auth/email";
-import { db } from "@/db";
-import { signInSchema, signUpSchema } from "@/lib/zod-schema";
 import { LibsqlError } from "@libsql/client";
 import { LuciaError } from "lucia";
 import * as context from "next/headers";
 import { redirect } from "next/navigation";
-import { NextResponse } from "next/server";
-import z from "zod";
+
+import { auth } from "@/auth";
+import { signInSchema, signUpSchema } from "@/lib/zod-schema";
 
 export async function signUp(formData: FormData) {
   // const unparsedEmail = formData.get("email");

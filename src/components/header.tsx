@@ -1,10 +1,9 @@
-import Link from "next/link";
-import Image from "next/image";
-import { ThemeToggle } from "./theme-toggle";
 import { MoreVertical } from "lucide-react";
-import { getSession } from "@/auth";
-import { Button } from "./ui/button";
+import Image from "next/image";
+import Link from "next/link";
+
 import { signOut } from "@/actions/auth";
+import { getSession } from "@/auth";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,6 +12,9 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+import { ThemeToggle } from "./theme-toggle";
+import { Button } from "./ui/button";
 
 export default async function Header() {
   const session = await getSession();

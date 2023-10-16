@@ -1,28 +1,29 @@
-import "./globals.css";
-import type { Metadata } from "next";
-import { Open_Sans } from "next/font/google";
-import Header from "@/components/header";
-import { Providers } from "@/components/providers";
+import Header from '@/components/header';
+import { Providers } from '@/components/providers';
+import type { Metadata } from 'next';
+import { Open_Sans } from 'next/font/google';
 
-// export const runtime = "edge";
+import './globals.css';
 
-const font = Open_Sans({ subsets: ["latin"] });
+export const runtime = 'edge';
+
+const font = Open_Sans({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "scrtmsg.me | Get message from anonymous.",
-  description: "Get message from anonymous.",
-  metadataBase: new URL("https://scrtmsg.me/"),
+  title: 'scrtmsg.me | Get message from anonymous.',
+  description: 'Get message from anonymous.',
+  metadataBase: new URL('https://scrtmsg.me/'),
   openGraph: {
-    type: "website",
-    url: "https://scrtmsg.me/api/og",
-    title: "scrtmsg.me | Get message from anonymous.",
-    description: "Get message from anonymous.",
+    type: 'website',
+    url: 'https://scrtmsg.me/api/og',
+    title: 'scrtmsg.me | Get message from anonymous.',
+    description: 'Get message from anonymous.',
     images: [
       {
-        url: "https://scrtmsg.me/og.png",
+        url: 'https://scrtmsg.me/og.png',
         width: 1200,
         height: 630,
-        alt: "scrtmsg.me | Get message from anonymous.",
+        alt: 'scrtmsg.me | Get message from anonymous.',
       },
     ],
   },

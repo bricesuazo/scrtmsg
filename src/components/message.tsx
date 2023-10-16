@@ -1,6 +1,7 @@
-import type { Message, Reply } from "@/db/schema";
-import { Fragment, useState } from "react";
-import Moment from "react-moment";
+'use client';
+
+import { deleteMessage, replyMessage } from '@/actions/message';
+import ReplyComponent from '@/components/reply';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -11,7 +12,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+} from '@/components/ui/alert-dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -19,10 +20,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-
-import { Edit, Loader2, MoreVertical, Send, Trash } from "lucide-react";
-import ReplyComponent from "./reply";
+} from '@/components/ui/dropdown-menu';
+import type { Message, Reply } from '@/db/schema';
+import { useMutation } from '@tanstack/react-query';
+import { Edit, Loader2, MoreVertical, Send, Trash } from 'lucide-react';
+import { useState } from 'react';
+import Moment from 'react-moment';
 
 export default function MessageComponent({
   message,
@@ -35,16 +38,24 @@ export default function MessageComponent({
   refetch: () => void;
   username: string;
 }) {
-  const replyMutation = api.message.reply.useMutation();
-  const deleteMutation = api.message.delete.useMutation();
-  const [reply, setReply] = useState("");
+  const replyMutation = useMutation({
+    mutationKey: ['replyMessage', message.id],
+    mutationFn: ({ messageId, reply }: { messageId: string; reply: string }) =>
+      replyMessage({ messageId, reply }),
+  });
+  const deleteMutation = useMutation({
+    mutationKey: ['deleteMessage', message.id],
+    mutationFn: ({ messageId }: { messageId: string }) =>
+      deleteMessage({ messageId }),
+  });
+  const [reply, setReply] = useState('');
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState<{
     id: string;
     message: string;
     isOpen: boolean;
   }>({
-    id: "",
-    message: "",
+    id: '',
+    message: '',
     isOpen: false,
   });
 
@@ -66,7 +77,7 @@ export default function MessageComponent({
             <AlertDialogDescription>
               <p className="text-sm text-slate-500 dark:text-slate-300">
                 Are you sure you want to delete this message? This action will
-                also delete all replies to this message.{" "}
+                also delete all replies to this message.{' '}
                 <span className="font-bold">This action cannot be undone.</span>
               </p>
 
@@ -86,7 +97,7 @@ export default function MessageComponent({
                   isOpen: false,
                 })
               }
-              disabled={deleteMutation.isLoading}
+              disabled={deleteMutation.isPending}
             >
               Cancel
             </AlertDialogCancel>
@@ -101,9 +112,9 @@ export default function MessageComponent({
                   isOpen: false,
                 });
               }}
-              disabled={deleteMutation.isLoading}
+              disabled={deleteMutation.isPending}
             >
-              {deleteMutation.isLoading && (
+              {deleteMutation.isPending && (
                 <Loader2 className="animate-spin m-1 h-4 w-4" />
               )}
               Delete
@@ -120,7 +131,7 @@ export default function MessageComponent({
             <p>{message.message}</p>
             <div className="flex items-center gap-x-1">
               <p className="text-xs text-slate-400">
-                {message.codeName || "Anonymous"}
+                {message.codeName || 'Anonymous'}
               </p>
               <p className="pointer-events-none select-none text-slate-400 dark:text-slate-600">
                 ·
@@ -143,7 +154,7 @@ export default function MessageComponent({
               <DropdownMenuSeparator />
               <DropdownMenuItem>
                 <button disabled>
-                  <Edit className="h-5 w-5" />{" "}
+                  <Edit className="h-5 w-5" />{' '}
                   <span className="w-full">Edit Message (coming soon!)</span>
                 </button>
               </DropdownMenuItem>
@@ -155,13 +166,13 @@ export default function MessageComponent({
                     isOpen: true,
                   });
                 }}
-                disabled={deleteMutation.isLoading}
+                disabled={deleteMutation.isPending}
               >
-                {deleteMutation.isLoading ? (
+                {deleteMutation.isPending ? (
                   <Loader2 className="h-5 w-5" />
                 ) : (
                   <>
-                    <Trash className="h-4 w-4 text-red-500 dark:text-red-800" />{" "}
+                    <Trash className="h-4 w-4 text-red-500 dark:text-red-800" />{' '}
                     <span className="text-red-500 dark:text-red-800">
                       Delete Message
                     </span>
@@ -195,7 +206,7 @@ export default function MessageComponent({
                 messageId: message.id,
                 reply,
               });
-              setReply("");
+              setReply('');
               refetch();
             }}
           >
@@ -205,15 +216,15 @@ export default function MessageComponent({
               className="w-full"
               required
               value={reply}
-              disabled={replyMutation.isLoading}
+              disabled={replyMutation.isPending}
               onChange={(e) => setReply(e.target.value)}
             />
             <button
               className="p-2"
-              disabled={replyMutation.isLoading}
+              disabled={replyMutation.isPending}
               name="Send reply"
             >
-              {replyMutation.isLoading ? (
+              {replyMutation.isPending ? (
                 <Loader2 className="animate-spin h-5 w-5" />
               ) : (
                 <Send size={20} />

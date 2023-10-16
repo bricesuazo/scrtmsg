@@ -1,7 +1,6 @@
-import Moment from "react-moment";
-import { Fragment, useState } from "react";
-import { Edit, Loader2, MoreVertical, Trash } from "lucide-react";
-import { Reply as ReplyType } from "@/db/schema";
+'use client';
+
+import { deleteReply } from '@/actions/reply';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -12,7 +11,7 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+} from '@/components/ui/alert-dialog';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -20,7 +19,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
+import type { Reply as ReplyType } from '@/db/schema';
+import { useMutation } from '@tanstack/react-query';
+import { Edit, Loader2, MoreVertical, Trash } from 'lucide-react';
+import { useState } from 'react';
+import Moment from 'react-moment';
 
 export default function Reply({
   reply,
@@ -31,14 +35,17 @@ export default function Reply({
   refetch: () => void;
   username: string;
 }) {
-  const deleteReplyMutation = api.message.deleteReply.useMutation();
+  const deleteReplyMutation = useMutation({
+    mutationKey: ['deleteReply', reply.id],
+    mutationFn: ({ replyId }: { replyId: string }) => deleteReply({ replyId }),
+  });
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState<{
     id: string;
     reply: string;
     isOpen: boolean;
   }>({
-    id: "",
-    reply: "",
+    id: '',
+    reply: '',
     isOpen: false,
   });
   return (
@@ -58,7 +65,7 @@ export default function Reply({
             <AlertDialogTitle>Delete Reply</AlertDialogTitle>
             <AlertDialogDescription>
               <p className="text-sm text-slate-500 dark:text-slate-300">
-                Are you sure you want to delete this reply?{" "}
+                Are you sure you want to delete this reply?{' '}
                 <span className="font-bold">This action cannot be undone.</span>
               </p>
 
@@ -78,7 +85,7 @@ export default function Reply({
                   isOpen: false,
                 })
               }
-              disabled={deleteReplyMutation.isLoading}
+              disabled={deleteReplyMutation.isPending}
             >
               Cancel
             </AlertDialogCancel>
@@ -93,10 +100,10 @@ export default function Reply({
                   isOpen: false,
                 });
               }}
-              disabled={deleteReplyMutation.isLoading}
+              disabled={deleteReplyMutation.isPending}
             >
-              {deleteReplyMutation.isLoading && (
-                <Loader2 className="animate-spin m-1 h-4 w-4" />
+              {deleteReplyMutation.isPending && (
+                <Loader2 className="m-1 h-4 w-4 animate-spin" />
               )}
               Delete
             </AlertDialogAction>
@@ -128,7 +135,7 @@ export default function Reply({
             <DropdownMenuSeparator />
             <DropdownMenuItem>
               <button disabled>
-                <Edit className="h-5 w-5" />{" "}
+                <Edit className="h-5 w-5" />{' '}
                 <span className="w-full">Edit Message (coming soon!)</span>
               </button>
             </DropdownMenuItem>
@@ -140,13 +147,13 @@ export default function Reply({
                   id: reply.id,
                 });
               }}
-              disabled={deleteReplyMutation.isLoading}
+              disabled={deleteReplyMutation.isPending}
             >
-              {deleteReplyMutation.isLoading ? (
+              {deleteReplyMutation.isPending ? (
                 <Loader2 className="h-5 w-5" />
               ) : (
                 <>
-                  <Trash className="h-4 w-4 text-red-500 dark:text-red-800" />{" "}
+                  <Trash className="h-4 w-4 text-red-500 dark:text-red-800" />{' '}
                   <span className="text-red-500 dark:text-red-800">
                     Delete Reply
                   </span>

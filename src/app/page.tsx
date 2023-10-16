@@ -1,7 +1,8 @@
-import { getSession } from "@/auth";
 import { Github } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+
+import { getSession } from "@/auth";
 
 export default async function Home() {
   const session = await getSession();
