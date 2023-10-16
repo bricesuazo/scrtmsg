@@ -1,10 +1,18 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ThemeToggle } from "./theme-toggle";
-import { LogOut } from "lucide-react";
+import { LogOut, MoreVertical } from "lucide-react";
 import { getSession } from "@/auth";
 import { Button } from "./ui/button";
 import { signOut } from "@/actions/auth";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 export default async function Header() {
   const session = await getSession();
@@ -33,19 +41,27 @@ export default async function Header() {
             </Button>
           </>
         ) : (
-          <div className="space-x-2">
-            <Link
-              href={`/${session.user.username}`}
-              className="truncate text-sm sm:text-base"
-            >
-              @{session.user.username}
-            </Link>
-            <form action={signOut}>
-              <Button type="submit" className="p-3">
-                <LogOut className="h-3 w-3" />
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button size="icon" variant="outline">
+                <MoreVertical size={"1.2rem"} />
               </Button>
-            </form>
-          </div>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent>
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem asChild>
+                <Link href={session.user.username}>
+                  @{session.user.username}
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem asChild>
+                <form action={signOut}>
+                  <button type="submit">Sign out</button>
+                </form>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         )}
       </div>
     </header>
