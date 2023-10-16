@@ -2,12 +2,6 @@
 
 import { auth, getSession } from "@/auth";
 import { sendEmailVerificationLink, sendPasswordResetLink } from "@/auth/email";
-import {
-  generateEmailVerificationToken,
-  generatePasswordResetToken,
-  validateEmailVerificationToken,
-  validatePasswordResetToken,
-} from "@/auth/token";
 import { db } from "@/db";
 import { signInSchema, signUpSchema } from "@/lib/zod-schema";
 import { LibsqlError } from "@libsql/client";

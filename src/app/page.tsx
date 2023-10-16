@@ -1,8 +1,18 @@
+import { getSession } from "@/auth";
 import { Github } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-export default function Home() {
+export default async function Home() {
+  const session = await getSession();
+
+  if (session)
+    return (
+      <>
+        <main></main>
+      </>
+    );
+
   return (
     <>
       <main className="mx-auto flex min-h-[calc(100vh-10rem)] max-w-screen-md flex-col items-center justify-center p-4">

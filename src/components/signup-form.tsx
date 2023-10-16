@@ -29,10 +29,6 @@ export default function SignUpForm() {
       isValidCaptcha: false,
     },
   });
-  console.log(
-    "🚀 ~ file: signup-form.tsx:32 ~ SignUpForm ~ form:",
-    form.getValues()
-  );
 
   async function onSubmit(values: z.infer<typeof signUpSchema>) {
     if (form.formState.isValid) return;
