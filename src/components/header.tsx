@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ThemeToggle } from "./theme-toggle";
-import { LogOut, MoreVertical } from "lucide-react";
+import { MoreVertical } from "lucide-react";
 import { getSession } from "@/auth";
 import { Button } from "./ui/button";
 import { signOut } from "@/actions/auth";

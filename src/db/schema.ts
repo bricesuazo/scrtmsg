@@ -1,6 +1,6 @@
 // schema.js
 import { relations } from "drizzle-orm";
-import { sqliteTable, text, blob, int, index } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, int, index } from "drizzle-orm/sqlite-core";
 
 export const user = sqliteTable("user", {
   id: text("id").primaryKey(),
@@ -20,11 +20,11 @@ export const session = sqliteTable("user_session", {
   userId: text("user_id")
     .notNull()
     .references(() => user.id, { onDelete: "cascade" }),
-  activeExpires: blob("active_expires", {
-    mode: "bigint",
+  activeExpires: int("active_expires", {
+    mode: "timestamp_ms",
   }).notNull(),
-  idleExpires: blob("idle_expires", {
-    mode: "bigint",
+  idleExpires: int("idle_expires", {
+    mode: "timestamp_ms",
   }).notNull(),
 });
 
@@ -49,8 +49,8 @@ export const message = sqliteTable(
   {
     id: text("id").primaryKey(),
     message: text("message").notNull(),
-    createdAt: blob("created_at", {
-      mode: "bigint",
+    createdAt: int("created_at", {
+      mode: "timestamp_ms",
     }).notNull(),
     userId: text("user_id")
       .notNull()
@@ -74,8 +74,8 @@ export const reply = sqliteTable(
   {
     id: text("id").primaryKey(),
     reply: text("reply").notNull(),
-    createdAt: blob("created_at", {
-      mode: "bigint",
+    createdAt: int("created_at", {
+      mode: "timestamp_ms",
     }).notNull(),
     userId: text("user_id")
       .notNull()
@@ -103,8 +103,8 @@ export const replyRelation = relations(reply, ({ one, many }) => ({
 //   userId: text("user_id")
 //     .notNull()
 //     .references(() => user.id),
-//   expires: blob("expires", {
-//     mode: "bigint",
+//   expires: int("expires", {
+//     mode: 'timestamp_ms'
 //   }).notNull(),
 // });
 
@@ -113,7 +113,13 @@ export const replyRelation = relations(reply, ({ one, many }) => ({
 //   userId: text("user_id")
 //     .notNull()
 //     .references(() => user.id),
-//   expires: blob("expires", {
-//     mode: "bigint",
+//   expires: int("expires", {
+//     mode: 'timestamp_ms'
 //   }).notNull(),
 // });
+
+export type User = typeof user.$inferSelect;
+export type Session = typeof session.$inferSelect;
+export type Key = typeof key.$inferSelect;
+export type Message = typeof message.$inferSelect;
+export type Reply = typeof reply.$inferSelect;
