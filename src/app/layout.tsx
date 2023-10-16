@@ -1,9 +1,8 @@
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import Header from "@/components/header";
-import { getSession } from "@/auth";
+import { Providers } from "@/components/providers";
 
 // export const runtime = "edge";
 
@@ -29,27 +28,20 @@ export const metadata: Metadata = {
   },
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const session = await getSession();
-  console.log("🚀 ~ file: layout.tsx:37 ~ session:", session);
   return (
     <html lang="en">
       <body className={font.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
+        <Providers>
           <div className="sticky top-0 z-20">
             <Header />
           </div>
           {children}
-        </ThemeProvider>
+        </Providers>
       </body>
     </html>
   );

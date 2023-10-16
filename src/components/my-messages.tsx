@@ -1,26 +1,35 @@
 "use client";
 
-import { Check, Copy, Loader2, Undo2 } from "lucide-react";
+import { Check, Copy, RefreshCw } from "lucide-react";
 import { useState } from "react";
 import LoadingMessage from "./loading-message";
 import MessageComponent from "./message";
+import { useQuery } from "@tanstack/react-query";
+import { getAllMessagesWithReplies } from "@/actions/user";
+import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { cn } from "@/lib/utils";
 
 export default function MyMessages({ username }: { username: string }) {
-  const messages = api.message.getAllMessagesWithReplies.useQuery();
+  const messages = useQuery({
+    queryKey: ["messages", username],
+    queryFn: () => getAllMessagesWithReplies({ username }),
+  });
   const [isCopied, setIsCopied] = useState(false);
 
   const copyUsername = (username: string) => {
-    navigator.clipboard.writeText(`scrtmsg.me/${username}`);
+    (navigator as any).clipboard.writeText(`scrtmsg.me/${username}`);
     setIsCopied(true);
     setTimeout(() => {
       setIsCopied(false);
     }, 3000);
   };
+
   return (
-    <div className="flex flex-col gap-y-2">
+    <div className="flex flex-col gap-y-2 max-w-screen-md mx-auto px-4">
       <div className="flex items-center justify-between">
-        <div className="flex flex-shrink-0 items-center gap-x-2">
-          <input
+        <div className="flex items-center gap-x-2">
+          <Input
             type="text"
             value={isCopied ? "Copied" : `scrtmsg.me/${username}`}
             className="truncate"
@@ -28,36 +37,30 @@ export default function MyMessages({ username }: { username: string }) {
             onClick={() => copyUsername(username)}
             disabled={isCopied}
           />
-          <button
-            className="hidden p-3 sm:block"
+          <Button
+            className="hidden sm:flex"
             onClick={() => copyUsername(username)}
             disabled={isCopied}
-            name="Copy username"
+            size="icon"
+            variant="secondary"
           >
-            {!isCopied ? (
-              <Copy size={12} className="dark:text-slate-200" />
-            ) : (
-              <Check size={12} className="dark:text-slate-200" />
-            )}
-          </button>
+            {!isCopied ? <Copy size="1rem" /> : <Check size="1rem" />}
+          </Button>
         </div>
-        <button
+        <Button
           onClick={() => messages.refetch()}
-          disabled={messages.isRefetching}
-          className="flex w-auto items-center justify-center sm:w-20"
-          name="Refresh"
+          disabled={messages.isLoading || messages.isRefetching}
+          variant="outline"
         >
-          {messages.isRefetching ? (
-            <Loader2 className="m-1 h-4 w-3 animate-spin" />
-          ) : (
-            <>
-              <div className="p-1 sm:hidden">
-                <Undo2 className="w-3 dark:text-slate-300" />
-              </div>
-              <p className="hidden sm:block">Refresh</p>
-            </>
-          )}
-        </button>
+          <RefreshCw
+            className={cn(
+              "w-4 sm:mr-1",
+              (messages.isLoading || messages.isRefetching) && "animate-spin"
+            )}
+          />
+
+          <p className="hidden sm:block">Refresh</p>
+        </Button>
       </div>
       {messages.isLoading ? (
         <>

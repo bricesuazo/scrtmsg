@@ -29,7 +29,7 @@ export const session = sqliteTable("user_session", {
 });
 
 export const sessionRelation = relations(session, ({ one }) => ({
-  user: one(user),
+  user: one(user, { fields: [session.userId], references: [user.id] }),
 }));
 
 export const key = sqliteTable("user_key", {
@@ -41,7 +41,10 @@ export const key = sqliteTable("user_key", {
 });
 
 export const keyRelation = relations(key, ({ one }) => ({
-  user: one(user),
+  user: one(user, {
+    fields: [key.userId],
+    references: [user.id],
+  }),
 }));
 
 export const message = sqliteTable(
@@ -65,7 +68,10 @@ export const message = sqliteTable(
 );
 
 export const messageRelation = relations(message, ({ one, many }) => ({
-  user: one(user),
+  user: one(user, {
+    fields: [message.userId],
+    references: [user.id],
+  }),
   replies: many(reply),
 }));
 
@@ -93,8 +99,14 @@ export const reply = sqliteTable(
 );
 
 export const replyRelation = relations(reply, ({ one, many }) => ({
-  user: one(user),
-  message: one(message),
+  user: one(user, {
+    fields: [reply.userId],
+    references: [user.id],
+  }),
+  message: one(message, {
+    fields: [reply.messageId],
+    references: [message.id],
+  }),
   replies: many(reply),
 }));
 
