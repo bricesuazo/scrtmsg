@@ -34,11 +34,11 @@ export default function SignInForm() {
 
     const response = await signIn(body as FormData);
 
-    // if (!response.error) {
-    //   form.setError("root", { message: response.error });
-    // }
+    if (!response.error) {
+      form.setError("root", { message: response.error });
+    }
 
-    // form.reset();
+    form.reset();
   }
 
   return (
@@ -48,12 +48,15 @@ export default function SignInForm() {
           <FormField
             control={form.control}
             name="username"
-            disabled={form.formState.isSubmitting}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Username</FormLabel>
                 <FormControl>
-                  <Input placeholder="Username" {...field} name="username" />
+                  <Input
+                    placeholder="Username"
+                    {...field}
+                    disabled={form.formState.isSubmitting}
+                  />
                 </FormControl>
                 <FormDescription>
                   Must be at least 2 characters long.
@@ -65,12 +68,16 @@ export default function SignInForm() {
           <FormField
             control={form.control}
             name="password"
-            disabled={form.formState.isSubmitting}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="Password" type="password" {...field} />
+                  <Input
+                    placeholder="Password"
+                    type="password"
+                    disabled={form.formState.isSubmitting}
+                    {...field}
+                  />
                 </FormControl>
                 <FormDescription>
                   Must be at least 8 characters long.

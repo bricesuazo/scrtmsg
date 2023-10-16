@@ -18,9 +18,9 @@ export const signInSchema = z.object({
     }),
 });
 export const signUpSchema = z.object({
-  email: z.string().email({
-    message: "Invalid email.",
-  }),
+  // email: z.string().email({
+  //   message: "Invalid email.",
+  // }),
   username: z
     .string()
     .min(2, {
@@ -37,4 +37,7 @@ export const signUpSchema = z.object({
     .max(100, {
       message: "Password must be at most 100 characters long.",
     }),
+  isValidCaptcha: z.boolean().refine((value) => value, {
+    message: "Please complete the captcha.",
+  }),
 });

@@ -5,6 +5,7 @@ import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
+import ReCAPTCHA from "react-google-recaptcha";
 import {
   Form,
   FormControl,
@@ -15,38 +16,45 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { signUp } from "@/actions/auth";
+import { signUp, verifyCaptcha } from "@/actions/auth";
 import { signUpSchema } from "@/lib/zod-schema";
 
 export default function SignUpForm() {
   const form = useForm<z.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
-      email: "",
+      // email: "",
       username: "",
       password: "",
+      isValidCaptcha: false,
     },
   });
+  console.log(
+    "🚀 ~ file: signup-form.tsx:32 ~ SignUpForm ~ form:",
+    form.getValues()
+  );
 
   async function onSubmit(values: z.infer<typeof signUpSchema>) {
+    if (form.formState.isValid) return;
+
     const body = new FormData();
 
     Object.entries(values).forEach(([key, value]) => body.append(key, value));
 
     const response = await signUp(body as FormData);
 
-    // if (!response.error) {
-    //   form.setError("root", { message: response.error });
-    // }
-
-    // form.reset();
+    if (response.error) {
+      form.setError("root", { message: response.error });
+    } else {
+      form.reset();
+    }
   }
 
   return (
     <main className="max-w-screen-md px-4 mx-auto">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
+          {/* <FormField
             control={form.control}
             name="email"
             disabled={form.formState.isSubmitting}
@@ -59,16 +67,19 @@ export default function SignUpForm() {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          /> */}
           <FormField
             control={form.control}
             name="username"
-            disabled={form.formState.isSubmitting}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Username</FormLabel>
                 <FormControl>
-                  <Input placeholder="Username" {...field} name="username" />
+                  <Input
+                    placeholder="Username"
+                    disabled={form.formState.isSubmitting}
+                    {...field}
+                  />
                 </FormControl>
                 <FormDescription>
                   Must be at least 2 characters long.
@@ -80,12 +91,16 @@ export default function SignUpForm() {
           <FormField
             control={form.control}
             name="password"
-            disabled={form.formState.isSubmitting}
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input placeholder="Password" type="password" {...field} />
+                  <Input
+                    placeholder="Password"
+                    type="password"
+                    disabled={form.formState.isSubmitting}
+                    {...field}
+                  />
                 </FormControl>
                 <FormDescription>
                   Must be at least 8 characters long.
@@ -94,6 +109,39 @@ export default function SignUpForm() {
               </FormItem>
             )}
           />
+          <FormField
+            control={form.control}
+            name="isValidCaptcha"
+            render={({ field }) => (
+              <FormItem>
+                <ReCAPTCHA
+                  sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+                  onChange={async (token) =>
+                    await verifyCaptcha(token)
+                      .then(() => form.setValue("isValidCaptcha", true))
+                      .catch(() => form.setValue("isValidCaptcha", false))
+                  }
+                />
+                <input
+                  hidden
+                  type="checkbox"
+                  checked={form.watch("isValidCaptcha")}
+                  name={field.name}
+                  ref={field.ref}
+                  onBlur={field.onBlur}
+                  onChange={() => {
+                    if (form.watch("isValidCaptcha")) {
+                      form.setValue("isValidCaptcha", false);
+                    } else {
+                      form.setValue("isValidCaptcha", true);
+                    }
+                  }}
+                />
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
           <Button type="submit" disabled={form.formState.isSubmitting}>
             {form.formState.isSubmitting && (
               <Loader2 className="animate-spin mr-2 h-4 w-4" />

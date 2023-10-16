@@ -4,8 +4,8 @@ import { sqliteTable, text, blob, int } from "drizzle-orm/sqlite-core";
 export const user = sqliteTable("user", {
   id: text("id").primaryKey(),
   username: text("username").notNull().unique(),
-  email: text("email").notNull().unique(),
-  emailVerified: int("email_verified"),
+  // email: text("email").notNull().unique(),
+  // emailVerified: int("email_verified"),
   // other user attributes
 });
 
@@ -30,22 +30,22 @@ export const key = sqliteTable("user_key", {
   hashedPassword: text("hashed_password"),
 });
 
-export const emailVerificationToken = sqliteTable("email_verification_token", {
-  id: text("id").primaryKey(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => user.id),
-  expires: blob("expires", {
-    mode: "bigint",
-  }).notNull(),
-});
+// export const emailVerificationToken = sqliteTable("email_verification_token", {
+//   id: text("id").primaryKey(),
+//   userId: text("user_id")
+//     .notNull()
+//     .references(() => user.id),
+//   expires: blob("expires", {
+//     mode: "bigint",
+//   }).notNull(),
+// });
 
-export const passwordResetToken = sqliteTable("password_reset_token", {
-  id: text("id").primaryKey(),
-  userId: text("user_id")
-    .notNull()
-    .references(() => user.id),
-  expires: blob("expires", {
-    mode: "bigint",
-  }).notNull(),
-});
+// export const passwordResetToken = sqliteTable("password_reset_token", {
+//   id: text("id").primaryKey(),
+//   userId: text("user_id")
+//     .notNull()
+//     .references(() => user.id),
+//   expires: blob("expires", {
+//     mode: "bigint",
+//   }).notNull(),
+// });
