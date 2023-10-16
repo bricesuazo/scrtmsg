@@ -5,7 +5,8 @@ import { Open_Sans } from "next/font/google";
 import Header from "@/components/header";
 import { getSession } from "@/auth";
 
-export const runtime = "edge";
+export const runtime =
+  process.env.NODE_ENV === "production" ? "edge" : undefined;
 
 const font = Open_Sans({ subsets: ["latin"] });
 
