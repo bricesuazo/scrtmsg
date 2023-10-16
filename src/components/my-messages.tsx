@@ -19,7 +19,7 @@ export default function MyMessages({ username }: { username: string }) {
   const [isCopied, setIsCopied] = useState(false);
 
   const copyUsername = (username: string) => {
-    navigator.clipboard.writeText(`scrtmsg.me/${username}`);
+    (navigator as any).clipboard.writeText(`scrtmsg.me/${username}`);
     setIsCopied(true);
     setTimeout(() => {
       setIsCopied(false);

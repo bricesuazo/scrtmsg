@@ -217,7 +217,7 @@ export default function MessageComponent({
               required
               value={reply}
               disabled={replyMutation.isPending}
-              onChange={(e) => setReply(e.target.value)}
+              onChange={(e) => setReply((e.target as any).value)}
             />
             <button
               className="p-2"

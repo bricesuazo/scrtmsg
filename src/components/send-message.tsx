@@ -72,7 +72,9 @@ export default function SendMessage({
           <ReactTextareaAutosize
             cacheMeasurements
             placeholder={`Send anonymous message to @${username}`}
-            onChange={(e) => setInput({ ...input, message: e.target.value })}
+            onChange={(e) =>
+              setInput({ ...input, message: (e.target as any).value })
+            }
             value={input.message}
             disabled={sendMessageMutation.isPending}
             required
@@ -138,7 +140,7 @@ export default function SendMessage({
                 id="codename"
                 placeholder="Code name"
                 onChange={(e) =>
-                  setInput({ ...input, codeName: e.target.value })
+                  setInput({ ...input, codeName: (e.target as any).value })
                 }
                 value={input.codeName || ''}
                 disabled={sendMessageMutation.isPending}
