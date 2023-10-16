@@ -17,6 +17,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { signIn } from "@/actions/auth";
 import { signInSchema } from "@/lib/zod-schema";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 
 export default function SignInForm() {
   const form = useForm<z.infer<typeof signInSchema>>({
@@ -34,11 +36,11 @@ export default function SignInForm() {
 
     const response = await signIn(body as FormData);
 
-    if (!response.error) {
+    if (response.error) {
       form.setError("root", { message: response.error });
+    } else {
+      form.reset();
     }
-
-    form.reset();
   }
 
   return (
@@ -54,8 +56,8 @@ export default function SignInForm() {
                 <FormControl>
                   <Input
                     placeholder="Username"
-                    {...field}
                     disabled={form.formState.isSubmitting}
+                    {...field}
                   />
                 </FormControl>
                 <FormDescription>
@@ -86,6 +88,15 @@ export default function SignInForm() {
               </FormItem>
             )}
           />
+          {form.formState.errors.root && (
+            <Alert variant="destructive">
+              <ExclamationTriangleIcon className="h-4 w-4" />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>
+                {form.formState.errors.root.message}
+              </AlertDescription>
+            </Alert>
+          )}
           <Button type="submit" disabled={form.formState.isSubmitting}>
             {form.formState.isSubmitting && (
               <Loader2 className="animate-spin mr-2 h-4 w-4" />

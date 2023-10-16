@@ -3,8 +3,9 @@ import { ThemeProvider } from "@/components/theme-provider";
 import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import Header from "@/components/header";
+import { getSession } from "@/auth";
 
-export const runtime = "edge";
+// export const runtime = "edge";
 
 const font = Open_Sans({ subsets: ["latin"] });
 
@@ -28,11 +29,13 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getSession();
+  console.log("🚀 ~ file: layout.tsx:37 ~ session:", session);
   return (
     <html lang="en">
       <body className={font.className}>

@@ -18,6 +18,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { signUp, verifyCaptcha } from "@/actions/auth";
 import { signUpSchema } from "@/lib/zod-schema";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 
 export default function SignUpForm() {
   const form = useForm<z.infer<typeof signUpSchema>>({
@@ -138,11 +140,21 @@ export default function SignUpForm() {
             )}
           />
 
+          {form.formState.errors.root && (
+            <Alert variant="destructive">
+              <ExclamationTriangleIcon className="h-4 w-4" />
+              <AlertTitle>Error</AlertTitle>
+              <AlertDescription>
+                {form.formState.errors.root.message}
+              </AlertDescription>
+            </Alert>
+          )}
+
           <Button type="submit" disabled={form.formState.isSubmitting}>
             {form.formState.isSubmitting && (
               <Loader2 className="animate-spin mr-2 h-4 w-4" />
             )}
-            Sign in
+            Sign up
           </Button>
         </form>
       </Form>

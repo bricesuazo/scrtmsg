@@ -15,28 +15,28 @@ export async function signUp(formData: FormData) {
   // const unparsedEmail = formData.get("email");
   const unparsedIsValidCaptcha = Boolean(formData.get("isValidCaptcha"));
   const unparsedUsername = formData.get("username");
-  const unparsedUassword = formData.get("password");
+  const unparsedPassword = formData.get("password");
   // basic check
 
   const { username, password, isValidCaptcha } = signUpSchema.parse({
     // email: unparsedEmail,
     username: unparsedUsername,
-    password: unparsedUassword,
+    password: unparsedPassword,
     isValidCaptcha: unparsedIsValidCaptcha,
   });
 
   if (!isValidCaptcha) {
     return {
-      error: "Invalid captcha",
+      error: "Invalid Captcha",
     };
   }
 
   try {
     const user = await auth.createUser({
       key: {
-        providerId: "username", // auth method
-        providerUserId: username.toLowerCase(), // unique id when using "username" auth method
-        password, // hashed by Lucia
+        providerId: "username",
+        providerUserId: username.toLowerCase(),
+        password,
       },
       attributes: {
         username,
@@ -52,13 +52,10 @@ export async function signUp(formData: FormData) {
     authRequest.setSession(session);
     // const token = await generateEmailVerificationToken(user.userId);
     // await sendEmailVerificationLink(token);
-    NextResponse.redirect("/verify");
+    // NextResponse.redirect("/verify");
     return {};
   } catch (e) {
-    console.log("🚀 ~ file: route.ts:65 ~ POST ~ e:", e);
-    // this part depends on the database you're using
-    // check for unique constraint error in user table
-    if (e instanceof LibsqlError && e.message === "") {
+    if (e instanceof LibsqlError && e.code === "SQLITE_CONSTRAINT") {
       return {
         error: "Username already taken",
       };
@@ -86,17 +83,14 @@ export async function signOut() {
 
 export async function signIn(formData: FormData) {
   const unparsedUsername = formData.get("username");
-  const unparsedUassword = formData.get("password");
-  // basic check
-
-  const { username, password } = signInSchema.parse({
-    username: unparsedUsername,
-    password: unparsedUassword,
-  });
+  const unparsedPassword = formData.get("password");
 
   try {
-    // find user by key
-    // and validate password
+    const { username, password } = signInSchema.parse({
+      username: unparsedUsername,
+      password: unparsedPassword,
+    });
+
     const key = await auth.useKey("username", username.toLowerCase(), password);
     const session = await auth.createSession({
       userId: key.userId,
@@ -104,16 +98,15 @@ export async function signIn(formData: FormData) {
     });
     const authRequest = auth.handleRequest("POST", context);
     authRequest.setSession(session);
-    NextResponse.redirect("/");
+    // NextResponse.redirect("/");
     return {};
   } catch (e) {
+    console.log("🚀 ~ file: auth.ts:104 ~ signIn ~ e:", e);
     if (
       e instanceof LuciaError &&
       (e.message === "AUTH_INVALID_KEY_ID" ||
         e.message === "AUTH_INVALID_PASSWORD")
     ) {
-      // user does not exist
-      // or invalid password
       return {
         error: "Incorrect username or password",
       };
