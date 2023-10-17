@@ -1,10 +1,10 @@
 // schema.js
-import { relations } from "drizzle-orm";
-import { index, int, sqliteTable, text } from "drizzle-orm/sqlite-core";
+import { relations } from 'drizzle-orm';
+import { index, int, sqliteTable, text } from 'drizzle-orm/sqlite-core';
 
-export const user = sqliteTable("user", {
-  id: text("id").primaryKey(),
-  username: text("username").notNull().unique(),
+export const user = sqliteTable('user', {
+  id: text('id').primaryKey(),
+  username: text('username').notNull().unique(),
   // email: text("email").notNull().unique(),
   // emailVerified: int("email_verified"),
   // other user attributes
@@ -15,16 +15,16 @@ export const userRelation = relations(user, ({ many }) => ({
   replies: many(reply),
 }));
 
-export const session = sqliteTable("user_session", {
-  id: text("id").primaryKey(),
-  userId: text("user_id")
+export const session = sqliteTable('user_session', {
+  id: text('id').primaryKey(),
+  userId: text('user_id')
     .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
-  activeExpires: int("active_expires", {
-    mode: "timestamp_ms",
+    .references(() => user.id, { onDelete: 'cascade' }),
+  activeExpires: int('active_expires', {
+    mode: 'timestamp_ms',
   }).notNull(),
-  idleExpires: int("idle_expires", {
-    mode: "timestamp_ms",
+  idleExpires: int('idle_expires', {
+    mode: 'timestamp_ms',
   }).notNull(),
 });
 
@@ -32,12 +32,12 @@ export const sessionRelation = relations(session, ({ one }) => ({
   user: one(user, { fields: [session.userId], references: [user.id] }),
 }));
 
-export const key = sqliteTable("user_key", {
-  id: text("id").primaryKey(),
-  userId: text("user_id")
+export const key = sqliteTable('user_key', {
+  id: text('id').primaryKey(),
+  userId: text('user_id')
     .notNull()
-    .references(() => user.id, { onDelete: "cascade" }),
-  hashedPassword: text("hashed_password"),
+    .references(() => user.id, { onDelete: 'cascade' }),
+  hashedPassword: text('hashed_password'),
 });
 
 export const keyRelation = relations(key, ({ one }) => ({
@@ -48,23 +48,23 @@ export const keyRelation = relations(key, ({ one }) => ({
 }));
 
 export const message = sqliteTable(
-  "message",
+  'message',
   {
-    id: text("id").primaryKey(),
-    message: text("message").notNull(),
-    createdAt: int("created_at", {
-      mode: "timestamp_ms",
+    id: text('id').primaryKey(),
+    message: text('message').notNull(),
+    createdAt: int('created_at', {
+      mode: 'timestamp_ms',
     }).notNull(),
-    userId: text("user_id")
+    userId: text('user_id')
       .notNull()
-      .references(() => user.id, { onDelete: "cascade" }),
-    codeName: text("code_name"),
+      .references(() => user.id, { onDelete: 'cascade' }),
+    codeName: text('code_name'),
   },
   (table) => {
     return {
-      userId_idx: index("message_userId_idx").on(table.userId),
+      userId_idx: index('message_userId_idx').on(table.userId),
     };
-  }
+  },
 );
 
 export const messageRelation = relations(message, ({ one, many }) => ({
@@ -76,29 +76,29 @@ export const messageRelation = relations(message, ({ one, many }) => ({
 }));
 
 export const reply = sqliteTable(
-  "reply",
+  'reply',
   {
-    id: text("id").primaryKey(),
-    reply: text("reply").notNull(),
-    createdAt: int("created_at", {
-      mode: "timestamp_ms",
+    id: text('id').primaryKey(),
+    reply: text('reply').notNull(),
+    createdAt: int('created_at', {
+      mode: 'timestamp_ms',
     }).notNull(),
-    userId: text("user_id")
+    userId: text('user_id')
       .notNull()
-      .references(() => user.id, { onDelete: "cascade" }),
-    messageId: text("message_id")
+      .references(() => user.id, { onDelete: 'cascade' }),
+    messageId: text('message_id')
       .notNull()
-      .references(() => message.id, { onDelete: "cascade" }),
+      .references(() => message.id, { onDelete: 'cascade' }),
   },
   (table) => {
     return {
-      userId_idx: index("reply_userId_idx").on(table.userId),
-      messageId_idx: index("reply_messageId_idx").on(table.messageId),
+      userId_idx: index('reply_userId_idx').on(table.userId),
+      messageId_idx: index('reply_messageId_idx').on(table.messageId),
     };
-  }
+  },
 );
 
-export const replyRelation = relations(reply, ({ one, many }) => ({
+export const replyRelation = relations(reply, ({ one }) => ({
   user: one(user, {
     fields: [reply.userId],
     references: [user.id],
@@ -107,7 +107,6 @@ export const replyRelation = relations(reply, ({ one, many }) => ({
     fields: [reply.messageId],
     references: [message.id],
   }),
-  replies: many(reply),
 }));
 
 // export const emailVerificationToken = sqliteTable("email_verification_token", {

@@ -1,7 +1,7 @@
-"use server";
+'use server';
 
-import { db } from "@/db";
-import { notAllowedUsername } from "@/lib/utils";
+import { db } from '@/db';
+import { notAllowedUsername } from '@/lib/utils';
 
 export async function getAllMessagesWithReplies({
   username,
@@ -12,10 +12,9 @@ export async function getAllMessagesWithReplies({
     where: (user, { eq }) => eq(user.username, username),
   });
 
-  if (!user) throw new Error("User not found");
+  if (!user) throw new Error('User not found');
 
   const messages = await db.query.message.findMany({
-    // take: 10,
     where: (message, { eq }) => eq(message.userId, user.id),
     orderBy: (message, { desc }) => desc(message.createdAt),
     with: {
@@ -55,7 +54,7 @@ export async function getAllPublicMessages({ username }: { username: string }) {
     where: (user, { eq }) => eq(user.username, username),
   });
 
-  if (!user) throw new Error("User not found");
+  if (!user) throw new Error('User not found');
 
   return db.query.message.findMany({
     // where: {

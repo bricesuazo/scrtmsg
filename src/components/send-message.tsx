@@ -2,14 +2,15 @@
 
 import { sendMessageToUsername } from '@/actions/message';
 import { getAllPublicMessages } from '@/actions/user';
+import LoadingMessage from '@/components/loading-message';
+import PublicMessage from '@/components/public-message';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import type { Dispatch, SetStateAction } from 'react';
 import { useState } from 'react';
-import ReactTextareaAutosize from 'react-textarea-autosize';
-
-import PublicMessage from './public-message';
-import { Input } from './ui/input';
-import { Switch } from './ui/switch';
 
 export default function SendMessage({
   username,
@@ -52,7 +53,7 @@ export default function SendMessage({
   });
   return (
     <div className="mx-auto max-w-md space-y-8">
-      <div className="sticky top-16 z-10 space-y-4 bg-white py-0 pb-4 transition-all duration-75 ease-in-out dark:bg-[#121212]">
+      <div className="sticky top-16 z-10 space-y-4 py-0 pb-4 transition-all duration-75 ease-in-out">
         <h1 className="text-center text-xl font-bold">
           Send message to @{username}
         </h1>
@@ -69,8 +70,7 @@ export default function SendMessage({
           }}
           className="flex flex-col gap-y-2"
         >
-          <ReactTextareaAutosize
-            cacheMeasurements
+          <Textarea
             placeholder={`Send anonymous message to @${username}`}
             onChange={(e) =>
               setInput({ ...input, message: (e.target as any).value })
@@ -78,17 +78,17 @@ export default function SendMessage({
             value={input.message}
             disabled={sendMessageMutation.isPending}
             required
-            minRows={2}
-            maxRows={10}
+            rows={2}
+
+            // maxRows={10}
           />
-          <button
+          <Button
             type="submit"
             disabled={sendMessageMutation.isPending}
-            className="bg-slate-100"
             name="Send message"
           >
             {sendMessageMutation.isPending ? 'Loading...' : 'Send'}
-          </button>
+          </Button>
 
           {sendMessageMutation.isError && (
             <p className="text-sm text-red-500">
@@ -156,9 +156,9 @@ export default function SendMessage({
           <>
             <div className="mx-auto mt-10 h-4 w-32 animate-pulse bg-slate-300 p-1 dark:bg-slate-700" />
             <div className="space-y-2">
-              {/* {[...Array(10)].map((_, index) => (
+              {[...Array(10)].map((_, index) => (
                 <LoadingMessage key={index} isOwned={false} />
-              ))} */}
+              ))}
             </div>
           </>
         ) : !messages.data?.length ? (

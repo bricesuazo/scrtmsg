@@ -31,7 +31,7 @@
     "lucia": "^2.7.1",
     "lucide-react": "^0.284.0",
     "nanoid": "^5.0.1",
-    "next": "13.5.4",
+    "next": "13.5.5",
     "next-themes": "^0.2.1",
     "react": "^18",
     "react-dom": "^18",

@@ -27,7 +27,7 @@ export default function MyMessages({ username }: { username: string }) {
   };
 
   return (
-    <div className="flex flex-col gap-y-2 max-w-screen-md mx-auto px-4">
+    <div className="flex flex-col gap-y-2">
       <div className="flex items-center justify-between gap-x-4">
         <div className="flex items-center gap-x-2">
           <Input

@@ -1,9 +1,6 @@
-import { MoreVertical } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-
-import { signOut } from "@/actions/auth";
-import { getSession } from "@/auth";
+import { signOut } from '@/actions/auth';
+import { getSession } from '@/auth';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,10 +8,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+} from '@/components/ui/dropdown-menu';
+import { MoreVertical } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 
-import { ThemeToggle } from "./theme-toggle";
-import { Button } from "./ui/button";
+import { ThemeToggle } from './theme-toggle';
 
 export default async function Header() {
   const session = await getSession();
@@ -46,7 +45,7 @@ export default async function Header() {
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button size="icon" variant="outline">
-                <MoreVertical size={"1.2rem"} />
+                <MoreVertical size={'1.2rem'} />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
@@ -57,11 +56,11 @@ export default async function Header() {
                   @{session.user.username}
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <form action={signOut}>
-                  <button type="submit">Sign out</button>
-                </form>
-              </DropdownMenuItem>
+              <form action={signOut}>
+                <button type="submit" className="w-full">
+                  <DropdownMenuItem>Sign out</DropdownMenuItem>
+                </button>
+              </form>
             </DropdownMenuContent>
           </DropdownMenu>
         )}

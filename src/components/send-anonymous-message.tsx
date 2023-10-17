@@ -1,11 +1,11 @@
 'use client';
 
 import { getUserByUsername } from '@/actions/user';
+import SendMessage from '@/components/send-message';
+import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
-
-import SendMessage from './send-message';
 
 export default function SendAnonymousMessage({
   username,
@@ -41,14 +41,14 @@ export default function SendAnonymousMessage({
           Message sent to @{username}
         </h1>
         <p>
-          <button
+          <Button
             onClick={() => {
               setIsSent(false);
             }}
             name="Send another message"
           >
             Send another message
-          </button>
+          </Button>
         </p>
       </div>
     );

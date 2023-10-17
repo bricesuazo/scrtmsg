@@ -5,7 +5,7 @@ import { Open_Sans } from 'next/font/google';
 
 import './globals.css';
 
-export const runtime = 'edge';
+// export const runtime = 'edge';
 
 const font = Open_Sans({ subsets: ['latin'] });
 
