@@ -20,14 +20,8 @@ export default async function Header() {
 
   return (
     <header className="mx-auto flex max-w-screen-md items-center justify-between p-4">
-      <Link href="/">
-        <Image
-          src="/logo.png"
-          alt="scrtmsg.me logo"
-          className="min-w-min"
-          width={32}
-          height={32}
-        />
+      <Link href="/" className="flex-shrink-0">
+        <Image src="/logo.png" alt="scrtmsg.me logo" width={32} height={32} />
       </Link>
 
       <div className="flex items-center gap-x-2">
