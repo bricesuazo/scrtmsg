@@ -10,8 +10,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -59,7 +59,6 @@ export default function Reply({
           })
         }
       >
-        <AlertDialogTrigger>Open</AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Reply</AlertDialogTitle>
@@ -127,17 +126,17 @@ export default function Reply({
           </div>
         </div>
         <DropdownMenu>
-          <DropdownMenuTrigger>
-            <MoreVertical />
+          <DropdownMenuTrigger asChild>
+            <Button size="icon" variant="outline">
+              <MoreVertical size="1.25rem" />
+            </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent>
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
+            <DropdownMenuLabel>Reply</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <button disabled>
-                <Edit className="h-5 w-5" />{' '}
-                <span className="w-full">Edit Message (coming soon!)</span>
-              </button>
+            <DropdownMenuItem disabled className="gap-x-2 truncate">
+              <Edit className="h-4 w-4" />
+              <span>Edit Reply (Soon!)</span>
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => {
@@ -148,12 +147,13 @@ export default function Reply({
                 });
               }}
               disabled={deleteReplyMutation.isPending}
+              className="gap-x-2 truncate"
             >
               {deleteReplyMutation.isPending ? (
-                <Loader2 className="h-5 w-5" />
+                <Loader2 className="h-4 w-4" />
               ) : (
                 <>
-                  <Trash className="h-4 w-4 text-red-500 dark:text-red-800" />{' '}
+                  <Trash className="h-4 w-4 text-red-500 dark:text-red-800" />
                   <span className="text-red-500 dark:text-red-800">
                     Delete Reply
                   </span>

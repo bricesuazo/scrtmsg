@@ -11,7 +11,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
 import {
   DropdownMenu,
@@ -26,6 +25,9 @@ import { useMutation } from '@tanstack/react-query';
 import { Edit, Loader2, MoreVertical, Send, Trash } from 'lucide-react';
 import { useState } from 'react';
 import Moment from 'react-moment';
+
+import { Button } from './ui/button';
+import { Input } from './ui/input';
 
 export default function MessageComponent({
   message,
@@ -47,6 +49,13 @@ export default function MessageComponent({
     mutationKey: ['deleteMessage', message.id],
     mutationFn: ({ messageId }: { messageId: string }) =>
       deleteMessage({ messageId }),
+    onSuccess: () => {
+      refetch();
+      setDeleteConfirmationModal({
+        ...deleteConfirmationModal,
+        isOpen: false,
+      });
+    },
   });
   const [reply, setReply] = useState('');
   const [deleteConfirmationModal, setDeleteConfirmationModal] = useState<{
@@ -70,7 +79,6 @@ export default function MessageComponent({
           })
         }
       >
-        <AlertDialogTrigger>Open</AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Delete Message</AlertDialogTitle>
@@ -102,14 +110,9 @@ export default function MessageComponent({
               Cancel
             </AlertDialogCancel>
             <AlertDialogAction
-              onClick={async () => {
-                await deleteMutation.mutateAsync({
+              onClick={() => {
+                deleteMutation.mutate({
                   messageId: message.id,
-                });
-                refetch();
-                setDeleteConfirmationModal({
-                  ...deleteConfirmationModal,
-                  isOpen: false,
                 });
               }}
               disabled={deleteMutation.isPending}
@@ -122,10 +125,7 @@ export default function MessageComponent({
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-      <div
-        key={message.id}
-        className="space-y-2 rounded border p-4 dark:border-slate-800"
-      >
+      <div key={message.id} className="space-y-2 rounded border p-4">
         <div className="flex items-center justify-between">
           <div>
             <p>{message.message}</p>
@@ -146,17 +146,17 @@ export default function MessageComponent({
           </div>
 
           <DropdownMenu>
-            <DropdownMenuTrigger>
-              <MoreVertical />
+            <DropdownMenuTrigger asChild>
+              <Button size="icon" variant="outline">
+                <MoreVertical size="1.25rem" />
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuLabel>Message</DropdownMenuLabel>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>
-                <button disabled>
-                  <Edit className="h-5 w-5" />{' '}
-                  <span className="w-full">Edit Message (coming soon!)</span>
-                </button>
+              <DropdownMenuItem disabled className="gap-x-2 truncate">
+                <Edit className="h-4 w-4" />
+                <span>Edit Message (Soon!)</span>
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => {
@@ -167,12 +167,13 @@ export default function MessageComponent({
                   });
                 }}
                 disabled={deleteMutation.isPending}
+                className="gap-x-2 truncate"
               >
                 {deleteMutation.isPending ? (
-                  <Loader2 className="h-5 w-5" />
+                  <Loader2 className="h-4 w-4" />
                 ) : (
                   <>
-                    <Trash className="h-4 w-4 text-red-500 dark:text-red-800" />{' '}
+                    <Trash className="h-4 w-4 text-red-500 dark:text-red-800" />
                     <span className="text-red-500 dark:text-red-800">
                       Delete Message
                     </span>
@@ -181,57 +182,57 @@ export default function MessageComponent({
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
-
-          <div>
-            {message.replies.length === 0 ? (
-              <p className="text-center text-xs text-slate-500">No reply</p>
-            ) : (
-              message.replies.map((reply) => {
-                return (
-                  <ReplyComponent
-                    key={reply.id}
-                    reply={reply}
-                    username={username}
-                    refetch={refetch}
-                  />
-                );
-              })
-            )}
-          </div>
-          <form
-            className="flex items-center gap-x-2"
-            onSubmit={async (e) => {
-              e.preventDefault();
-              await replyMutation.mutateAsync({
-                messageId: message.id,
-                reply,
-              });
-              setReply('');
-              refetch();
-            }}
-          >
-            <input
-              type="text"
-              placeholder="Reply..."
-              className="w-full"
-              required
-              value={reply}
-              disabled={replyMutation.isPending}
-              onChange={(e) => setReply((e.target as any).value)}
-            />
-            <button
-              className="p-2"
-              disabled={replyMutation.isPending}
-              name="Send reply"
-            >
-              {replyMutation.isPending ? (
-                <Loader2 className="animate-spin h-5 w-5" />
-              ) : (
-                <Send size={20} />
-              )}
-            </button>
-          </form>
         </div>
+        <div>
+          {message.replies.length === 0 ? (
+            <p className="text-center text-xs text-slate-500">No reply</p>
+          ) : (
+            message.replies.map((reply) => {
+              return (
+                <ReplyComponent
+                  key={reply.id}
+                  reply={reply}
+                  username={username}
+                  refetch={refetch}
+                />
+              );
+            })
+          )}
+        </div>
+        <form
+          className="flex items-center gap-x-2"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            await replyMutation.mutateAsync({
+              messageId: message.id,
+              reply,
+            });
+            setReply('');
+            refetch();
+          }}
+        >
+          <Input
+            type="text"
+            placeholder="Reply..."
+            className="w-full"
+            required
+            value={reply}
+            disabled={replyMutation.isPending}
+            onChange={(e) => setReply((e.target as any).value)}
+          />
+          <Button
+            size="icon"
+            className="p-2"
+            disabled={replyMutation.isPending}
+            name="Send reply"
+          >
+            {replyMutation.isPending ? (
+              <Loader2 className="animate-spin h-5 w-5" />
+            ) : (
+              <Send size={20} />
+            )}
+          </Button>
+        </form>
       </div>
     </>
   );

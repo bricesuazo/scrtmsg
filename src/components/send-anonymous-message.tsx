@@ -2,7 +2,6 @@
 
 import { getUserByUsername } from '@/actions/user';
 import SendMessage from '@/components/send-message';
-import { Button } from '@/components/ui/button';
 import { useQuery } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
@@ -34,25 +33,7 @@ export default function SendAnonymousMessage({
     return <h1 className="text-center text-xl text-red-500">User not found</h1>;
   }
 
-  if (isSent) {
-    return (
-      <div className="flex flex-col items-center gap-y-4">
-        <h1 className="text-center text-xl font-bold">
-          Message sent to @{username}
-        </h1>
-        <p>
-          <Button
-            onClick={() => {
-              setIsSent(false);
-            }}
-            name="Send another message"
-          >
-            Send another message
-          </Button>
-        </p>
-      </div>
-    );
-  } else {
-    return <SendMessage username={username} setIsSent={setIsSent} />;
-  }
+  return (
+    <SendMessage username={username} isSent={isSent} setIsSent={setIsSent} />
+  );
 }

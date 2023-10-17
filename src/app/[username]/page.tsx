@@ -29,11 +29,9 @@ export default async function UserPage({
   const session = await getSession();
 
   return (
-    <main className="max-w-screen-md mx-auto px-4">
+    <main className="max-w-screen-md mx-auto p-4">
       {session?.user.username === username ? (
-        <div className="space-y-2">
-          <MyMessages username={username} />
-        </div>
+        <MyMessages username={username} />
       ) : (
         <SendAnonymousMessage username={username} />
       )}

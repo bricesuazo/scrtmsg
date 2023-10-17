@@ -38,7 +38,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={font.className}>
         <Providers>
-          <div className="sticky top-0 z-20">
+          <div className="sticky top-0 z-20 bg-background border-b-border border-b">
             <Header />
           </div>
           {children}

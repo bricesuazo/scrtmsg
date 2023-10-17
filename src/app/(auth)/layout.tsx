@@ -1,11 +1,10 @@
-import { redirect } from "next/navigation";
-
-import { getSession } from "@/auth";
+import { getSession } from '@/auth';
+import { redirect } from 'next/navigation';
 
 export default async function AuthLayout(props: React.PropsWithChildren) {
   const session = await getSession();
 
-  if (session) redirect("/");
+  if (session) redirect('/');
 
-  return <>{props.children}</>;
+  return <main className="max-w-screen-md p-4 mx-auto">{props.children}</main>;
 }
