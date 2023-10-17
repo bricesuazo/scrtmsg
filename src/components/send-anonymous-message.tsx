@@ -4,14 +4,12 @@ import { getUserByUsername } from '@/actions/user';
 import SendMessage from '@/components/send-message';
 import { useQuery } from '@tanstack/react-query';
 import { Loader2 } from 'lucide-react';
-import { useState } from 'react';
 
 export default function SendAnonymousMessage({
   username,
 }: {
   username: string;
 }) {
-  const [isSent, setIsSent] = useState(false);
   const user = useQuery({
     queryKey: ['user', username],
     queryFn: () => getUserByUsername({ username }),
@@ -34,6 +32,6 @@ export default function SendAnonymousMessage({
   }
 
   return (
-    <SendMessage username={username} isSent={isSent} setIsSent={setIsSent} />
+    <SendMessage username={username} />
   );
 }
