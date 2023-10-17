@@ -1,8 +1,8 @@
-import { Github } from "lucide-react";
-import Image from "next/image";
-import Link from "next/link";
-
-import { getSession } from "@/auth";
+import { getSession } from '@/auth';
+import MyMessages from '@/components/my-messages';
+import { Github } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export default async function Home() {
   const session = await getSession();
@@ -10,7 +10,9 @@ export default async function Home() {
   if (session)
     return (
       <>
-        <main></main>
+        <main className="max-w-screen-md p-4 mx-auto">
+          <MyMessages username={session.user.username} />
+        </main>
       </>
     );
 

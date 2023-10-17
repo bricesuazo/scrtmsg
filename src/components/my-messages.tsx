@@ -27,7 +27,7 @@ export default function MyMessages({ username }: { username: string }) {
   };
 
   return (
-    <div className="flex flex-col gap-y-2">
+    <div className="flex flex-col gap-y-4">
       <div className="flex items-center justify-between gap-x-4">
         <div className="flex items-center gap-x-2">
           <Input
@@ -38,15 +38,17 @@ export default function MyMessages({ username }: { username: string }) {
             onClick={() => copyUsername(username)}
             disabled={isCopied}
           />
-          <Button
-            className="hidden sm:flex"
-            onClick={() => copyUsername(username)}
-            disabled={isCopied}
-            size="icon"
-            variant="secondary"
-          >
-            {!isCopied ? <Copy size="1rem" /> : <Check size="1rem" />}
-          </Button>
+          <div>
+            <Button
+              className="hidden sm:flex"
+              onClick={() => copyUsername(username)}
+              disabled={isCopied}
+              size="icon"
+              variant="secondary"
+            >
+              {!isCopied ? <Copy size="1rem" /> : <Check size="1rem" />}
+            </Button>
+          </div>
         </div>
         <Button
           onClick={() => messages.refetch()}

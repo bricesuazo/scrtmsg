@@ -1,18 +1,18 @@
-"use server";
+'use server';
 
-import { LibsqlError } from "@libsql/client";
-import { LuciaError } from "lucia";
-import * as context from "next/headers";
-import { redirect } from "next/navigation";
-
-import { auth } from "@/auth";
-import { signInSchema, signUpSchema } from "@/lib/zod-schema";
+import { auth } from '@/auth';
+import { notAllowedUsername } from '@/lib/utils';
+import { signInSchema, signUpSchema } from '@/lib/zod-schema';
+import { LibsqlError } from '@libsql/client';
+import { LuciaError } from 'lucia';
+import * as context from 'next/headers';
+import { redirect } from 'next/navigation';
 
 export async function signUp(formData: FormData) {
   // const unparsedEmail = formData.get("email");
-  const unparsedIsValidCaptcha = Boolean(formData.get("isValidCaptcha"));
-  const unparsedUsername = formData.get("username");
-  const unparsedPassword = formData.get("password");
+  const unparsedIsValidCaptcha = Boolean(formData.get('isValidCaptcha'));
+  const unparsedUsername = formData.get('username');
+  const unparsedPassword = formData.get('password');
   // basic check
 
   const { username, password, isValidCaptcha } = signUpSchema.parse({
@@ -24,14 +24,20 @@ export async function signUp(formData: FormData) {
 
   if (!isValidCaptcha) {
     return {
-      error: "Invalid Captcha",
+      error: 'Invalid Captcha',
     };
   }
 
   try {
+    if (notAllowedUsername.includes(username.toLowerCase())) {
+      return {
+        error: 'Username not allowed',
+      };
+    }
+
     const user = await auth.createUser({
       key: {
-        providerId: "username",
+        providerId: 'username',
         providerUserId: username.toLowerCase(),
         password,
       },
@@ -45,42 +51,42 @@ export async function signUp(formData: FormData) {
       userId: user.userId,
       attributes: {},
     });
-    const authRequest = auth.handleRequest("POST", context);
+    const authRequest = auth.handleRequest('POST', context);
     authRequest.setSession(session);
     // const token = await generateEmailVerificationToken(user.userId);
     // await sendEmailVerificationLink(token);
     // NextResponse.redirect("/verify");
     return {};
   } catch (e) {
-    if (e instanceof LibsqlError && e.code === "SQLITE_CONSTRAINT") {
+    if (e instanceof LibsqlError && e.code === 'SQLITE_CONSTRAINT') {
       return {
-        error: "Username already taken",
+        error: 'Username already taken',
       };
     }
     return {
-      error: "An unknown error occurred",
+      error: 'An unknown error occurred',
     };
   }
 }
 
 export async function signOut() {
-  const authRequest = auth.handleRequest("POST", context);
+  const authRequest = auth.handleRequest('POST', context);
 
   const session = await authRequest.validate();
   if (!session) {
-    return { error: "Unauthorized" };
+    return { error: 'Unauthorized' };
   }
 
   await auth.invalidateSession(session.sessionId);
 
   authRequest.setSession(null);
 
-  redirect("/sign-in");
+  redirect('/sign-in');
 }
 
 export async function signIn(formData: FormData) {
-  const unparsedUsername = formData.get("username");
-  const unparsedPassword = formData.get("password");
+  const unparsedUsername = formData.get('username');
+  const unparsedPassword = formData.get('password');
 
   try {
     const { username, password } = signInSchema.parse({
@@ -88,28 +94,28 @@ export async function signIn(formData: FormData) {
       password: unparsedPassword,
     });
 
-    const key = await auth.useKey("username", username.toLowerCase(), password);
+    const key = await auth.useKey('username', username.toLowerCase(), password);
     const session = await auth.createSession({
       userId: key.userId,
       attributes: {},
     });
-    const authRequest = auth.handleRequest("POST", context);
+    const authRequest = auth.handleRequest('POST', context);
     authRequest.setSession(session);
     // NextResponse.redirect("/");
     return {};
   } catch (e) {
-    console.log("🚀 ~ file: auth.ts:104 ~ signIn ~ e:", e);
+    console.log('🚀 ~ file: auth.ts:104 ~ signIn ~ e:', e);
     if (
       e instanceof LuciaError &&
-      (e.message === "AUTH_INVALID_KEY_ID" ||
-        e.message === "AUTH_INVALID_PASSWORD")
+      (e.message === 'AUTH_INVALID_KEY_ID' ||
+        e.message === 'AUTH_INVALID_PASSWORD')
     ) {
       return {
-        error: "Incorrect username or password",
+        error: 'Incorrect username or password',
       };
     }
     return {
-      error: "An unknown error occurred",
+      error: 'An unknown error occurred',
     };
   }
 }
@@ -235,11 +241,11 @@ export async function signIn(formData: FormData) {
 export async function verifyCaptcha(token: string | null) {
   const res = await fetch(
     `https://www.google.com/recaptcha/api/siteverify?secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`,
-    { method: "POST" }
+    { method: 'POST' },
   );
   if (res.ok) {
-    return "success!";
+    return 'success!';
   } else {
-    throw new Error("Failed Captcha");
+    throw new Error('Failed Captcha');
   }
 }

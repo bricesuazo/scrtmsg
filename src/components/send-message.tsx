@@ -24,7 +24,13 @@ import {
   FormMessage,
 } from './ui/form';
 
-export default function SendMessage({ username }: { username: string }) {
+export default function SendMessage({
+  username,
+  isImTheUsername,
+}: {
+  username: string;
+  isImTheUsername: boolean;
+}) {
   const [isSent, setIsSent] = useState(false);
 
   const form = useForm<z.infer<typeof sendAnonymousMessageSchema>>({
@@ -73,125 +79,129 @@ export default function SendMessage({ username }: { username: string }) {
   }
   return (
     <div className="space-y-8">
-      {isSent ? (
-        <div className="flex flex-col items-center gap-y-4">
-          <h1 className="text-center text-xl font-bold">
-            Message sent to @{username}
-          </h1>
-          <p>
-            <Button
-              onClick={() => {
-                setIsSent(false);
-              }}
-              name="Send another message"
-            >
-              Send another message
-            </Button>
-          </p>
-        </div>
-      ) : (
-        <div className="space-y-4 py-0 pb-4 transition-all duration-75 ease-in-out">
-          <h1 className="text-center text-xl font-bold">
-            Send message to @{username}
-          </h1>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="flex flex-col gap-y-4"
-            >
-              <FormField
-                control={form.control}
-                name="message"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Message</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder={`Send anonymous message to @${username}`}
-                        {...field}
-                        disabled={sendMessageMutation.isPending}
-                        required
-                        rows={4}
+      {!isImTheUsername && (
+        <>
+          {isSent ? (
+            <div className="flex flex-col items-center gap-y-4">
+              <h1 className="text-center text-xl font-bold">
+                Message sent to @{username}
+              </h1>
+              <p>
+                <Button
+                  onClick={() => {
+                    setIsSent(false);
+                  }}
+                  name="Send another message"
+                >
+                  Send another message
+                </Button>
+              </p>
+            </div>
+          ) : (
+            <div className="space-y-4 py-0 pb-4 transition-all duration-75 ease-in-out">
+              <h1 className="text-center text-xl font-bold">
+                Send message to @{username}
+              </h1>
+              <Form {...form}>
+                <form
+                  onSubmit={form.handleSubmit(onSubmit)}
+                  className="flex flex-col gap-y-4"
+                >
+                  <FormField
+                    control={form.control}
+                    name="message"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Message</FormLabel>
+                        <FormControl>
+                          <Textarea
+                            placeholder={`Send anonymous message to @${username}`}
+                            {...field}
+                            disabled={sendMessageMutation.isPending}
+                            required
+                            rows={4}
 
-                        // maxRows={10}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <Button
-                type="submit"
-                disabled={sendMessageMutation.isPending}
-                name="Send message"
-              >
-                {sendMessageMutation.isPending ? 'Loading...' : 'Send'}
-              </Button>
-
-              {sendMessageMutation.isError && (
-                <p className="text-sm text-red-500">
-                  {sendMessageMutation.error.message}
-                </p>
-              )}
-
-              <FormField
-                control={form.control}
-                name="isCodeNameEnable"
-                render={({ field }) => (
-                  <FormItem>
-                    <div className="flex items-center gap-x-2 justify-center">
-                      <FormControl>
-                        <Switch
-                          checked={field.value}
-                          onCheckedChange={field.onChange}
-                        >
-                          <span className="sr-only">Add code name</span>
-                          <span
-                            className={`${
-                              form.getValues().isCodeNameEnable
-                                ? 'translate-x-3'
-                                : '-translate-x-1'
-                            } inline-block h-3 w-3 transform rounded-full bg-white transition`}
+                            // maxRows={10}
                           />
-                        </Switch>
-                      </FormControl>
-                      <FormLabel>Add code name</FormLabel>
-                    </div>
-                  </FormItem>
-                )}
-              />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
 
-              {form.getValues().isCodeNameEnable && (
-                <FormField
-                  control={form.control}
-                  name="codeName"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>
-                        Code name
-                        <span className="pointer-events-none select-none text-red-500">
-                          {' '}
-                          *
-                        </span>
-                      </FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="Code name"
-                          disabled={sendMessageMutation.isPending}
-                          required={form.getValues().isCodeNameEnable}
-                          {...field}
-                          value={field.value ?? ''}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
+                  <Button
+                    type="submit"
+                    disabled={sendMessageMutation.isPending}
+                    name="Send message"
+                  >
+                    {sendMessageMutation.isPending ? 'Loading...' : 'Send'}
+                  </Button>
+
+                  {sendMessageMutation.isError && (
+                    <p className="text-sm text-red-500">
+                      {sendMessageMutation.error.message}
+                    </p>
                   )}
-                />
-              )}
-            </form>
-          </Form>
-        </div>
+
+                  <FormField
+                    control={form.control}
+                    name="isCodeNameEnable"
+                    render={({ field }) => (
+                      <FormItem>
+                        <div className="flex items-center gap-x-2 justify-center">
+                          <FormControl>
+                            <Switch
+                              checked={field.value}
+                              onCheckedChange={field.onChange}
+                            >
+                              <span className="sr-only">Add code name</span>
+                              <span
+                                className={`${
+                                  form.getValues().isCodeNameEnable
+                                    ? 'translate-x-3'
+                                    : '-translate-x-1'
+                                } inline-block h-3 w-3 transform rounded-full bg-white transition`}
+                              />
+                            </Switch>
+                          </FormControl>
+                          <FormLabel>Add code name</FormLabel>
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+
+                  {form.getValues().isCodeNameEnable && (
+                    <FormField
+                      control={form.control}
+                      name="codeName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>
+                            Code name
+                            <span className="pointer-events-none select-none text-red-500">
+                              {' '}
+                              *
+                            </span>
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="Code name"
+                              disabled={sendMessageMutation.isPending}
+                              required={form.getValues().isCodeNameEnable}
+                              {...field}
+                              value={field.value ?? ''}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  )}
+                </form>
+              </Form>
+            </div>
+          )}
+        </>
       )}
 
       <div className="space-y-4">
@@ -205,16 +215,14 @@ export default function SendMessage({ username }: { username: string }) {
             </div>
           </>
         ) : !messages.data?.length ? (
-          <p className="text-center text-sm dark:text-slate-500">
-            No replied messages
-          </p>
+          <p className="text-center text-sm dark:text-slate-500">No messages</p>
         ) : (
           <>
             <p className="text-center text-muted-foreground text-xs">
               Messages
             </p>
             <div className="space-y-2">
-              {messages.data?.map((message) => (
+              {messages.data.map((message) => (
                 <PublicMessage
                   message={message}
                   key={message.id}

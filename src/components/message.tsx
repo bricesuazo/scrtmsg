@@ -229,7 +229,7 @@ export default function MessageComponent({
             {replyMutation.isPending ? (
               <Loader2 className="animate-spin h-5 w-5" />
             ) : (
-              <Send size={20} />
+              <Send size="1.25rem" />
             )}
           </Button>
         </form>

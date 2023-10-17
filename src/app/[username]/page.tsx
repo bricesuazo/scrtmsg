@@ -1,5 +1,4 @@
 import { getSession } from '@/auth';
-import MyMessages from '@/components/my-messages';
 import SendAnonymousMessage from '@/components/send-anonymous-message';
 import type { Metadata } from 'next';
 
@@ -30,11 +29,10 @@ export default async function UserPage({
 
   return (
     <main className="max-w-screen-md mx-auto p-4">
-      {session?.user.username === username ? (
-        <MyMessages username={username} />
-      ) : (
-        <SendAnonymousMessage username={username} />
-      )}
+      <SendAnonymousMessage
+        username={username}
+        isImTheUsername={session?.user.username === username}
+      />
     </main>
   );
 }
